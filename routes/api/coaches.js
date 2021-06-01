@@ -6,14 +6,14 @@ const jwt = require('jsonwebtoken')
 const { check, validationResult } = require('express-validator')
 
 const upload = require('../../middleware/upload')
-const Owner = require('../../models/Owner')
+const Coach = require('../../models/Coaches')
+const { array } = require('../../middleware/upload')
 
-// @route   POST /api/owner/register
-// @desc    Register owner
+// @route   POST /api/coach/register
+// @desc    Register coach
 // @access  Public
 router.post('/register', upload.array('image', 2), async(req, res) => {
     req.body = JSON.parse(req.body.data)
-    console.log('body', req.body);
     await check('name', 'Vui lòng nhập tên').not().isEmpty().run(req);
     await check('email', 'Vui lòng nhập email').isEmail().run(req);
     await check('password', 'Mật khẩu ít nhất 6 chữ').isLength({ min: 6 }).run(req);
@@ -35,31 +35,29 @@ router.post('/register', upload.array('image', 2), async(req, res) => {
     const address = { city, district, ward }
     const contact = { email, phoneNumber, address }
     try {
-        //see if owner exist
-        let owner = await Owner.findOne({ phoneNumber })
-        if (owner) {
+        //see if coach exist
+        let coach = await Coach.findOne({ phoneNumber })
+        if (coach) {
             return res.status(400).json({ errors: 'SĐT này đã tồn tại trong hệ thống' })
         }
 
-        owner = new Owner({
+        coach = new Coach({
                 name,
                 contact
             })
-            //add identityCard Id to owner
-        owner.identityCard = identityCard
+            //add identityCard Id to Coaches
+        coach.identityCard = identityCard
 
         //Encrypt password
         const salt = await bcrypt.genSalt(10)
-        owner.password = await bcrypt.hash(password, salt)
+        coach.password = await bcrypt.hash(password, salt)
 
-        console.log('owenr', owner);
-
-        await owner.save()
+        await coach.save()
 
         //return jsonwebtoken
         const payload = {
-            owner: {
-                id: owner.id
+            coach: {
+                id: coach.id
             }
         }
 
@@ -76,8 +74,8 @@ router.post('/register', upload.array('image', 2), async(req, res) => {
     }
 })
 
-// @route   POST owner/authenticate
-// @desc    Authenticate owner & get token
+// @route   POST coach/authenticate
+// @desc    Authenticate coach & get token
 // @access  Public
 router.post('/authenticate', //Router-level middleware
     [
@@ -91,20 +89,20 @@ router.post('/authenticate', //Router-level middleware
         const { phoneNumber, password } = req.body
         try {
             //see if owner exists
-            let owner = await Owner.findOne({ "contact.phoneNumber": "0798850400" })
-            if (!owner) {
+            let coach = await Coach.findOne({ "contact.phoneNumber": "0798850400" })
+            if (!coach) {
                 return res.status(400).json({ errors: [{ msg: 'Thông tin không hợp lệ' }] })
             }
 
-            const isMatch = await bcrypt.compare(password, owner.password)
+            const isMatch = await bcrypt.compare(password, coach.password)
             if (!isMatch) {
                 return res.status(400).json({ errors: [{ msg: 'Thông tin không hợp lệ' }] })
             }
 
             //Return jwt
             const payload = { //the payload which inclube ownerId
-                owner: {
-                    id: owner.id
+                coach: {
+                    id: coach.id
                 }
             }
 
