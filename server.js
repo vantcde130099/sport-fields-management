@@ -18,6 +18,8 @@ app.use('/api/fields', require('./routes/api/fields'));
 
 // Serve static assets in production
 if (process.env.NODE_ENV === 'production') {
+  console.log('it came here');
+
   // Set static folder
   app.use(express.static('client/build'));
 
