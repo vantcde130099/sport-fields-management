@@ -1,0 +1,4 @@
+{
+  "mongoURI": "mongodb+srv://cresd1601:Crescent1!@nerdgang.hvxap.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+  "jwtSecret": "mysecrettoken"
+}
