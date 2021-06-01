@@ -4,7 +4,7 @@ import './App.css';
 
 const App = () => (
   <Fragment>
-    <h1>Test Application</h1>
+    <h1>Test Buksan Application</h1>
   </Fragment>
 );
 
