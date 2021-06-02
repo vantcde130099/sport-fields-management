@@ -1,29 +1,19 @@
-<<<<<<< HEAD
 # .github/workflows/chromatic.yml
 
 # Workflow name
 name: 'Chromatic'
-=======
-# Workflow name
-name: 'Chromatic Deployment'
->>>>>>> af95f4a (Update location for github workflow)
 
 # Event for the workflow
 on: push
 
 # List of jobs
 jobs:
-<<<<<<< HEAD
   chromatic-deployment:
-=======
-  test:
->>>>>>> af95f4a (Update location for github workflow)
     # Operating System
     runs-on: ubuntu-latest
     # Job steps
     steps:
       - uses: actions/checkout@v1
-<<<<<<< HEAD
       - name: Install dependencies
         run: yarn
         # 👇 Adds Chromatic as a step in the workflow
@@ -34,13 +24,3 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           # 👇 Chromatic projectToken, refer to the manage page to obtain it.
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-=======
-      - run: yarn
-        #👇 Adds Chromatic as a step in the workflow
-      - uses: chromaui/action@v1
-        # Options required for Chromatic's GitHub Action
-        with:
-          #👇 Chromatic projectToken, see https://storybook.js.org/tutorials/intro-to-storybook/ember/en/deploy/ to obtain it
-          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-          token: ${{ secrets.GITHUB_TOKEN }}
->>>>>>> af95f4a (Update location for github workflow)
