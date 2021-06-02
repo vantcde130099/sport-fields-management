@@ -4,7 +4,7 @@ import './App.css';
 
 const App = () => (
   <Fragment>
-    <h1>Test Deploy Application</h1>
+    <h1>Demo Workflow 2</h1>
   </Fragment>
 );
 
