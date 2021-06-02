@@ -1,0 +1,19 @@
+jobs:
+  chromatic-deployment:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: client
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install dependencies
+        run: yarn
+        # 👇 Runs yarn in ./client
+        working-directory: client
+      - name: Publish to Chromatic
+        uses: chromaui/action@v1
+        with:
+          # 👇 Runs Chromatic CLI in ./client
+          workingDir: client
+          token: ${{ secrets.GITHUB_TOKEN }}
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
