@@ -1,5 +1,6 @@
 jobs:
   chromatic-deployment:
+    on: push
     runs-on: ubuntu-latest
     defaults:
       run:
