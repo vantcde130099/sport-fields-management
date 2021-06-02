@@ -1,0 +1,11 @@
+# travis.yml
+
+# Other required configuration
+
+jobs:
+  include:
+    # Other jobs
+
+    # 👇 Adds Chromatic as a job
+    - name: 'Publish to Chromatic'
+      script: yarn chromatic --project-token=${CHROMATIC_PROJECT_TOKEN}
