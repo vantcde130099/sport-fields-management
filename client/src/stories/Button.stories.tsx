@@ -16,22 +16,26 @@ const Template: Story<ButtonProps> = args => <Button {...args} />;
 export const Primary = Template.bind({});
 Primary.args = {
   primary: true,
+<<<<<<< HEAD
   label: 'Button Demo'
+=======
+  label: 'Button'
+>>>>>>> 55dfb94 (Update button name for story)
 };
 
 export const Secondary = Template.bind({});
 Secondary.args = {
-  label: 'Button Demo'
+  label: 'Button'
 };
 
 export const Large = Template.bind({});
 Large.args = {
   size: 'large',
-  label: 'Button Demo'
+  label: 'Button'
 };
 
 export const Small = Template.bind({});
 Small.args = {
   size: 'small',
-  label: 'Button Demo'
+  label: 'Button'
 };
