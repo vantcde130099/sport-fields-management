@@ -36,7 +36,7 @@ router.post('/register', upload.array('image', 2), async(req, res) => {
     const contact = { email, phoneNumber, address }
     try {
         //see if coach exist
-        let coach = await Coach.findOne({ phoneNumber })
+        let coach = await Coach.findOne({ 'contact.phoneNumber': phoneNumber })
         if (coach) {
             return res.status(400).json({ errors: 'SĐT này đã tồn tại trong hệ thống' })
         }
@@ -74,7 +74,7 @@ router.post('/register', upload.array('image', 2), async(req, res) => {
     }
 })
 
-// @route   POST coach/authenticate
+// @route   POST api/coaches/authenticate
 // @desc    Authenticate coach & get token
 // @access  Public
 router.post('/authenticate', //Router-level middleware
@@ -89,7 +89,7 @@ router.post('/authenticate', //Router-level middleware
         const { phoneNumber, password } = req.body
         try {
             //see if owner exists
-            let coach = await Coach.findOne({ "contact.phoneNumber": "0798850400" })
+            let coach = await Coach.findOne({ 'contact.phoneNumber': phoneNumber })
             if (!coach) {
                 return res.status(400).json({ errors: [{ msg: 'Thông tin không hợp lệ' }] })
             }

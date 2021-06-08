@@ -6,14 +6,13 @@ const jwt = require('jsonwebtoken')
 const { check, validationResult } = require('express-validator')
 
 const upload = require('../../middleware/upload')
-const Owner = require('../../models/Owner')
+const Owner = require('../../models/Owners')
 
 // @route   POST /api/owner/register
 // @desc    Register owner
 // @access  Public
 router.post('/register', upload.array('image', 2), async(req, res) => {
     req.body = JSON.parse(req.body.data)
-    console.log('body', req.body);
     await check('name', 'Vui lòng nhập tên').not().isEmpty().run(req);
     await check('email', 'Vui lòng nhập email').isEmail().run(req);
     await check('password', 'Mật khẩu ít nhất 6 chữ').isLength({ min: 6 }).run(req);
@@ -36,7 +35,7 @@ router.post('/register', upload.array('image', 2), async(req, res) => {
     const contact = { email, phoneNumber, address }
     try {
         //see if owner exist
-        let owner = await Owner.findOne({ phoneNumber })
+        let owner = await Owner.findOne({ "contact.phoneNumber": phoneNumber })
         if (owner) {
             return res.status(400).json({ errors: 'SĐT này đã tồn tại trong hệ thống' })
         }
@@ -52,7 +51,6 @@ router.post('/register', upload.array('image', 2), async(req, res) => {
         const salt = await bcrypt.genSalt(10)
         owner.password = await bcrypt.hash(password, salt)
 
-        console.log('owenr', owner);
 
         await owner.save()
 
@@ -91,7 +89,7 @@ router.post('/authenticate', //Router-level middleware
         const { phoneNumber, password } = req.body
         try {
             //see if owner exists
-            let owner = await Owner.findOne({ "contact.phoneNumber": "0798850400" })
+            let owner = await Owner.findOne({ "contact.phoneNumber": phoneNumber })
             if (!owner) {
                 return res.status(400).json({ errors: [{ msg: 'Thông tin không hợp lệ' }] })
             }

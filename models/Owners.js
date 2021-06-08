@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-const OwnerSchema = new mongoose.Schema({
+const OwnerSchema = new Schema({
     name: {
         type: String,
         require: true,
@@ -73,7 +73,6 @@ const OwnerSchema = new mongoose.Schema({
     dateCreated: {
         type: Date,
         default: Date.now
-    }
+    },
 })
-​
 module.exports = Owners = mongoose.model('owner', OwnerSchema)

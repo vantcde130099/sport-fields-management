@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const Owner = require('../../models/Owner')
+const Owner = require('../../models/Owners')
 const owner = require('../../middleware/owner')
 const Coach = require('../../models/Coaches')
 const coach = require('../../middleware/coach')

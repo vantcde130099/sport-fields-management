@@ -2,50 +2,52 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const CustomerSchema = new Schema({
-  name: {
-    type: String,
-    required: true
-  },
-  contact: {
-    phoneNumber: {
-      type: String,
-      require: true
+    googleId: {
+        type: String
     },
-    email: {
-      type: String,
-      require: true
+    facebookId: {
+        type: String
     },
-    address: {
-      city: {
+    name: {
         type: String,
-        require: true
-      },
-      district: {
+        required: true
+    },
+    contact: {
+        phoneNumber: {
+            type: String,
+        },
+        email: {
+            type: String,
+        },
+        address: {
+            city: {
+                type: String,
+                require: true
+            },
+            district: {
+                type: String,
+                require: true
+            },
+            ward: {
+                type: String,
+                require: true
+            }
+        }
+    },
+    password: {
         type: String,
-        require: true
-      },
-      ward: {
+    },
+    dateOfBirth: {
+        type: Date,
+    },
+    avatar: {
         type: String,
-        require: true
-      }
+        default: 'https://www.amongusavatarcreator.com/assets/img/main/icon.png'
+    },
+    dateCreated: {
+        type: Date,
+        default: Date.now
     }
-  },
-  password: {
-    type: String,
-    required: true
-  },
-  dateOfBirth: {
-    type: Date,
-    required: true
-  },
-  avatar: {
-    type: String,
-    default: 'https://www.amongusavatarcreator.com/assets/img/main/icon.png'
-  },
-  dateCreated: {
-    type: Date,
-    default: Date.now
-  }
 });
 
 module.exports = Customers = mongoose.model('customer', CustomerSchema);

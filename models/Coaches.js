@@ -1,25 +1,29 @@
-const mongoose = require('mongoose')
-const Schema = mongoose.Schema
-​
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
 const CoachSchema = new Schema({
     name: {
         type: String,
-        required: true,
+        required: true
     },
     avatar: {
         type: String
     },
     dateOfBirth: {
-        type: Date,
+        type: Date
+    },
+    password: {
+        type: String,
+        required: true
     },
     contact: {
         phoneNumber: {
             type: String,
-            require: true,
+            require: true
         },
         email: {
             type: String,
-            require: true,
+            require: true
         },
         address: {
             city: {
@@ -33,12 +37,9 @@ const CoachSchema = new Schema({
             ward: {
                 type: String,
                 require: true
-            },
-        },
+            }
+        }
     },
-    identityCard: [{
-        type: Schema.Types.ObjectId
-    }],
     fieldsRegistered: [{
         field: {
             type: Schema.Types.ObjectId,
@@ -46,7 +47,7 @@ const CoachSchema = new Schema({
         },
         startTime: {
             hour: {
-                type: Number,
+                type: Number
             },
             miutes: {
                 type: Number
@@ -54,17 +55,17 @@ const CoachSchema = new Schema({
         }
     }],
     price: {
-        type: Number,
+        type: Number
     },
     rate: {
         customerId: {
-            type: Schema.Types.ObjectId,
+            type: Schema.Types.ObjectId
         },
         rateValue: {
-            type: Number,
+            type: Number
         },
         text: {
-            type: String,
+            type: String
         },
         dateCreated: {
             type: Date,
@@ -72,12 +73,12 @@ const CoachSchema = new Schema({
         }
     },
     description: {
-        type: String,
+        type: String
     },
     dateCreated: {
         type: Date,
         default: Date.now
-    },
-})
-​
-module.exports = Coaches = mongoose.model('coach', CoachSchema)
+    }
+});
+
+module.exports = Coaches = mongoose.model('coach', CoachSchema);
