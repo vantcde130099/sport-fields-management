@@ -46,10 +46,6 @@ const FieldSchema = new Schema({
         type: Boolean,
         default: true
     },
-    bookings: {
-        type: Number,
-        default: 0
-    },
     dateCreated: {
         type: Date,
         default: Date.now

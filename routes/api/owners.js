@@ -7,6 +7,8 @@ const { check, validationResult } = require('express-validator')
 
 const upload = require('../../middleware/upload')
 const Owner = require('../../models/Owners')
+const Field = require('../../models/Fields')
+const { ObjectId } = require('bson')
 
 // @route   POST /api/owner/register
 // @desc    Register owner
@@ -30,7 +32,7 @@ router.post('/register', upload.array('image', 2), async(req, res) => {
         identityCard.push(e.id)
     })
 
-    const { name, email, phoneNumber, password, city, district, ward } = req.body
+    const { name, email, phoneNumber, password, city, district, ward, description } = req.body
     const address = { city, district, ward }
     const contact = { email, phoneNumber, address }
     try {
@@ -42,7 +44,8 @@ router.post('/register', upload.array('image', 2), async(req, res) => {
 
         owner = new Owner({
                 name,
-                contact
+                contact,
+                description
             })
             //add identityCard Id to owner
         owner.identityCard = identityCard
@@ -120,5 +123,57 @@ router.post('/authenticate', //Router-level middleware
         }
     }
 )
+
+// @route   POST /api/owners
+// @desc    get all owners info order by dateCreated
+// @access  Public
+router.get('/', async(req, res) => {
+    try {
+        let infoBlock = []
+        listOwners = await Owner.find().sort({ dateCreated: -1 })
+        if (listOwners.isEmpty) {
+            return res.status(400).json({ msg: 'Không có sân' })
+        }
+        for (const owner of listOwners) {
+            // const field = await Field.findById(owner.fields[0]) // find field by id from owner
+            const fields = await Field.find({
+                '_id': { $in: owner.fields }
+            })
+            const listPrice = fields.map(field => field.price)
+            let info = {
+                ownerId: owner.id,
+                name: owner.name,
+                price: Math.min(...listPrice),
+                // imgId: (field && field.image[0]) ? field.image[0] : 'undefined',
+                description: owner.description,
+                rate: owner.rate.value
+            }
+            infoBlock.push(info)
+        }
+        return res.status(200).json({ infoBlock })
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Lỗi server')
+    }
+})
+
+// @route   POST /api/fields
+// @desc    get all fields by location
+// @access  Public
+router.get('/location', async(req, res) => {
+    console.log(req);
+    try {
+        let locationOwners
+        let listFields = await Field.find()
+        if (listFields.isEmpty) {
+            return res.status(400).json({ msg: 'Không có sân' })
+        }
+        return res.json(listFields)
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Lỗi server')
+    }
+})
+
 
 module.exports = router;

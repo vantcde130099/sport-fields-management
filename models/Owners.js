@@ -37,10 +37,7 @@ const OwnerSchema = new Schema({
     identityCard: [{
         type: Schema.Types.ObjectId
     }],
-    avatar: {
-        type: String,
-        default: 'https://www.amongusavatarcreator.com/assets/img/main/icon.png'
-    },
+
     brandName: {
         type: String,
         require: true,
@@ -58,7 +55,7 @@ const OwnerSchema = new Schema({
             type: Schema.Types.ObjectId,
             ref: 'customer'
         },
-        rateValue: {
+        value: {
             type: Number,
             required: true,
         },
@@ -70,6 +67,13 @@ const OwnerSchema = new Schema({
             default: Date.now
         }
     }],
+    bookings: {
+        type: Number,
+        default: 0
+    },
+    description: {
+        type: String,
+    },
     dateCreated: {
         type: Date,
         default: Date.now

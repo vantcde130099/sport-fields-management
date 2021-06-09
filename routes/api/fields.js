@@ -1,13 +1,14 @@
 const express = require('express')
 const router = express.Router()
-
-const { check, checkSchema, validationResult } = require('express-validator')
+const mongoose = require('mongoose')
+const { check, validationResult } = require('express-validator')
 
 const owner = require('../../middleware/owner')
 const upload = require('../../middleware/upload')
 
 const Owner = require('../../models/Owners')
 const Field = require('../../models/Fields')
+const { ReplSet } = require('mongodb')
 
 
 // @route   POST /api/fields/add
@@ -25,19 +26,22 @@ router.post('/add', owner, upload.array('image', 10), async(req, res) => {
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() })
     }
-
     const { name, sportType, fieldType, price, openHour, closeHour, openMinutes, closeMinutes, status } = req.body
     const type = { sportType, fieldType }
     const open = { "hour": openHour, "minutes": openMinutes }
     const close = { "hour": closeHour, "minutes": closeMinutes }
-    console.log(req.body);
     try {
-        let existField = await Field.findOne({ name: name })
-        if (existField) {
+        const owner = await Owner.findById(req.owner.id).select('-password')
+
+        //get field if exist
+        const existField = await Field.find({
+            '_id': { $in: owner.fields },
+            'name': name
+        })
+        if (existField.length > 0) {
             return res.status(400).json({ message: 'Trùng tên sân' })
         }
 
-        const owner = await Owner.findById(req.owner.id).select('-password')
         const newField = new Field({
             name,
             type,
