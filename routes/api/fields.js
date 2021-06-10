@@ -30,7 +30,6 @@ router.post('/add', owner, upload.array('image', 10), async(req, res) => {
     const type = { sportType, fieldType }
     const open = { "hour": openHour, "minutes": openMinutes }
     const close = { "hour": closeHour, "minutes": closeMinutes }
-    console.log(req.body);
     try {
         let existField = await Field.findOne({ name: name })
         if (existField) {

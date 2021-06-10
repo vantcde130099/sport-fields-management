@@ -16,7 +16,7 @@ router.post('/register', upload.array('image', 2), async(req, res) => {
     await check('name', 'Vui lòng nhập tên').not().isEmpty().run(req);
     await check('email', 'Vui lòng nhập email').isEmail().run(req);
     await check('password', 'Mật khẩu ít nhất 6 chữ').isLength({ min: 6 }).run(req);
-    await check('phoneNumber', 'Vui lòng nhập SDT').not().isEmpty().run(req);
+    await check('phoneNumber', 'Vui lòng nhập số điện thoại').not().isEmpty().run(req);
 
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
