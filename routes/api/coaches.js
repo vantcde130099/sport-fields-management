@@ -65,11 +65,11 @@ router.post('/register', upload.array('image', 2), async(req, res) => {
         jwt.sign( //sign the token pass and the payload pass
             payload, config.get('jwtSecret'), { expiresIn: 36000 },
             (err, token) => {
-                if (err) throw err
+                if (error) throw err
                 res.json({ token }) //if have no err, send that token to the client
             }
         )
-    } catch (err) {
+    } catch (error) {
         console.error(err.message);
         res.status(500).send('Server error')
     }
@@ -83,9 +83,9 @@ router.post('/authenticate', //Router-level middleware
         check('phoneNumber', 'Vui lòng nhập số điện thoại').not().isEmpty(),
         check('password', 'Yêu cầu nhập mật khẩu').exists()
     ], async(req, res) => {
-        const err = validationResult(req)
-        if (!err.isEmpty()) {
-            return res.status(400).json({ err: err.array() })
+        const errors = validationResult(req)
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors })
         }
         const { phoneNumber, password } = req.body
         try {
@@ -115,8 +115,8 @@ router.post('/authenticate', //Router-level middleware
                 }
             )
 
-        } catch (err) {
-            console.error(err.message);
+        } catch (error) {
+            console.error(error.message);
             res.status(500).send('Lỗi server')
         }
     }

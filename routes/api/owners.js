@@ -68,8 +68,8 @@ router.post('/register', upload.array('image', 2), async(req, res) => {
                 res.json({ token }) //if have no err, send that token to the client
             }
         )
-    } catch (err) {
-        console.error(err.message);
+    } catch (error) {
+        console.error(error.message);
         res.status(500).send('Server error')
     }
 })
@@ -114,8 +114,8 @@ router.post('/authenticate', //Router-level middleware
                 }
             )
 
-        } catch (err) {
-            console.error(err.message);
+        } catch (error) {
+            console.error(error.message);
             res.status(500).send('Lỗi server')
         }
     }
