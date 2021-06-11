@@ -34,7 +34,7 @@ router.post('/add', owner, upload.array('image', 10), async(req, res) => {
         const owner = await Owner.findById(req.owner.id).select('-password')
 
         //get field if exist
-        const existField = await Field.find({
+        const existField = await Field.find({ //get all fields of owner
             '_id': { $in: owner.fields },
             'name': name
         })

@@ -130,24 +130,43 @@ router.post('/authenticate', //Router-level middleware
 router.get('/', async(req, res) => {
     try {
         let infoBlock = []
-        listOwners = await Owner.find().sort({ dateCreated: -1 })
+        const listOwners = await Owner.find().sort({ dateCreated: -1 })
         if (listOwners.isEmpty) {
             return res.status(400).json({ msg: 'Không có sân' })
         }
-        for (const owner of listOwners) {
+
+        //filter owner have no field
+        const fileteredOwner = await listOwners.filter(function(e) {
+            return e.fields.length > 0
+        })
+
+        for (const owner of fileteredOwner) {
             // const field = await Field.findById(owner.fields[0]) // find field by id from owner
-            const fields = await Field.find({
+            const fields = await Field.find({ // get all fields of owner
                 '_id': { $in: owner.fields }
             })
-            const listPrice = fields.map(field => field.price)
+
+            //get first imageId if exist
+            var imageId = ''
+            for (const field of fields) {
+                if (field.image.length > 0) {
+                    imageId = field.image[0]
+                }
+                if (imageId !== '') break
+            }
+
+            const listPrice = await fields.map(field => field.price) //list price from fields
+
             let info = {
                 ownerId: owner.id,
                 name: owner.name,
+                address: owner.contact.address,
                 price: Math.min(...listPrice),
-                // imgId: (field && field.image[0]) ? field.image[0] : 'undefined',
+                imageId,
                 description: owner.description,
                 rate: owner.rate.value
             }
+
             infoBlock.push(info)
         }
         return res.status(200).json({ infoBlock })
@@ -157,23 +176,70 @@ router.get('/', async(req, res) => {
     }
 })
 
-// @route   POST /api/fields
+// @route   GET /api/owner
 // @desc    get all fields by location
 // @access  Public
 router.get('/location', async(req, res) => {
-    console.log(req);
+    const { city, district, ward } = req.body
+
     try {
-        let locationOwners
-        let listFields = await Field.find()
-        if (listFields.isEmpty) {
+        let infoBlock = []
+
+        let listOwners
+        if (city && district && ward) {
+            listOwners = await Owner.find({ 'contact.address': req.body }).sort({ dateCreated: -1 })
+        } else if (city && district) {
+            listOwners = await Owner.find({ 'contact.address.city': req.body.city, 'contact.address.district': req.body.district }).sort({ dateCreated: -1 })
+        } else if (city) {
+            listOwners = await Owner.find({ 'contact.address.city': req.body.city }).sort({ dateCreated: -1 })
+        }
+
+        //check empty list owner found
+        if (listOwners.isEmpty) {
             return res.status(400).json({ msg: 'Không có sân' })
         }
-        return res.json(listFields)
+
+        //filter owner have no field
+        const fileteredOwner = await listOwners.filter(function(e) {
+            return e.fields.length > 0
+        })
+
+        for (const owner of fileteredOwner) {
+            // const field = await Field.findById(owner.fields[0]) // find field by id from owner
+            const fields = await Field.find({ // get all fields of owner
+                '_id': { $in: owner.fields }
+            })
+
+            //get first imageId if exist
+            var imageId = ''
+            for (const field of fields) {
+                if (field.image.length > 0) {
+                    imageId = field.image[0]
+                }
+                if (imageId !== '') break
+            }
+
+            const listPrice = await fields.map(field => field.price) //list price from fields
+
+            let info = {
+                ownerId: owner.id,
+                name: owner.name,
+                address: owner.contact.address,
+                price: Math.min(...listPrice),
+                imageId,
+                description: owner.description,
+                rate: owner.rate.value
+            }
+
+            infoBlock.push(info)
+        }
+        return res.status(200).json({ infoBlock })
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Lỗi server')
     }
 })
+
 
 
 module.exports = router;
