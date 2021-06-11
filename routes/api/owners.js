@@ -9,6 +9,7 @@ const upload = require('../../middleware/upload')
 const Owner = require('../../models/Owners')
 const Field = require('../../models/Fields')
 const { ObjectId } = require('bson')
+const Fields = require('../../models/Fields')
 
 // @route   POST /api/owner/register
 // @desc    Register owner
@@ -240,6 +241,123 @@ router.get('/location', async(req, res) => {
     }
 })
 
+// @route   POST /api/owners/name
+// @desc    get all owners by name
+// @access  Public
+router.get('/name', async(req, res) => {
+    try {
+        let infoBlock = []
+        const listOwners = await Owner.find({ name: { $regex: `.*${req.body.name}.*` } }).sort({ dateCreated: -1 })
+        if (listOwners.isEmpty) {
+            return res.status(400).json({ msg: 'Không có sân' })
+        }
 
+        //filter owner have no field
+        const fileteredOwner = await listOwners.filter(function(e) {
+            return e.fields.length > 0
+        })
+
+        for (const owner of fileteredOwner) {
+            // const field = await Field.findById(owner.fields[0]) // find field by id from owner
+            const fields = await Field.find({ // get all fields of owner
+                '_id': { $in: owner.fields }
+            })
+
+            //get first imageId if exist
+            var imageId = ''
+            for (const field of fields) {
+                if (field.image.length > 0) {
+                    imageId = field.image[0]
+                }
+                if (imageId !== '') break
+            }
+
+            const listPrice = await fields.map(field => field.price) //list price from fields
+
+            let info = {
+                ownerId: owner.id,
+                name: owner.name,
+                address: owner.contact.address,
+                price: Math.min(...listPrice),
+                imageId,
+                description: owner.description,
+                rate: owner.rate.value
+            }
+
+            infoBlock.push(info)
+        }
+        return res.status(200).json({ infoBlock })
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Lỗi server')
+    }
+})
+
+// @route   POST /api/owners/type
+// @desc    get all owners by type
+// @access  Public
+router.get('/type', async(req, res) => {
+    const type = req.body
+    try {
+        let infoBlock = []
+        let listFields
+
+        //find field by type
+        if (type.sportType && type.fieldType) {
+            listFields = await Fields.find({ type })
+        } else if (type.sportType !== 'undefined') {
+            listFields = await Fields.find({ 'type.sportType': type.sportType })
+        }
+
+        //find owners with field id
+        let listOwners = []
+        for (const field of listFields) {
+            let owner = await Owner.findOne({ 'fields': field.id }).sort({ dateCreated: -1 })
+            if (!listOwners.includes(owner)) {
+                listOwners.push(owner)
+            }
+        }
+
+        //filter owner have no field
+        const filteredOwner = await listOwners.filter(function(e) {
+            return e.fields.length > 0
+        })
+
+        //get info
+        for (const owner of filteredOwner) {
+
+            const fields = await Field.find({ // get all fields of owner
+                '_id': { $in: owner.fields }
+            })
+
+            //get first imageId if exist
+            var imageId = ''
+            for (const field of fields) {
+                if (field.image.length > 0) {
+                    imageId = field.image[0]
+                }
+                if (imageId !== '') break
+            }
+
+            const listPrice = await fields.map(field => field.price) //list price from fields
+
+            let info = {
+                ownerId: owner.id,
+                name: owner.name,
+                address: owner.contact.address,
+                price: Math.min(...listPrice),
+                imageId,
+                description: owner.description,
+                rate: owner.rate.value
+            }
+
+            infoBlock.push(info)
+        }
+        return res.status(200).json({ infoBlock })
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Lỗi server')
+    }
+})
 
 module.exports = router;
