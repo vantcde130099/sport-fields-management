@@ -86,9 +86,9 @@ router.post('/authenticate', //Router-level middleware
         check('phoneNumber', 'Vui lòng nhập số điện thoại').not().isEmpty(),
         check('password', 'Yêu cầu nhập mật khẩu').exists()
     ], async(req, res) => {
-        const err = validationResult(req)
-        if (!err.isEmpty()) {
-            return res.status(400).json({ err: err.array() })
+        const errors = validationResult(req)
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() })
         }
         const { phoneNumber, password } = req.body
         try {
@@ -354,8 +354,8 @@ router.get('/type', async(req, res) => {
             infoBlock.push(info)
         }
         return res.status(200).json({ infoBlock })
-    } catch (err) {
-        console.error(err.message);
+    } catch (error) {
+        console.error(error.message);
         res.status(500).send('Lỗi server')
     }
 })
