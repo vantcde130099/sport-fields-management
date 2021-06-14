@@ -1,25 +1,25 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const config = require("config");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const { check, validationResult } = require("express-validator");
+const config = require('config');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const { check, validationResult } = require('express-validator');
 
-const upload = require("../../middleware/upload");
-const Coach = require("../../models/Coaches");
-const { array } = require("../../middleware/upload");
+const upload = require('../../middleware/upload');
+const Coach = require('../../models/Coaches');
+const { array } = require('../../middleware/upload');
 
 // @route   POST /api/coach/register
 // @desc    Register coach
 // @access  Public
-router.post("/register", upload.array("image", 2), async (req, res) => {
+router.post('/register', upload.array('image', 2), async (req, res) => {
   req.body = JSON.parse(req.body.data);
-  await check("name", "Vui lòng nhập tên").not().isEmpty().run(req);
-  await check("email", "Vui lòng nhập email").isEmail().run(req);
-  await check("password", "Mật khẩu ít nhất 6 chữ")
+  await check('name', 'Vui lòng nhập tên').not().isEmpty().run(req);
+  await check('email', 'Vui lòng nhập email').isEmail().run(req);
+  await check('password', 'Mật khẩu ít nhất 6 chữ')
     .isLength({ min: 6 })
     .run(req);
-  await check("phoneNumber", "Vui lòng nhập SDT").not().isEmpty().run(req);
+  await check('phoneNumber', 'Vui lòng nhập SDT').not().isEmpty().run(req);
 
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -38,11 +38,11 @@ router.post("/register", upload.array("image", 2), async (req, res) => {
   const contact = { email, phoneNumber, address };
   try {
     //see if coach exist
-    let coach = await Coach.findOne({ "contact.phoneNumber": phoneNumber });
+    let coach = await Coach.findOne({ 'contact.phoneNumber': phoneNumber });
     if (coach) {
       return res
         .status(400)
-        .json({ errors: "SĐT này đã tồn tại trong hệ thống" });
+        .json({ errors: 'SĐT này đã tồn tại trong hệ thống' });
     }
 
     coach = new Coach({
@@ -68,7 +68,7 @@ router.post("/register", upload.array("image", 2), async (req, res) => {
     jwt.sign(
       //sign the token pass and the payload pass
       payload,
-      config.get("jwtSecret"),
+      config.get('jwtSecret'),
       { expiresIn: 36000 },
       (err, token) => {
         if (err) throw err;
@@ -77,7 +77,7 @@ router.post("/register", upload.array("image", 2), async (req, res) => {
     );
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Server error");
+    res.status(500).send('Server error');
   }
 });
 
@@ -85,10 +85,10 @@ router.post("/register", upload.array("image", 2), async (req, res) => {
 // @desc    Authenticate coach & get token
 // @access  Public
 router.post(
-  "/authenticate", //Router-level middleware
+  '/authenticate', //Router-level middleware
   [
-    check("phoneNumber", "Vui lòng nhập số điện thoại").not().isEmpty(),
-    check("password", "Yêu cầu nhập mật khẩu").exists(),
+    check('phoneNumber', 'Vui lòng nhập số điện thoại').not().isEmpty(),
+    check('password', 'Yêu cầu nhập mật khẩu').exists(),
   ],
   async (req, res) => {
     const err = validationResult(req);
@@ -98,18 +98,18 @@ router.post(
     const { phoneNumber, password } = req.body;
     try {
       //see if owner exists
-      let coach = await Coach.findOne({ "contact.phoneNumber": phoneNumber });
+      let coach = await Coach.findOne({ 'contact.phoneNumber': phoneNumber });
       if (!coach) {
         return res
           .status(400)
-          .json({ errors: [{ msg: "Thông tin không hợp lệ" }] });
+          .json({ errors: [{ msg: 'Thông tin không hợp lệ' }] });
       }
 
       const isMatch = await bcrypt.compare(password, coach.password);
       if (!isMatch) {
         return res
           .status(400)
-          .json({ errors: [{ msg: "Thông tin không hợp lệ" }] });
+          .json({ errors: [{ msg: 'Thông tin không hợp lệ' }] });
       }
 
       //Return jwt
@@ -122,7 +122,7 @@ router.post(
 
       jwt.sign(
         payload,
-        config.get("jwtSecret"),
+        config.get('jwtSecret'),
         { expiresIn: 36000 },
         (err, token) => {
           if (err) throw err;
@@ -131,7 +131,7 @@ router.post(
       );
     } catch (err) {
       console.error(err.message);
-      res.status(500).send("Lỗi server");
+      res.status(500).send('Lỗi server');
     }
   }
 );

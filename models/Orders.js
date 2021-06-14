@@ -1,26 +1,26 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const OrderSchema = new Schema({
   owner: {
     type: Schema.Types.ObjectId,
-    ref: "owner",
+    ref: 'owner',
   },
   customer: {
     type: Schema.Types.ObjectId,
-    ref: "customer",
+    ref: 'customer',
   },
   field: {
     type: Schema.Types.ObjectId,
-    ref: "field",
+    ref: 'field',
   },
   coach: {
     type: Schema.Types.ObjectId,
-    ref: "coach",
+    ref: 'coach',
   },
   item: {
     type: Schema.Types.ObjectId,
-    ref: "item",
+    ref: 'item',
   },
   rentalDate: {
     type: Date,
@@ -74,4 +74,4 @@ const OrderSchema = new Schema({
   },
 });
 
-module.exports = Orders = mongoose.model("order", OrderSchema);
+module.exports = Orders = mongoose.model('order', OrderSchema);

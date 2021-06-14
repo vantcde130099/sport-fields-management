@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const CoachSchema = new Schema({
@@ -44,7 +44,7 @@ const CoachSchema = new Schema({
     {
       field: {
         type: Schema.Types.ObjectId,
-        ref: "field",
+        ref: 'field',
       },
       startTime: {
         hour: {
@@ -83,4 +83,4 @@ const CoachSchema = new Schema({
   },
 });
 
-module.exports = Coaches = mongoose.model("coach", CoachSchema);
+module.exports = Coaches = mongoose.model('coach', CoachSchema);
