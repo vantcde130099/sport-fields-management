@@ -9,8 +9,6 @@ const upload = require('../../middleware/upload')
 const Coach = require('../../models/Coaches')
 const { array } = require('../../middleware/upload')
 
-const router = express.Router()
-
 // @route   POST /api/coach/register
 // @desc    Register coach
 // @access  Public
