@@ -8,15 +8,21 @@ const upload = require('../../middleware/upload')
 
 const Owner = require('../../models/Owners')
 const Field = require('../../models/Fields')
-
+const { ReplSet } = require('mongodb')
 
 // @route   POST /api/fields/add
 // @desc    Owner add field
 // @access  Private
 router.post('/add', owner, upload.array('image', 10), async (req, res) => {
   req.body = JSON.parse(req.body.data)
-  await check('name', 'Vui lòng nhập tên sân').not().isEmpty().run(req)
-  await check('price', 'Vui lòng nhập tên giá sân/giờ').not().isEmpty().run(req)
+  await check('name', 'Vui lòng nhập tên sân')
+    .not()
+    .isEmpty()
+    .run(req)
+  await check('price', 'Vui lòng nhập tên giá sân/giờ')
+    .not()
+    .isEmpty()
+    .run(req)
   await check('openHour', 'Vui lòng nhập giờ mở cửa lớn hơn 0 và nhỏ hơn 24!')
     .isInt({ min: 0, max: 23 })
     .run(req)
@@ -79,7 +85,7 @@ router.post('/add', owner, upload.array('image', 10), async (req, res) => {
     })
 
     //add images to field
-    req.files.forEach((e) => {
+    req.files.forEach(e => {
       newField.image.push(e.id)
     })
 
@@ -141,7 +147,7 @@ router.get('/type', async (req, res) => {
 
     //add info to block response
     let fieldsInfo = []
-    fields.forEach((field) => {
+    fields.forEach(field => {
       fieldsInfo.push({
         sport: field.type.sportType,
         type: field.type.fieldType,
@@ -186,7 +192,6 @@ router.get('/name', async (req, res) => {
     console.error(error.message)
     res.status(500).send('Lỗi server')
   }
-
 })
 
 module.exports = router
