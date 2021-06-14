@@ -1,4 +1,5 @@
 const express = require('express')
+const router = express.Router()
 const config = require('config')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
@@ -15,12 +16,20 @@ const router = express.Router()
 // @access  Public
 router.post('/register', upload.array('image', 2), async (req, res) => {
   req.body = JSON.parse(req.body.data)
-  await check('name', 'Vui lòng nhập tên').not().isEmpty().run(req)
-  await check('email', 'Vui lòng nhập email').isEmail().run(req)
+  await check('name', 'Vui lòng nhập tên')
+    .not()
+    .isEmpty()
+    .run(req)
+  await check('email', 'Vui lòng nhập email')
+    .isEmail()
+    .run(req)
   await check('password', 'Mật khẩu ít nhất 6 chữ')
     .isLength({ min: 6 })
     .run(req)
-  await check('phoneNumber', 'Vui lòng nhập SDT').not().isEmpty().run(req)
+  await check('phoneNumber', 'Vui lòng nhập SDT')
+    .not()
+    .isEmpty()
+    .run(req)
 
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
@@ -30,7 +39,7 @@ router.post('/register', upload.array('image', 2), async (req, res) => {
   //upload image
   let identityCard = []
 
-  req.files.forEach((e) => {
+  req.files.forEach(e => {
     identityCard.push(e.id)
   })
 
@@ -43,7 +52,7 @@ router.post('/register', upload.array('image', 2), async (req, res) => {
     if (coach) {
       return res
         .status(400)
-        .json({ errors: 'Số điện thoại này đã tồn tại trong hệ thống' })
+        .json({ errors: 'SĐT này đã tồn tại trong hệ thống' })
     }
 
     coach = new Coach({
@@ -72,11 +81,11 @@ router.post('/register', upload.array('image', 2), async (req, res) => {
       config.get('jwtSecret'),
       { expiresIn: 36000 },
       (err, token) => {
-        if (error) throw err
+        if (err) throw err
         res.json({ token }) //if have no err, send that token to the client
       }
     )
-  } catch (error) {
+  } catch (err) {
     console.error(err.message)
     res.status(500).send('Server error')
   }
@@ -88,7 +97,9 @@ router.post('/register', upload.array('image', 2), async (req, res) => {
 router.post(
   '/authenticate', //Router-level middleware
   [
-    check('phoneNumber', 'Vui lòng nhập số điện thoại').not().isEmpty(),
+    check('phoneNumber', 'Vui lòng nhập số điện thoại')
+      .not()
+      .isEmpty(),
     check('password', 'Yêu cầu nhập mật khẩu').exists()
   ],
   async (req, res) => {
@@ -130,8 +141,8 @@ router.post(
           res.json({ token })
         }
       )
-    } catch (error) {
-      console.error(error.message)
+    } catch (err) {
+      console.error(err.message)
       res.status(500).send('Lỗi server')
     }
   }
