@@ -142,7 +142,6 @@ router.get('/', async(req, res) => {
         })
 
         for (const owner of fileteredOwner) {
-            // const field = await Field.findById(owner.fields[0]) // find field by id from owner
             const fields = await Field.find({ // get all fields of owner
                 '_id': { $in: owner.fields }
             })

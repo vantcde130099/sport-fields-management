@@ -10,7 +10,6 @@ const Owner = require('../../models/Owners')
 const Field = require('../../models/Fields')
 const { ReplSet } = require('mongodb')
 
-
 // @route   POST /api/fields/add
 // @desc    Owner add field
 // @access  Private
@@ -65,8 +64,97 @@ router.post('/add', owner, upload.array('image', 10), async(req, res) => {
         res.status(200).json({
             message: `Thêm thành công sân ${newField.name}`
         })
-    } catch (err) {
-        console.error(err.message);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Lỗi server')
+    }
+})
+
+
+// @route   GET /api/fields/
+// @desc    Default get first field of owner
+// @access  Private
+router.get('/', async(req,res) => {
+    try {
+        const owner = await Owner.findById(req.body.ownerId)
+        const fieldId = owner.fields[owner.fields.length - 1]
+        const theFirstField = await Field.findById(fieldId)
+        if(!theFirstField){
+            res.status(400).json({"message": "Sân không tồn tại"})
+        }
+        res.status(200).json({
+            sport: theFirstField.type.sportType,
+            type:  theFirstField.type.fieldType,
+            image: theFirstField.image,
+            status: theFirstField.status,
+            name: theFirstField.name,
+            price: theFirstField.price,
+        })
+    } catch (error) {
+        console.error(error.message)    
+        res.status(500).send('Lỗi server')
+    }
+})
+
+// @route   GET /api/fields/type
+// @desc    Get field by type of owner
+// @access  Private
+router.get('/type', async(req,res) => {
+    try {
+        const owner = await Owner.findById(req.body.ownerId)
+
+        const fields = await Field.find({ // get all fields of owner and by type
+            '_id': { $in: owner.fields },
+            'type': req.body.type
+        })
+        if(!fields){
+            res.status(400).json({"message": "Sân không tồn tại"})
+        }
+
+        //add info to block response
+        let fieldsInfo = []
+        fields.forEach(field => {
+            fieldsInfo.push({
+                sport: field.type.sportType,
+                type:  field.type.fieldType,
+                image: field.image,
+                status: field.status,
+                name: field.name,
+                price: field.price,
+            })
+        });
+        res.status(200).json(fieldsInfo)
+    } catch (error) {
+        console.error(error.message)    
+        res.status(500).send('Lỗi server')
+    }
+})
+
+// @route   GET /api/fields/name
+// @desc    Get fields by name field of owner
+// @access  Private
+router.get('/name', async(req,res) => {
+    try {
+        const owner = await Owner.findById(req.body.ownerId)
+
+        const field = await Field.findOne({ // get field in owner with ?name
+            '_id': { $in: owner.fields },
+            'name': req.body.fieldName
+        })
+
+        if(!field){
+            res.status(400).json({"message": "Sân không tồn tại"})
+        }
+        res.status(200).json({
+            sport: field.type.sportType,
+            type:  field.type.fieldType,
+            image: field.image,
+            status: field.status,
+            name: field.name,
+            price: field.price,
+        })
+    } catch (error) {
+        console.error(error.message)    
         res.status(500).send('Lỗi server')
     }
 })
