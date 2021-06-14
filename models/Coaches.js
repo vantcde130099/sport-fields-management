@@ -1,84 +1,86 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const CoachSchema = new Schema({
-    name: {
+  name: {
+    type: String,
+    required: true,
+  },
+  avatar: {
+    type: String,
+  },
+  dateOfBirth: {
+    type: Date,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  contact: {
+    phoneNumber: {
+      type: String,
+      require: true,
+    },
+    email: {
+      type: String,
+      require: true,
+    },
+    address: {
+      city: {
         type: String,
-        required: true
-    },
-    avatar: {
-        type: String
-    },
-    dateOfBirth: {
-        type: Date
-    },
-    password: {
+        require: true,
+      },
+      district: {
         type: String,
-        required: true
+        require: true,
+      },
+      ward: {
+        type: String,
+        require: true,
+      },
     },
-    contact: {
-        phoneNumber: {
-            type: String,
-            require: true
+  },
+  fieldsRegistered: [
+    {
+      field: {
+        type: Schema.Types.ObjectId,
+        ref: "field",
+      },
+      startTime: {
+        hour: {
+          type: Number,
         },
-        email: {
-            type: String,
-            require: true
+        miutes: {
+          type: Number,
         },
-        address: {
-            city: {
-                type: String,
-                require: true
-            },
-            district: {
-                type: String,
-                require: true
-            },
-            ward: {
-                type: String,
-                require: true
-            }
-        }
+      },
     },
-    fieldsRegistered: [{
-        field: {
-            type: Schema.Types.ObjectId,
-            ref: 'field'
-        },
-        startTime: {
-            hour: {
-                type: Number
-            },
-            miutes: {
-                type: Number
-            }
-        }
-    }],
-    price: {
-        type: Number
+  ],
+  price: {
+    type: Number,
+  },
+  rate: {
+    customerId: {
+      type: Schema.Types.ObjectId,
     },
-    rate: {
-        customerId: {
-            type: Schema.Types.ObjectId
-        },
-        rateValue: {
-            type: Number
-        },
-        text: {
-            type: String
-        },
-        dateCreated: {
-            type: Date,
-            default: Date.now
-        }
+    rateValue: {
+      type: Number,
     },
-    description: {
-        type: String
+    text: {
+      type: String,
     },
     dateCreated: {
-        type: Date,
-        default: Date.now
-    }
+      type: Date,
+      default: Date.now,
+    },
+  },
+  description: {
+    type: String,
+  },
+  dateCreated: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
-module.exports = Coaches = mongoose.model('coach', CoachSchema);
+module.exports = Coaches = mongoose.model("coach", CoachSchema);
