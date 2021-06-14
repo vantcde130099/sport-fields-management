@@ -1,43 +1,43 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const mongoose = require("mongoose");
-const { check, validationResult } = require("express-validator");
+const mongoose = require('mongoose');
+const { check, validationResult } = require('express-validator');
 
-const owner = require("../../middleware/owner");
-const upload = require("../../middleware/upload");
+const owner = require('../../middleware/owner');
+const upload = require('../../middleware/upload');
 
-const Owner = require("../../models/Owners");
-const Field = require("../../models/Fields");
-const { ReplSet } = require("mongodb");
+const Owner = require('../../models/Owners');
+const Field = require('../../models/Fields');
+const { ReplSet } = require('mongodb');
 
 // @route   POST /api/fields/add
 // @desc    Owner add field
 // @access  Private
-router.post("/add", owner, upload.array("image", 10), async (req, res) => {
+router.post('/add', owner, upload.array('image', 10), async (req, res) => {
   req.body = JSON.parse(req.body.data);
-  await check("name", "Vui lòng nhập tên sân").not().isEmpty().run(req);
-  await check("price", "Vui lòng nhập tên giá sân/giờ")
+  await check('name', 'Vui lòng nhập tên sân').not().isEmpty().run(req);
+  await check('price', 'Vui lòng nhập tên giá sân/giờ')
     .not()
     .isEmpty()
     .run(req);
-  await check("openHour", "Vui lòng nhập giờ mở cửa lớn hơn 0 và nhỏ hơn 24!")
+  await check('openHour', 'Vui lòng nhập giờ mở cửa lớn hơn 0 và nhỏ hơn 24!')
     .isInt({ min: 0, max: 23 })
     .run(req);
   await check(
-    "closeHour",
-    "Vui lòng nhập giờ đóng cửa lớn hơn 0 và nhỏ hơn 24!"
+    'closeHour',
+    'Vui lòng nhập giờ đóng cửa lớn hơn 0 và nhỏ hơn 24!'
   )
     .isInt({ min: 0, max: 23 })
     .run(req);
   await check(
-    "closeMinutes",
-    "Vui lòng nhập phút đóng cửa lớn hơn 0 và nhỏ hơn 59!"
+    'closeMinutes',
+    'Vui lòng nhập phút đóng cửa lớn hơn 0 và nhỏ hơn 59!'
   )
     .isInt({ min: 0, max: 59 })
     .run(req);
   await check(
-    "openMinutes",
-    "Vui lòng nhập phút đóng cửa lớn hơn 0 và nhỏ hơn 59!"
+    'openMinutes',
+    'Vui lòng nhập phút đóng cửa lớn hơn 0 và nhỏ hơn 59!'
   )
     .isInt({ min: 0, max: 59 })
     .run(req);
@@ -60,7 +60,7 @@ router.post("/add", owner, upload.array("image", 10), async (req, res) => {
   const open = { hour: openHour, minutes: openMinutes };
   const close = { hour: closeHour, minutes: closeMinutes };
   try {
-    const owner = await Owner.findById(req.owner.id).select("-password");
+    const owner = await Owner.findById(req.owner.id).select('-password');
 
     //get field if exist
     const existField = await Field.find({
@@ -69,7 +69,7 @@ router.post("/add", owner, upload.array("image", 10), async (req, res) => {
       name: name,
     });
     if (existField.length > 0) {
-      return res.status(400).json({ message: "Trùng tên sân" });
+      return res.status(400).json({ message: 'Trùng tên sân' });
     }
 
     const newField = new Field({
@@ -97,20 +97,20 @@ router.post("/add", owner, upload.array("image", 10), async (req, res) => {
     });
   } catch (error) {
     console.error(error.message);
-    res.status(500).send("Lỗi server");
+    res.status(500).send('Lỗi server');
   }
 });
 
 // @route   GET /api/fields/
 // @desc    Default get first field of owner
 // @access  Private
-router.get("/", async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const owner = await Owner.findById(req.body.ownerId);
     const fieldId = owner.fields[owner.fields.length - 1];
     const theFirstField = await Field.findById(fieldId);
     if (!theFirstField) {
-      res.status(400).json({ message: "Sân không tồn tại" });
+      res.status(400).json({ message: 'Sân không tồn tại' });
     }
     res.status(200).json({
       sport: theFirstField.type.sportType,
@@ -122,14 +122,14 @@ router.get("/", async (req, res) => {
     });
   } catch (error) {
     console.error(error.message);
-    res.status(500).send("Lỗi server");
+    res.status(500).send('Lỗi server');
   }
 });
 
 // @route   GET /api/fields/type
 // @desc    Get field by type of owner
 // @access  Private
-router.get("/type", async (req, res) => {
+router.get('/type', async (req, res) => {
   try {
     const owner = await Owner.findById(req.body.ownerId);
 
@@ -139,7 +139,7 @@ router.get("/type", async (req, res) => {
       type: req.body.type,
     });
     if (!fields) {
-      res.status(400).json({ message: "Sân không tồn tại" });
+      res.status(400).json({ message: 'Sân không tồn tại' });
     }
 
     //add info to block response
@@ -157,14 +157,14 @@ router.get("/type", async (req, res) => {
     res.status(200).json(fieldsInfo);
   } catch (error) {
     console.error(error.message);
-    res.status(500).send("Lỗi server");
+    res.status(500).send('Lỗi server');
   }
 });
 
 // @route   GET /api/fields/name
 // @desc    Get fields by name field of owner
 // @access  Private
-router.get("/name", async (req, res) => {
+router.get('/name', async (req, res) => {
   try {
     const owner = await Owner.findById(req.body.ownerId);
 
@@ -175,7 +175,7 @@ router.get("/name", async (req, res) => {
     });
 
     if (!field) {
-      res.status(400).json({ message: "Sân không tồn tại" });
+      res.status(400).json({ message: 'Sân không tồn tại' });
     }
     res.status(200).json({
       sport: field.type.sportType,
@@ -187,7 +187,7 @@ router.get("/name", async (req, res) => {
     });
   } catch (error) {
     console.error(error.message);
-    res.status(500).send("Lỗi server");
+    res.status(500).send('Lỗi server');
   }
 });
 

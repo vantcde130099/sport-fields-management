@@ -1,10 +1,10 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const CouponSchema = new Schema({
   owner: {
     type: Schema.Types.ObjectId,
-    ref: "owner",
+    ref: 'owner',
   },
   code: {
     type: String,
@@ -37,4 +37,4 @@ const CouponSchema = new Schema({
   },
 });
 
-module.exports = Coupons = mongoose.model("coupon", CouponSchema);
+module.exports = Coupons = mongoose.model('coupon', CouponSchema);

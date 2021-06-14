@@ -1,27 +1,27 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const config = require("config");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const { check, validationResult } = require("express-validator");
+const config = require('config');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const { check, validationResult } = require('express-validator');
 
-const upload = require("../../middleware/upload");
-const Owner = require("../../models/Owners");
-const Field = require("../../models/Fields");
-const { ObjectId } = require("bson");
-const Fields = require("../../models/Fields");
+const upload = require('../../middleware/upload');
+const Owner = require('../../models/Owners');
+const Field = require('../../models/Fields');
+const { ObjectId } = require('bson');
+const Fields = require('../../models/Fields');
 
 // @route   POST /api/owner/register
 // @desc    Register owner
 // @access  Public
-router.post("/register", upload.array("image", 2), async (req, res) => {
+router.post('/register', upload.array('image', 2), async (req, res) => {
   req.body = JSON.parse(req.body.data);
-  await check("name", "Vui lòng nhập tên").not().isEmpty().run(req);
-  await check("email", "Vui lòng nhập email").isEmail().run(req);
-  await check("password", "Mật khẩu ít nhất 6 chữ")
+  await check('name', 'Vui lòng nhập tên').not().isEmpty().run(req);
+  await check('email', 'Vui lòng nhập email').isEmail().run(req);
+  await check('password', 'Mật khẩu ít nhất 6 chữ')
     .isLength({ min: 6 })
     .run(req);
-  await check("phoneNumber", "Vui lòng nhập SDT").not().isEmpty().run(req);
+  await check('phoneNumber', 'Vui lòng nhập SDT').not().isEmpty().run(req);
 
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -49,11 +49,11 @@ router.post("/register", upload.array("image", 2), async (req, res) => {
   const contact = { email, phoneNumber, address };
   try {
     //see if owner exist
-    let owner = await Owner.findOne({ "contact.phoneNumber": phoneNumber });
+    let owner = await Owner.findOne({ 'contact.phoneNumber': phoneNumber });
     if (owner) {
       return res
         .status(400)
-        .json({ errors: "SĐT này đã tồn tại trong hệ thống" });
+        .json({ errors: 'SĐT này đã tồn tại trong hệ thống' });
     }
 
     owner = new Owner({
@@ -80,7 +80,7 @@ router.post("/register", upload.array("image", 2), async (req, res) => {
     jwt.sign(
       //sign the token pass and the payload pass
       payload,
-      config.get("jwtSecret"),
+      config.get('jwtSecret'),
       { expiresIn: 36000 },
       (err, token) => {
         if (err) throw err;
@@ -89,7 +89,7 @@ router.post("/register", upload.array("image", 2), async (req, res) => {
     );
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Server error");
+    res.status(500).send('Server error');
   }
 });
 
@@ -97,10 +97,10 @@ router.post("/register", upload.array("image", 2), async (req, res) => {
 // @desc    Authenticate owner & get token
 // @access  Public
 router.post(
-  "/authenticate", //Router-level middleware
+  '/authenticate', //Router-level middleware
   [
-    check("phoneNumber", "Vui lòng nhập số điện thoại").not().isEmpty(),
-    check("password", "Yêu cầu nhập mật khẩu").exists(),
+    check('phoneNumber', 'Vui lòng nhập số điện thoại').not().isEmpty(),
+    check('password', 'Yêu cầu nhập mật khẩu').exists(),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -110,18 +110,18 @@ router.post(
     const { phoneNumber, password } = req.body;
     try {
       //see if owner exists
-      let owner = await Owner.findOne({ "contact.phoneNumber": phoneNumber });
+      let owner = await Owner.findOne({ 'contact.phoneNumber': phoneNumber });
       if (!owner) {
         return res
           .status(400)
-          .json({ errors: [{ msg: "Thông tin không hợp lệ" }] });
+          .json({ errors: [{ msg: 'Thông tin không hợp lệ' }] });
       }
 
       const isMatch = await bcrypt.compare(password, owner.password);
       if (!isMatch) {
         return res
           .status(400)
-          .json({ errors: [{ msg: "Thông tin không hợp lệ" }] });
+          .json({ errors: [{ msg: 'Thông tin không hợp lệ' }] });
       }
 
       //Return jwt
@@ -134,7 +134,7 @@ router.post(
 
       jwt.sign(
         payload,
-        config.get("jwtSecret"),
+        config.get('jwtSecret'),
         { expiresIn: 36000 },
         (err, token) => {
           if (err) throw err;
@@ -143,7 +143,7 @@ router.post(
       );
     } catch (err) {
       console.error(err.message);
-      res.status(500).send("Lỗi server");
+      res.status(500).send('Lỗi server');
     }
   }
 );
@@ -151,12 +151,12 @@ router.post(
 // @route   POST /api/owners
 // @desc    get all owners info order by dateCreated
 // @access  Public
-router.get("/", async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     let infoBlock = [];
     const listOwners = await Owner.find().sort({ dateCreated: -1 });
     if (listOwners.isEmpty) {
-      return res.status(400).json({ msg: "Không có sân" });
+      return res.status(400).json({ msg: 'Không có sân' });
     }
 
     //filter owner have no field
@@ -171,12 +171,12 @@ router.get("/", async (req, res) => {
       });
 
       //get first imageId if exist
-      var imageId = "";
+      var imageId = '';
       for (const field of fields) {
         if (field.image.length > 0) {
           imageId = field.image[0];
         }
-        if (imageId !== "") break;
+        if (imageId !== '') break;
       }
 
       const listPrice = await fields.map((field) => field.price); //list price from fields
@@ -196,14 +196,14 @@ router.get("/", async (req, res) => {
     return res.status(200).json({ infoBlock });
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Lỗi server");
+    res.status(500).send('Lỗi server');
   }
 });
 
 // @route   GET /api/owner
 // @desc    get all fields by location
 // @access  Public
-router.get("/location", async (req, res) => {
+router.get('/location', async (req, res) => {
   const { city, district, ward } = req.body;
 
   try {
@@ -211,23 +211,23 @@ router.get("/location", async (req, res) => {
 
     let listOwners;
     if (city && district && ward) {
-      listOwners = await Owner.find({ "contact.address": req.body }).sort({
+      listOwners = await Owner.find({ 'contact.address': req.body }).sort({
         dateCreated: -1,
       });
     } else if (city && district) {
       listOwners = await Owner.find({
-        "contact.address.city": req.body.city,
-        "contact.address.district": req.body.district,
+        'contact.address.city': req.body.city,
+        'contact.address.district': req.body.district,
       }).sort({ dateCreated: -1 });
     } else if (city) {
       listOwners = await Owner.find({
-        "contact.address.city": req.body.city,
+        'contact.address.city': req.body.city,
       }).sort({ dateCreated: -1 });
     }
 
     //check empty list owner found
     if (listOwners.isEmpty) {
-      return res.status(400).json({ msg: "Không có sân" });
+      return res.status(400).json({ msg: 'Không có sân' });
     }
 
     //filter owner have no field
@@ -243,12 +243,12 @@ router.get("/location", async (req, res) => {
       });
 
       //get first imageId if exist
-      var imageId = "";
+      var imageId = '';
       for (const field of fields) {
         if (field.image.length > 0) {
           imageId = field.image[0];
         }
-        if (imageId !== "") break;
+        if (imageId !== '') break;
       }
 
       const listPrice = await fields.map((field) => field.price); //list price from fields
@@ -268,21 +268,21 @@ router.get("/location", async (req, res) => {
     return res.status(200).json({ infoBlock });
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Lỗi server");
+    res.status(500).send('Lỗi server');
   }
 });
 
 // @route   POST /api/owners/name
 // @desc    get all owners by name
 // @access  Public
-router.get("/name", async (req, res) => {
+router.get('/name', async (req, res) => {
   try {
     let infoBlock = [];
     const listOwners = await Owner.find({
       name: { $regex: `.*${req.body.name}.*` },
     }).sort({ dateCreated: -1 });
     if (listOwners.isEmpty) {
-      return res.status(400).json({ msg: "Không có sân" });
+      return res.status(400).json({ msg: 'Không có sân' });
     }
 
     //filter owner have no field
@@ -298,12 +298,12 @@ router.get("/name", async (req, res) => {
       });
 
       //get first imageId if exist
-      var imageId = "";
+      var imageId = '';
       for (const field of fields) {
         if (field.image.length > 0) {
           imageId = field.image[0];
         }
-        if (imageId !== "") break;
+        if (imageId !== '') break;
       }
 
       const listPrice = await fields.map((field) => field.price); //list price from fields
@@ -323,14 +323,14 @@ router.get("/name", async (req, res) => {
     return res.status(200).json({ infoBlock });
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Lỗi server");
+    res.status(500).send('Lỗi server');
   }
 });
 
 // @route   POST /api/owners/type
 // @desc    get all owners by type
 // @access  Public
-router.get("/type", async (req, res) => {
+router.get('/type', async (req, res) => {
   const type = req.body;
   try {
     let infoBlock = [];
@@ -339,8 +339,8 @@ router.get("/type", async (req, res) => {
     //find field by type
     if (type.sportType && type.fieldType) {
       listFields = await Fields.find({ type });
-    } else if (type.sportType !== "undefined") {
-      listFields = await Fields.find({ "type.sportType": type.sportType });
+    } else if (type.sportType !== 'undefined') {
+      listFields = await Fields.find({ 'type.sportType': type.sportType });
     }
 
     //find owners with field id
@@ -367,12 +367,12 @@ router.get("/type", async (req, res) => {
       });
 
       //get first imageId if exist
-      var imageId = "";
+      var imageId = '';
       for (const field of fields) {
         if (field.image.length > 0) {
           imageId = field.image[0];
         }
-        if (imageId !== "") break;
+        if (imageId !== '') break;
       }
 
       const listPrice = await fields.map((field) => field.price); //list price from fields
@@ -392,7 +392,7 @@ router.get("/type", async (req, res) => {
     return res.status(200).json({ infoBlock });
   } catch (error) {
     console.error(error.message);
-    res.status(500).send("Lỗi server");
+    res.status(500).send('Lỗi server');
   }
 });
 

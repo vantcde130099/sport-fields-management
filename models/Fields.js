@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const FieldSchema = new Schema({
@@ -9,7 +9,7 @@ const FieldSchema = new Schema({
   type: {
     sportType: {
       type: String,
-      enum: ["Bóng đá", "Bóng rổ"],
+      enum: ['Bóng đá', 'Bóng rổ'],
     },
     fieldType: {
       type: String,
@@ -57,4 +57,4 @@ const FieldSchema = new Schema({
   },
 });
 
-module.exports = Fields = mongoose.model("field", FieldSchema);
+module.exports = Fields = mongoose.model('field', FieldSchema);
