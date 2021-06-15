@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const CustomerSchema = new Schema({
@@ -42,7 +42,7 @@ const CustomerSchema = new Schema({
   },
   avatar: {
     type: String,
-    default: "https://www.amongusavatarcreator.com/assets/img/main/icon.png",
+    default: 'https://www.amongusavatarcreator.com/assets/img/main/icon.png',
   },
   dateCreated: {
     type: Date,
@@ -50,4 +50,4 @@ const CustomerSchema = new Schema({
   },
 });
 
-module.exports = Customers = mongoose.model("customer", CustomerSchema);
+module.exports = Customers = mongoose.model('customer', CustomerSchema);

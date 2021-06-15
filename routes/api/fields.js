@@ -1,42 +1,42 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
 
-const { check, checkSchema, validationResult } = require("express-validator");
+const { check, checkSchema, validationResult } = require('express-validator');
 
-const owner = require("../../middleware/owner");
-const upload = require("../../middleware/upload");
+const owner = require('../../middleware/owner');
+const upload = require('../../middleware/upload');
 
-const Owner = require("../../models/Owners");
-const Field = require("../../models/Fields");
+const Owner = require('../../models/Owners');
+const Field = require('../../models/Fields');
 
 // @route   POST /api/fields/add
 // @desc    Owner add field
 // @access  Private
-router.post("/add", owner, upload.array("image", 10), async (req, res) => {
+router.post('/add', owner, upload.array('image', 10), async (req, res) => {
   req.body = JSON.parse(req.body.data);
-  await check("name", "Vui lòng nhập tên sân").not().isEmpty().run(req);
-  await check("price", "Vui lòng nhập tên giá sân/giờ")
+  await check('name', 'Vui lòng nhập tên sân').not().isEmpty().run(req);
+  await check('price', 'Vui lòng nhập tên giá sân/giờ')
     .not()
     .isEmpty()
     .run(req);
-  await check("openHour", "Vui lòng nhập giờ mở cửa lớn hơn 0 và nhỏ hơn 24!")
+  await check('openHour', 'Vui lòng nhập giờ mở cửa lớn hơn 0 và nhỏ hơn 24!')
     .isInt({ min: 0, max: 23 })
     .run(req);
   await check(
-    "closeHour",
-    "Vui lòng nhập giờ đóng cửa lớn hơn 0 và nhỏ hơn 24!"
+    'closeHour',
+    'Vui lòng nhập giờ đóng cửa lớn hơn 0 và nhỏ hơn 24!'
   )
     .isInt({ min: 0, max: 23 })
     .run(req);
   await check(
-    "closeMinutes",
-    "Vui lòng nhập phút đóng cửa lớn hơn 0 và nhỏ hơn 59!"
+    'closeMinutes',
+    'Vui lòng nhập phút đóng cửa lớn hơn 0 và nhỏ hơn 59!'
   )
     .isInt({ min: 0, max: 59 })
     .run(req);
   await check(
-    "openMinutes",
-    "Vui lòng nhập phút đóng cửa lớn hơn 0 và nhỏ hơn 59!"
+    'openMinutes',
+    'Vui lòng nhập phút đóng cửa lớn hơn 0 và nhỏ hơn 59!'
   )
     .isInt({ min: 0, max: 59 })
     .run(req);
@@ -62,10 +62,10 @@ router.post("/add", owner, upload.array("image", 10), async (req, res) => {
   try {
     let existField = await Field.findOne({ name: name });
     if (existField) {
-      return res.status(400).json({ message: "Trùng tên sân" });
+      return res.status(400).json({ message: 'Trùng tên sân' });
     }
 
-    const owner = await Owner.findById(req.owner.id).select("-password");
+    const owner = await Owner.findById(req.owner.id).select('-password');
     const newField = new Field({
       name,
       type,
@@ -91,7 +91,7 @@ router.post("/add", owner, upload.array("image", 10), async (req, res) => {
     });
   } catch (error) {
     console.error(error.message);
-    res.status(500).send("Lỗi server");
+    res.status(500).send('Lỗi server');
   }
 });
 

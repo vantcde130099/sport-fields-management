@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const OwnerSchema = new Schema({
@@ -41,7 +41,7 @@ const OwnerSchema = new Schema({
   ],
   avatar: {
     type: String,
-    default: "https://www.amongusavatarcreator.com/assets/img/main/icon.png",
+    default: 'https://www.amongusavatarcreator.com/assets/img/main/icon.png',
   },
   brandName: {
     type: String,
@@ -50,20 +50,20 @@ const OwnerSchema = new Schema({
   fields: [
     {
       type: Schema.Types.ObjectId,
-      ref: "field",
+      ref: 'field',
     },
   ],
   items: [
     {
       type: Schema.Types.ObjectId,
-      ref: "item",
+      ref: 'item',
     },
   ],
   rate: [
     {
       customer: {
         type: Schema.Types.ObjectId,
-        ref: "customer",
+        ref: 'customer',
       },
       rateValue: {
         type: Number,
@@ -83,4 +83,4 @@ const OwnerSchema = new Schema({
     default: Date.now,
   },
 });
-module.exports = Owners = mongoose.model("owner", OwnerSchema);
+module.exports = Owners = mongoose.model('owner', OwnerSchema);

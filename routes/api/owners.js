@@ -1,24 +1,24 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const config = require("config");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const { check, validationResult } = require("express-validator");
+const config = require('config');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const { check, validationResult } = require('express-validator');
 
-const upload = require("../../middleware/upload");
-const Owner = require("../../models/Owners");
+const upload = require('../../middleware/upload');
+const Owner = require('../../models/Owners');
 
 // @route   POST /api/owner/register
 // @desc    Register owner
 // @access  Public
-router.post("/register", upload.array("image", 2), async (req, res) => {
+router.post('/register', upload.array('image', 2), async (req, res) => {
   req.body = JSON.parse(req.body.data);
-  await check("name", "Vui lòng nhập tên").not().isEmpty().run(req);
-  await check("email", "Vui lòng nhập email").isEmail().run(req);
-  await check("password", "Mật khẩu ít nhất 6 chữ")
+  await check('name', 'Vui lòng nhập tên').not().isEmpty().run(req);
+  await check('email', 'Vui lòng nhập email').isEmail().run(req);
+  await check('password', 'Mật khẩu ít nhất 6 chữ')
     .isLength({ min: 6 })
     .run(req);
-  await check("phoneNumber", "Vui lòng nhập số điện thoại")
+  await check('phoneNumber', 'Vui lòng nhập số điện thoại')
     .not()
     .isEmpty()
     .run(req);
@@ -40,11 +40,11 @@ router.post("/register", upload.array("image", 2), async (req, res) => {
   const contact = { email, phoneNumber, address };
   try {
     //see if owner exist
-    let owner = await Owner.findOne({ "contact.phoneNumber": phoneNumber });
+    let owner = await Owner.findOne({ 'contact.phoneNumber': phoneNumber });
     if (owner) {
       return res
         .status(400)
-        .json({ errors: "SĐT này đã tồn tại trong hệ thống" });
+        .json({ errors: 'SĐT này đã tồn tại trong hệ thống' });
     }
 
     owner = new Owner({
@@ -70,7 +70,7 @@ router.post("/register", upload.array("image", 2), async (req, res) => {
     jwt.sign(
       //sign the token pass and the payload pass
       payload,
-      config.get("jwtSecret"),
+      config.get('jwtSecret'),
       { expiresIn: 36000 },
       (err, token) => {
         if (err) throw err;
@@ -79,7 +79,7 @@ router.post("/register", upload.array("image", 2), async (req, res) => {
     );
   } catch (error) {
     console.error(error.message);
-    res.status(500).send("Server error");
+    res.status(500).send('Server error');
   }
 });
 
@@ -87,10 +87,10 @@ router.post("/register", upload.array("image", 2), async (req, res) => {
 // @desc    Authenticate owner & get token
 // @access  Public
 router.post(
-  "/authenticate", //Router-level middleware
+  '/authenticate', //Router-level middleware
   [
-    check("phoneNumber", "Vui lòng nhập số điện thoại").not().isEmpty(),
-    check("password", "Yêu cầu nhập mật khẩu").exists(),
+    check('phoneNumber', 'Vui lòng nhập số điện thoại').not().isEmpty(),
+    check('password', 'Yêu cầu nhập mật khẩu').exists(),
   ],
   async (req, res) => {
     const err = validationResult(req);
@@ -100,18 +100,18 @@ router.post(
     const { phoneNumber, password } = req.body;
     try {
       //see if owner exists
-      let owner = await Owner.findOne({ "contact.phoneNumber": phoneNumber });
+      let owner = await Owner.findOne({ 'contact.phoneNumber': phoneNumber });
       if (!owner) {
         return res
           .status(400)
-          .json({ errors: [{ msg: "Thông tin không hợp lệ" }] });
+          .json({ errors: [{ msg: 'Thông tin không hợp lệ' }] });
       }
 
       const isMatch = await bcrypt.compare(password, owner.password);
       if (!isMatch) {
         return res
           .status(400)
-          .json({ errors: [{ msg: "Thông tin không hợp lệ" }] });
+          .json({ errors: [{ msg: 'Thông tin không hợp lệ' }] });
       }
 
       //Return jwt
@@ -124,7 +124,7 @@ router.post(
 
       jwt.sign(
         payload,
-        config.get("jwtSecret"),
+        config.get('jwtSecret'),
         { expiresIn: 36000 },
         (err, token) => {
           if (err) throw err;
@@ -133,7 +133,7 @@ router.post(
       );
     } catch (error) {
       console.error(error.message);
-      res.status(500).send("Lỗi server");
+      res.status(500).send('Lỗi server');
     }
   }
 );
