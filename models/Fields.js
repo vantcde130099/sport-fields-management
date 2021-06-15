@@ -1,60 +1,60 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
 const FieldSchema = new Schema({
   name: {
     type: String,
-    required: true,
+    required: true
   },
   type: {
     sportType: {
       type: String,
-      enum: ['Bóng đá', 'Bóng rổ'],
+      enum: ['Bóng đá', 'Bóng rổ']
     },
     fieldType: {
-      type: String,
-    },
+      type: String
+    }
   },
   price: {
     type: Number,
-    required: true,
+    required: true
   },
   open: {
     hour: {
       type: Number,
-      default: 6,
+      default: 6
     },
     minutes: {
       type: Number,
-      default: 0,
-    },
+      default: 0
+    }
   },
   close: {
     hour: {
       type: Number,
-      default: 22,
+      default: 22
     },
     minutes: {
       type: Number,
-      default: 0,
-    },
+      default: 0
+    }
   },
   image: [
     {
-      type: Schema.Types.ObjectId,
-    },
+      type: Schema.Types.ObjectId
+    }
   ],
   status: {
     type: Boolean,
-    default: true,
+    default: true
   },
   dateCreated: {
     type: Date,
-    default: Date.now,
+    default: Date.now
   },
   dateModified: {
-    type: Date,
-  },
-});
+    type: Date
+  }
+})
 
-module.exports = Fields = mongoose.model('field', FieldSchema);
+module.exports = Fields = mongoose.model('field', FieldSchema)

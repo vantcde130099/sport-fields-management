@@ -1,49 +1,46 @@
-const express = require('express');
-const router = express.Router();
-const mongoose = require('mongoose');
-const { check, validationResult } = require('express-validator');
+const express = require('express')
+const router = express.Router()
+const mongoose = require('mongoose')
+const { check, validationResult } = require('express-validator')
 
-const owner = require('../../middleware/owner');
-const upload = require('../../middleware/upload');
+const owner = require('../../middleware/owner')
+const upload = require('../../middleware/upload')
 
-const Owner = require('../../models/Owners');
-const Field = require('../../models/Fields');
-const { ReplSet } = require('mongodb');
+const Owner = require('../../models/Owners')
+const Field = require('../../models/Fields')
+const { ReplSet } = require('mongodb')
 
 // @route   POST /api/fields/add
 // @desc    Owner add field
 // @access  Private
 router.post('/add', owner, upload.array('image', 10), async (req, res) => {
-  req.body = JSON.parse(req.body.data);
-  await check('name', 'Vui lòng nhập tên sân').not().isEmpty().run(req);
-  await check('price', 'Vui lòng nhập tên giá sân/giờ')
-    .not()
-    .isEmpty()
-    .run(req);
+  req.body = JSON.parse(req.body.data)
+  await check('name', 'Vui lòng nhập tên sân').not().isEmpty().run(req)
+  await check('price', 'Vui lòng nhập tên giá sân/giờ').not().isEmpty().run(req)
   await check('openHour', 'Vui lòng nhập giờ mở cửa lớn hơn 0 và nhỏ hơn 24!')
     .isInt({ min: 0, max: 23 })
-    .run(req);
+    .run(req)
   await check(
     'closeHour',
     'Vui lòng nhập giờ đóng cửa lớn hơn 0 và nhỏ hơn 24!'
   )
     .isInt({ min: 0, max: 23 })
-    .run(req);
+    .run(req)
   await check(
     'closeMinutes',
     'Vui lòng nhập phút đóng cửa lớn hơn 0 và nhỏ hơn 59!'
   )
     .isInt({ min: 0, max: 59 })
-    .run(req);
+    .run(req)
   await check(
     'openMinutes',
     'Vui lòng nhập phút đóng cửa lớn hơn 0 và nhỏ hơn 59!'
   )
     .isInt({ min: 0, max: 59 })
-    .run(req);
-  const errors = validationResult(req);
+    .run(req)
+  const errors = validationResult(req)
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
+    return res.status(400).json({ errors: errors.array() })
   }
   const {
     name,
@@ -54,22 +51,22 @@ router.post('/add', owner, upload.array('image', 10), async (req, res) => {
     closeHour,
     openMinutes,
     closeMinutes,
-    status,
-  } = req.body;
-  const type = { sportType, fieldType };
-  const open = { hour: openHour, minutes: openMinutes };
-  const close = { hour: closeHour, minutes: closeMinutes };
+    status
+  } = req.body
+  const type = { sportType, fieldType }
+  const open = { hour: openHour, minutes: openMinutes }
+  const close = { hour: closeHour, minutes: closeMinutes }
   try {
-    const owner = await Owner.findById(req.owner.id).select('-password');
+    const owner = await Owner.findById(req.owner.id).select('-password')
 
     //get field if exist
     const existField = await Field.find({
       //get all fields of owner
       _id: { $in: owner.fields },
-      name: name,
-    });
+      name: name
+    })
     if (existField.length > 0) {
-      return res.status(400).json({ message: 'Trùng tên sân' });
+      return res.status(400).json({ message: 'Trùng tên sân' })
     }
 
     const newField = new Field({
@@ -78,27 +75,27 @@ router.post('/add', owner, upload.array('image', 10), async (req, res) => {
       price,
       close,
       open,
-      status,
-    });
+      status
+    })
 
     //add images to field
     req.files.forEach((e) => {
-      newField.image.push(e.id);
-    });
+      newField.image.push(e.id)
+    })
 
-    await newField.save();
+    await newField.save()
 
-    owner.fields.push(newField.id);
+    owner.fields.push(newField.id)
 
-    await owner.save();
+    await owner.save()
 
     res.status(200).json({
-      message: `Thêm thành công sân ${newField.name}`,
-    });
+      message: `Thêm thành công sân ${newField.name}`
+    })
   } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Lỗi server');
+    console.error(err.message)
+    res.status(500).send('Lỗi server')
   }
-});
+})
 
-module.exports = router;
+module.exports = router
