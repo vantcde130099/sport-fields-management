@@ -1,15 +1,17 @@
 const express = require('express');
-const router = express.Router();
 const config = require('config');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { check, validationResult } = require('express-validator');
 
 const upload = require('../../middleware/upload');
-const Owner = require('../../models/Owners');
+const Coach = require('../../models/Coaches');
+const { array } = require('../../middleware/upload');
 
-// @route   POST /api/owner/register
-// @desc    Register owner
+const router = express.Router();
+
+// @route   POST /api/coach/register
+// @desc    Register coach
 // @access  Public
 router.post('/register', upload.array('image', 2), async (req, res) => {
   req.body = JSON.parse(req.body.data);
@@ -25,7 +27,7 @@ router.post('/register', upload.array('image', 2), async (req, res) => {
 
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
+    return res.status(400).json({ errors });
   }
 
   //upload image
@@ -39,31 +41,31 @@ router.post('/register', upload.array('image', 2), async (req, res) => {
   const address = { city, district, ward };
   const contact = { email, phoneNumber, address };
   try {
-    //see if owner exist
-    let owner = await Owner.findOne({ 'contact.phoneNumber': phoneNumber });
-    if (owner) {
+    //see if coach exist
+    let coach = await Coach.findOne({ 'contact.phoneNumber': phoneNumber });
+    if (coach) {
       return res
         .status(400)
-        .json({ errors: 'SĐT này đã tồn tại trong hệ thống' });
+        .json({ errors: 'Số điện thoại này đã tồn tại trong hệ thống' });
     }
 
-    owner = new Owner({
+    coach = new Coach({
       name,
       contact,
     });
-    //add identityCard Id to owner
-    owner.identityCard = identityCard;
+    //add identityCard Id to Coaches
+    coach.identityCard = identityCard;
 
     //Encrypt password
     const salt = await bcrypt.genSalt(10);
-    owner.password = await bcrypt.hash(password, salt);
+    coach.password = await bcrypt.hash(password, salt);
 
-    await owner.save();
+    await coach.save();
 
     //return jsonwebtoken
     const payload = {
-      owner: {
-        id: owner.id,
+      coach: {
+        id: coach.id,
       },
     };
 
@@ -73,18 +75,18 @@ router.post('/register', upload.array('image', 2), async (req, res) => {
       config.get('jwtSecret'),
       { expiresIn: 36000 },
       (err, token) => {
-        if (err) throw err;
+        if (error) throw err;
         res.json({ token }); //if have no err, send that token to the client
       }
     );
   } catch (error) {
-    console.error(error.message);
+    console.error(err.message);
     res.status(500).send('Server error');
   }
 });
 
-// @route   POST owner/authenticate
-// @desc    Authenticate owner & get token
+// @route   POST api/coaches/authenticate
+// @desc    Authenticate coach & get token
 // @access  Public
 router.post(
   '/authenticate', //Router-level middleware
@@ -93,21 +95,21 @@ router.post(
     check('password', 'Yêu cầu nhập mật khẩu').exists(),
   ],
   async (req, res) => {
-    const err = validationResult(req);
-    if (!err.isEmpty()) {
-      return res.status(400).json({ err: err.array() });
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
     }
     const { phoneNumber, password } = req.body;
     try {
       //see if owner exists
-      let owner = await Owner.findOne({ 'contact.phoneNumber': phoneNumber });
-      if (!owner) {
+      let coach = await Coach.findOne({ 'contact.phoneNumber': phoneNumber });
+      if (!coach) {
         return res
           .status(400)
           .json({ errors: [{ msg: 'Thông tin không hợp lệ' }] });
       }
 
-      const isMatch = await bcrypt.compare(password, owner.password);
+      const isMatch = await bcrypt.compare(password, coach.password);
       if (!isMatch) {
         return res
           .status(400)
@@ -117,8 +119,8 @@ router.post(
       //Return jwt
       const payload = {
         //the payload which inclube ownerId
-        owner: {
-          id: owner.id,
+        coach: {
+          id: coach.id,
         },
       };
 

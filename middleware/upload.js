@@ -1,7 +1,7 @@
 const multer = require('multer');
 const GridFsStorage = require('multer-gridfs-storage');
-
-const url = require('src/config/default.json').mongoURI;
+const config = require('config');
+const url = config.get('mongoURI');
 
 var storage = new GridFsStorage({
   url: url,
@@ -16,9 +16,9 @@ var storage = new GridFsStorage({
 
     return {
       bucketName: 'photos', //collection in mongodb
-      filename: `${Date.now()}-${file.originalname}`
+      filename: `${Date.now()}-${file.originalname}`,
     };
-  }
+  },
 });
 
 var uploadFile = multer({ storage: storage });

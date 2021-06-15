@@ -1,80 +1,86 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const OwnerSchema = new mongoose.Schema({
+
+const OwnerSchema = new Schema({
   name: {
     type: String,
-    require: true
+    require: true,
   },
   password: {
     type: String,
-    require: true
+    require: true,
   },
   contact: {
     phoneNumber: {
       type: String,
-      require: true
+      require: true,
     },
     email: {
       type: String,
-      require: true
+      require: true,
     },
     address: {
       city: {
         type: String,
-        require: true
+        require: true,
       },
       district: {
         type: String,
-        require: true
+        require: true,
       },
       ward: {
         type: String,
-        require: true
-      }
-    }
+        require: true,
+      },
+    },
   },
   identityCard: [
     {
-      type: Schema.Types.ObjectId
-    }
+      type: Schema.Types.ObjectId,
+    },
   ],
   avatar: {
     type: String,
-    default: 'https://www.amongusavatarcreator.com/assets/img/main/icon.png'
+    default: 'https://www.amongusavatarcreator.com/assets/img/main/icon.png',
   },
   brandName: {
     type: String,
-    require: true
+    require: true,
   },
   fields: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'field'
-    }
+      ref: 'field',
+    },
+  ],
+  items: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'item',
+    },
   ],
   rate: [
     {
       customer: {
         type: Schema.Types.ObjectId,
-        ref: 'customer'
+        ref: 'customer',
       },
       rateValue: {
         type: Number,
-        required: true
+        required: true,
       },
       text: {
-        type: String
+        type: String,
       },
       dateCreated: {
         type: Date,
-        default: Date.now
-      }
-    }
+        default: Date.now,
+      },
+    },
   ],
   dateCreated: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 });
-
 module.exports = Owners = mongoose.model('owner', OwnerSchema);

@@ -4,37 +4,37 @@ const Schema = mongoose.Schema;
 const CouponSchema = new Schema({
   owner: {
     type: Schema.Types.ObjectId,
-    ref: 'owner'
+    ref: 'owner',
   },
   code: {
     type: String,
-    required: true
+    required: true,
   },
   type: {
     type: String,
-    required: true
+    required: true,
   },
   discount: {
     type: Number,
-    required: true
+    required: true,
   },
   timeStart: {
-    type: Date
+    type: Date,
   },
   timeEnd: {
-    type: Date
+    type: Date,
   },
   quanlity: {
-    type: Number
+    type: Number,
   },
   status: {
     type: Boolean,
-    default: false
+    default: false,
   },
   dateCreated: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 });
 
 module.exports = Coupons = mongoose.model('coupon', CouponSchema);
