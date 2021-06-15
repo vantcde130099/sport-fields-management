@@ -1,86 +1,86 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
 const CoachSchema = new Schema({
   name: {
     type: String,
-    required: true,
+    required: true
   },
   avatar: {
-    type: String,
+    type: String
   },
   dateOfBirth: {
-    type: Date,
+    type: Date
   },
   password: {
     type: String,
-    required: true,
+    required: true
   },
   contact: {
     phoneNumber: {
       type: String,
-      require: true,
+      require: true
     },
     email: {
       type: String,
-      require: true,
+      require: true
     },
     address: {
       city: {
         type: String,
-        require: true,
+        require: true
       },
       district: {
         type: String,
-        require: true,
+        require: true
       },
       ward: {
         type: String,
-        require: true,
-      },
-    },
+        require: true
+      }
+    }
   },
   fieldsRegistered: [
     {
       field: {
         type: Schema.Types.ObjectId,
-        ref: "field",
+        ref: 'field'
       },
       startTime: {
         hour: {
-          type: Number,
+          type: Number
         },
         miutes: {
-          type: Number,
-        },
-      },
-    },
+          type: Number
+        }
+      }
+    }
   ],
   price: {
-    type: Number,
+    type: Number
   },
   rate: {
     customerId: {
-      type: Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId
     },
     rateValue: {
-      type: Number,
+      type: Number
     },
     text: {
-      type: String,
+      type: String
     },
     dateCreated: {
       type: Date,
-      default: Date.now,
-    },
+      default: Date.now
+    }
   },
   description: {
-    type: String,
+    type: String
   },
   dateCreated: {
     type: Date,
-    default: Date.now,
-  },
-});
+    default: Date.now
+  }
+})
 
-module.exports = Coaches = mongoose.model("coach", CoachSchema);
+module.exports = Coaches = mongoose.model('coach', CoachSchema)

@@ -1,90 +1,90 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
 const OwnerSchema = new Schema({
   name: {
     type: String,
-    require: true,
+    require: true
   },
   password: {
     type: String,
-    require: true,
+    require: true
   },
   contact: {
     phoneNumber: {
       type: String,
-      require: true,
+      require: true
     },
     email: {
       type: String,
-      require: true,
+      require: true
     },
     address: {
       city: {
         type: String,
-        require: true,
+        require: true
       },
       district: {
         type: String,
-        require: true,
+        require: true
       },
       ward: {
         type: String,
-        require: true,
-      },
-    },
+        require: true
+      }
+    }
   },
   identityCard: [
     {
-      type: Schema.Types.ObjectId,
-    },
+      type: Schema.Types.ObjectId
+    }
   ],
 
   brandName: {
     type: String,
-    require: true,
+    require: true
   },
   fields: [
     {
       type: Schema.Types.ObjectId,
-      ref: "field",
-    },
+      ref: 'field'
+    }
   ],
   items: [
     {
       type: Schema.Types.ObjectId,
-      ref: "item",
-    },
+      ref: 'item'
+    }
   ],
   rate: [
     {
       customer: {
         type: Schema.Types.ObjectId,
-        ref: "customer",
+        ref: 'customer'
       },
       value: {
         type: Number,
-        required: true,
+        required: true
       },
       text: {
-        type: String,
+        type: String
       },
       dateCreated: {
         type: Date,
-        default: Date.now,
-      },
-    },
+        default: Date.now
+      }
+    }
   ],
   bookings: {
     type: Number,
-    default: 0,
+    default: 0
   },
   description: {
-    type: String,
+    type: String
   },
   dateCreated: {
     type: Date,
-    default: Date.now,
-  },
-});
-module.exports = Owners = mongoose.model("owner", OwnerSchema);
+    default: Date.now
+  }
+})
+module.exports = Owners = mongoose.model('owner', OwnerSchema)
