@@ -1,10 +1,10 @@
 import React from 'react'
-import './button.css'
-import Button1 from '@material-ui/core/Button'
-import { makeStyles, createMuiTheme } from '@material-ui/core/styles'
-import { DefaultTheme } from '@material-ui/styles'
 
-export interface ButtonProps {
+import { Button as MUIButton } from '@material-ui/core'
+
+import { useStyles } from './Button.styles'
+
+export interface Props {
   /**
    * Is this the principal call to action on the page?
    */
@@ -28,27 +28,10 @@ export interface ButtonProps {
   onClick?: () => void
 }
 
-const useStyles = makeStyles({
-  root: (props: ButtonProps) => {
-    return {
-      backgroundColor: props.backgroundColor,
-      color: 'white',
-      '&:hover': {
-        backgroundColor: 'rgb(7, 177, 77, 0.42)'
-      }
-    }
-  },
-  outlined: {
-    color: '#F94949',
-    fontWeight: 700,
-    borderColor: '#F94949'
-  }
-})
-
 /**
  * Primary UI component for user interaction
  */
-export const Button: React.FC<ButtonProps> = ({
+export const Button: React.FC<Props> = ({
   variant = 'contained',
   size = 'medium',
   backgroundColor = '#F94949',
@@ -62,14 +45,15 @@ export const Button: React.FC<ButtonProps> = ({
     backgroundColor: backgroundColor,
     label: label
   })
+
   return (
-    <Button1
+    <MUIButton
       variant={variant}
       size={size}
       className={variant === 'contained' ? classes.root : classes.outlined}
       disabled={disabled}
     >
       {label}
-    </Button1>
+    </MUIButton>
   )
 }
