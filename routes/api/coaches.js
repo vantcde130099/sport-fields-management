@@ -1,5 +1,4 @@
 const express = require('express')
-const router = express.Router()
 const config = require('config')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
@@ -8,6 +7,8 @@ const { check, validationResult } = require('express-validator')
 const upload = require('../../middleware/upload')
 const Coach = require('../../models/Coaches')
 const { array } = require('../../middleware/upload')
+
+const router = express.Router()
 
 // @route   POST /api/coach/register
 // @desc    Register coach
