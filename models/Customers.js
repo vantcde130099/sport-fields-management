@@ -1,19 +1,23 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
 const CustomerSchema = new Schema({
+  googleId: {
+    type: String
+  },
+  facebookId: {
+    type: String
+  },
   name: {
     type: String,
     required: true
   },
   contact: {
     phoneNumber: {
-      type: String,
-      require: true
+      type: String
     },
     email: {
-      type: String,
-      require: true
+      type: String
     },
     address: {
       city: {
@@ -31,12 +35,10 @@ const CustomerSchema = new Schema({
     }
   },
   password: {
-    type: String,
-    required: true
+    type: String
   },
   dateOfBirth: {
-    type: Date,
-    required: true
+    type: Date
   },
   avatar: {
     type: String,
@@ -46,6 +48,6 @@ const CustomerSchema = new Schema({
     type: Date,
     default: Date.now
   }
-});
+})
 
-module.exports = Customers = mongoose.model('customer', CustomerSchema);
+module.exports = Customers = mongoose.model('customer', CustomerSchema)

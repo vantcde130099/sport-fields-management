@@ -1,6 +1,7 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
-const OwnerSchema = new mongoose.Schema({
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
+
+const OwnerSchema = new Schema({
   name: {
     type: String,
     require: true
@@ -52,6 +53,12 @@ const OwnerSchema = new mongoose.Schema({
       ref: 'field'
     }
   ],
+  items: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'item'
+    }
+  ],
   rate: [
     {
       customer: {
@@ -75,6 +82,5 @@ const OwnerSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   }
-});
-
-module.exports = Owners = mongoose.model('owner', OwnerSchema);
+})
+module.exports = Owners = mongoose.model('owner', OwnerSchema)

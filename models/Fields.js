@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
 const FieldSchema = new Schema({
   name: {
@@ -49,7 +49,8 @@ const FieldSchema = new Schema({
     default: true
   },
   bookings: {
-    type: int
+    type: Number,
+    default: 0
   },
   dateCreated: {
     type: Date,
@@ -58,6 +59,6 @@ const FieldSchema = new Schema({
   dateModified: {
     type: Date
   }
-});
+})
 
-module.exports = Fields = mongoose.model('field', FieldSchema);
+module.exports = Fields = mongoose.model('field', FieldSchema)

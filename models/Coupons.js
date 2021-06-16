@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
 const CouponSchema = new Schema({
   owner: {
@@ -35,6 +35,6 @@ const CouponSchema = new Schema({
     type: Date,
     default: Date.now
   }
-});
+})
 
-module.exports = Coupons = mongoose.model('coupon', CouponSchema);
+module.exports = Coupons = mongoose.model('coupon', CouponSchema)

@@ -1,4 +1,8 @@
 {
-  "mongoURI": "mongodb+srv://cresd1601:Crescent1!@nerdgang.hvxap.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
-  "jwtSecret": "mysecrettoken"
+    "mongoURI": "mongodb+srv://cresd1601:Crescent1!@nerdgang.hvxap.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+    "jwtSecret": "mysecrettoken",
+    "facebookID": "1552009605165297",
+    "facebookSecret": "daa5a1bb80876519fe89ef46e9f7ccff",
+    "googleID": "558484712553-qftsumrut0ar4nebu5f0bn8ftkgkqkv3.apps.googleusercontent.com",
+    "googleSecret": "XLDwQUQXPwo4vdiybdsWU1Zm"
 }
