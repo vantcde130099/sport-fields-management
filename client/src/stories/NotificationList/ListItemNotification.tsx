@@ -7,8 +7,11 @@ import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import ListItem from '@material-ui/core/ListItem';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-export interface IInputWrapperProps {
-  children?: JSX.Element|JSX.Element[];
+export interface ListItemNotificationProps {
+  image ?: any , 
+  typeList ?: 'cart' | 'notification'
+  isMenuOpen ?: boolean
+
 }
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -26,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'inline',
       },
 }))
-export  function ListItemCart({typeList = 'cart',image = "https://i.pinimg.com/280x280_RS/7b/f4/9c/7bf49cc8e519bcea2fdd87b00df971aa.jpg",listItem = [{title :  'mã đơn hàng : BK10001', description : 'Bạn đã đặt thành công',cardState : 'success'},{title :  'mã đơn hàng : BK10001', description : 'Bạn đã đặt thành công',cardState : 'success'},{title :  'mã đơn hàng : BK10001', description : 'Bạn đã đặt thành công',cardState : 'success'},{title :  'mã đơn hàng : BK10001', description : 'Bạn đã đặt thành công',cardState : 'wait'},{title :  'mã đơn hàng : BK10001', description : 'Bạn đã đặt thành công',cardState : ''}],...props}) {
+export  function ListItemNotification({typeList = 'cart',isMenuOpen = true,image = "https://i.pinimg.com/280x280_RS/7b/f4/9c/7bf49cc8e519bcea2fdd87b00df971aa.jpg",listItem = [{title :  'mã đơn hàng : BK10001', description : 'Bạn đã đặt thành công',cardState : 'success'},{title :  'mã đơn hàng : BK10001', description : 'Bạn đã đặt thành công',cardState : 'success'},{title :  'mã đơn hàng : BK10001', description : 'Bạn đã đặt thành công',cardState : 'success'},{title :  'mã đơn hàng : BK10001', description : 'Bạn đã đặt thành công',cardState : 'wait'},{title :  'mã đơn hàng : BK10001', description : 'Bạn đã đặt thành công',cardState : ''}],...props}) {
     const classes = useStyles();
     return (
         <Menu
@@ -34,7 +37,7 @@ export  function ListItemCart({typeList = 'cart',image = "https://i.pinimg.com/2
         anchorOrigin={{
             vertical: 'bottom',
             horizontal: 'center',
-          }}
+          }} 
           transformOrigin={{
             vertical: 'top',
             horizontal: 'center',
@@ -42,19 +45,17 @@ export  function ListItemCart({typeList = 'cart',image = "https://i.pinimg.com/2
         getContentAnchorEl={null}
         id={props.menuId}
         keepMounted
-        open={props.isMenuOpen}
+        open={isMenuOpen}
         onClose={props.handleMenuClose}
       >
         {listItem.map((item) => {
            return(
             <MenuItem onClick={props.handleMenuClose} style ={{height : 40 , padding : 0, marginBottom : 10 }}>
             <ListItem >
-            <ListItemAvatar>
               {typeList=='cart'&&item.cardState =='success' &&<ListItemAvatar><ShoppingCartIcon color = 'secondary'></ShoppingCartIcon></ListItemAvatar>}       
               {typeList=='cart'&&item.cardState =='wait' &&<ListItemAvatar><ShoppingCartIcon color = 'primary'></ShoppingCartIcon></ListItemAvatar>}
               {typeList=='cart'&&item.cardState !='wait' && item.cardState != 'success' &&<ListItemAvatar><ShoppingCartIcon></ShoppingCartIcon></ListItemAvatar>}  
               {typeList=='notification'&&<img src ={image} style = {{width: 50 , height : 50}}></img>}
-              </ListItemAvatar>
             <ListItemText primary={<Typography style={{ color: '#000000' , fontSize : 14}}>{item.title}</Typography>} secondary={<Typography style ={{fontSize : 10}}noWrap>{item.description}</Typography>} style = {{width : 150}}            />
             </ListItem>
             </MenuItem>
