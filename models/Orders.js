@@ -1,77 +1,77 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
 const OrderSchema = new Schema({
   owner: {
     type: Schema.Types.ObjectId,
-    ref: 'owner',
+    ref: 'owner'
   },
   customer: {
     type: Schema.Types.ObjectId,
-    ref: 'customer',
+    ref: 'customer'
   },
   field: {
     type: Schema.Types.ObjectId,
-    ref: 'field',
+    ref: 'field'
   },
   coach: {
     type: Schema.Types.ObjectId,
-    ref: 'coach',
+    ref: 'coach'
   },
-  item: {
-    type: Schema.Types.ObjectId,
-    ref: 'item',
-  },
+  item: [
+    {
+      id: {
+        type: Schema.Types.ObjectId,
+        ref: 'item'
+      },
+      quantity: {
+        type: Number
+      }
+    }
+  ],
   rentalDate: {
     type: Date,
-    required: true,
+    required: true
   },
   start: {
-    hour: {
-      type: Number,
-    },
-    minutes: {
-      type: Number,
-    },
+    type: Date
   },
   end: {
-    hour: {
-      type: Number,
-    },
-    minutes: {
-      type: Number,
-    },
+    type: Date
   },
   totalTime: {
-    type: Number,
+    type: Number
   },
   fieldPrice: {
-    type: Number,
+    type: Number
   },
   coachPrice: {
-    type: Number,
+    type: Number
+  },
+  itemsPrice: {
+    type: Number
   },
   coupon: {
-    type: String,
+    type: String
   },
   total: {
-    type: Number,
+    type: Number
   },
   payment: {
     method: {
-      type: String,
+      type: String
     },
     status: {
-      type: String,
-    },
+      type: Boolean
+    }
   },
   dateCreated: {
     type: Date,
-    default: Date.now,
+    default: Date.now
   },
   dateModified: {
-    type: Date,
-  },
-});
+    type: Date
+  }
+})
 
-module.exports = Orders = mongoose.model('order', OrderSchema);
+module.exports = Orders = mongoose.model('order', OrderSchema)
