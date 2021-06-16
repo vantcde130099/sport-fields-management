@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
 const CoachSchema = new Schema({
   name: {
@@ -11,6 +11,10 @@ const CoachSchema = new Schema({
   },
   dateOfBirth: {
     type: Date
+  },
+  password: {
+    type: String,
+    required: true
   },
   contact: {
     phoneNumber: {
@@ -60,7 +64,7 @@ const CoachSchema = new Schema({
       type: Schema.Types.ObjectId
     },
     rateValue: {
-      type: int
+      type: Number
     },
     text: {
       type: String
@@ -77,6 +81,6 @@ const CoachSchema = new Schema({
     type: Date,
     default: Date.now
   }
-});
+})
 
-module.exports = Coaches = mongoose.model('coach', CoachSchema);
+module.exports = Coaches = mongoose.model('coach', CoachSchema)

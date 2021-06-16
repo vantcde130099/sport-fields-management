@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
 const OrderSchema = new Schema({
   owner: {
@@ -72,6 +72,6 @@ const OrderSchema = new Schema({
   dateModified: {
     type: Date
   }
-});
+})
 
-module.exports = Orders = mongoose.model('order', OrderSchema);
+module.exports = Orders = mongoose.model('order', OrderSchema)
