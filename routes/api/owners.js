@@ -11,6 +11,7 @@ const Field = require('../../models/Fields')
 const { ObjectId } = require('bson')
 const Fields = require('../../models/Fields')
 
+
 // @route   POST /api/owner/register
 // @desc    Register owner
 // @access  Public
@@ -87,8 +88,8 @@ router.post('/register', upload.array('image', 2), async (req, res) => {
         res.json({ token }) //if have no err, send that token to the client
       }
     )
-  } catch (err) {
-    console.error(err.message)
+  } catch (error) {
+    console.error(error.message)
     res.status(500).send('Server error')
   }
 })

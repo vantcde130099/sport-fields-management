@@ -8,7 +8,7 @@ const upload = require('../../middleware/upload')
 
 const Owner = require('../../models/Owners')
 const Field = require('../../models/Fields')
-const { ReplSet } = require('mongodb')
+
 
 // @route   POST /api/fields/add
 // @desc    Owner add field
@@ -92,8 +92,8 @@ router.post('/add', owner, upload.array('image', 10), async (req, res) => {
     res.status(200).json({
       message: `Thêm thành công sân ${newField.name}`
     })
-  } catch (err) {
-    console.error(err.message)
+  } catch (error) {
+    console.error(error.message)
     res.status(500).send('Lỗi server')
   }
 })
