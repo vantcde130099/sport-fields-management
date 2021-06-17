@@ -48,6 +48,7 @@ const FieldSchema = new Schema({
     type: Boolean,
     default: true
   },
+
   dateCreated: {
     type: Date,
     default: Date.now

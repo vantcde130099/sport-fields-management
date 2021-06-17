@@ -8,7 +8,7 @@ const upload = require('../../middleware/upload')
 
 const Owner = require('../../models/Owners')
 const Field = require('../../models/Fields')
-const { ReplSet } = require('mongodb')
+
 
 // @route   POST /api/fields/add
 // @desc    Owner add field
@@ -186,6 +186,7 @@ router.get('/name', async (req, res) => {
     console.error(error.message)
     res.status(500).send('Lỗi server')
   }
+
 })
 
 module.exports = router

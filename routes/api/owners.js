@@ -163,6 +163,8 @@ router.get('/', async (req, res) => {
     const fileteredOwner = await listOwners.filter(function (e) {
       return e.fields.length > 0
     })
+    //add identityCard Id to owner
+    owner.identityCard = identityCard
 
     for (const owner of fileteredOwner) {
       const fields = await Field.find({
@@ -395,5 +397,6 @@ router.get('/type', async (req, res) => {
     res.status(500).send('Lỗi server')
   }
 })
+
 
 module.exports = router
