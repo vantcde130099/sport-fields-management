@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
-
-const { check, checkSchema, validationResult } = require('express-validator')
+const mongoose = require('mongoose')
+const { check, validationResult } = require('express-validator')
 
 const owner = require('../../middleware/owner')
 const upload = require('../../middleware/upload')
@@ -9,19 +9,14 @@ const upload = require('../../middleware/upload')
 const Owner = require('../../models/Owners')
 const Field = require('../../models/Fields')
 
+
 // @route   POST /api/fields/add
 // @desc    Owner add field
 // @access  Private
 router.post('/add', owner, upload.array('image', 10), async (req, res) => {
   req.body = JSON.parse(req.body.data)
-  await check('name', 'Vui lòng nhập tên sân')
-    .not()
-    .isEmpty()
-    .run(req)
-  await check('price', 'Vui lòng nhập tên giá sân/giờ')
-    .not()
-    .isEmpty()
-    .run(req)
+  await check('name', 'Vui lòng nhập tên sân').not().isEmpty().run(req)
+  await check('price', 'Vui lòng nhập tên giá sân/giờ').not().isEmpty().run(req)
   await check('openHour', 'Vui lòng nhập giờ mở cửa lớn hơn 0 và nhỏ hơn 24!')
     .isInt({ min: 0, max: 23 })
     .run(req)
@@ -47,7 +42,6 @@ router.post('/add', owner, upload.array('image', 10), async (req, res) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() })
   }
-
   const {
     name,
     sportType,
@@ -63,12 +57,18 @@ router.post('/add', owner, upload.array('image', 10), async (req, res) => {
   const open = { hour: openHour, minutes: openMinutes }
   const close = { hour: closeHour, minutes: closeMinutes }
   try {
-    let existField = await Field.findOne({ name: name })
-    if (existField) {
+    const owner = await Owner.findById(req.owner.id).select('-password')
+
+    //get field if exist
+    const existField = await Field.find({
+      //get all fields of owner
+      _id: { $in: owner.fields },
+      name: name
+    })
+    if (existField.length > 0) {
       return res.status(400).json({ message: 'Trùng tên sân' })
     }
 
-    const owner = await Owner.findById(req.owner.id).select('-password')
     const newField = new Field({
       name,
       type,
@@ -79,7 +79,7 @@ router.post('/add', owner, upload.array('image', 10), async (req, res) => {
     })
 
     //add images to field
-    req.files.forEach(e => {
+    req.files.forEach((e) => {
       newField.image.push(e.id)
     })
 
