@@ -15,30 +15,22 @@ const router = express.Router()
 // @access  Public
 router.post('/register', upload.array('image', 2), async (req, res) => {
   req.body = JSON.parse(req.body.data)
-  await check('name', 'Vui lòng nhập tên')
-    .not()
-    .isEmpty()
-    .run(req)
-  await check('email', 'Vui lòng nhập email')
-    .isEmail()
-    .run(req)
+  await check('name', 'Vui lòng nhập tên').not().isEmpty().run(req)
+  await check('email', 'Vui lòng nhập email').isEmail().run(req)
   await check('password', 'Mật khẩu ít nhất 6 chữ')
     .isLength({ min: 6 })
     .run(req)
-  await check('phoneNumber', 'Vui lòng nhập số điện thoại')
-    .not()
-    .isEmpty()
-    .run(req)
+  await check('phoneNumber', 'Vui lòng nhập SDT').not().isEmpty().run(req)
 
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors })
+    return res.status(400).json({ errors: errors })
   }
 
   //upload image
   let identityCard = []
 
-  req.files.forEach(e => {
+  req.files.forEach((e) => {
     identityCard.push(e.id)
   })
 
@@ -96,15 +88,13 @@ router.post('/register', upload.array('image', 2), async (req, res) => {
 router.post(
   '/authenticate', //Router-level middleware
   [
-    check('phoneNumber', 'Vui lòng nhập số điện thoại')
-      .not()
-      .isEmpty(),
+    check('phoneNumber', 'Vui lòng nhập số điện thoại').not().isEmpty(),
     check('password', 'Yêu cầu nhập mật khẩu').exists()
   ],
   async (req, res) => {
-    const errors = validationResult(req)
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() })
+    const err = validationResult(req)
+    if (!err.isEmpty()) {
+      return res.status(400).json({ err: err.array() })
     }
     const { phoneNumber, password } = req.body
     try {
