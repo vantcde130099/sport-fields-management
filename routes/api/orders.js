@@ -18,7 +18,8 @@ router.post('/create', customer, async (req, res) => {
     date,
     startRental,
     endRental,
-    payment
+    payment,
+    coupon
   } = req.body
   const [day, month, year] = date.split('-')
   const [startHour, startMinute] = startRental.split(':')
@@ -40,8 +41,14 @@ router.post('/create', customer, async (req, res) => {
       start,
       end,
       totalTime: (end.getTime() - start.getTime()) / 60 / 60 / 1000, //milisecond to hour
-      fieldPrice:
-        (field.price * (end.getTime() - start.getTime())) / 60 / 60 / 1000,
+      fieldPrice: Math.round(
+        (field.price *
+          (end.getTime() - start.getTime()) *
+          (coupon ? 1 - coupon / 100 : 1)) / //check if has coupon
+          60 /
+          60 /
+          1000
+      ),
       coachPrice: 0,
       itemsPrice: 0
     })
