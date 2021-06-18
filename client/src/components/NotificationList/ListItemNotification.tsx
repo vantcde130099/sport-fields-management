@@ -68,7 +68,7 @@ export function ListItemNotification({
 }) {
   return (
     <Menu
-      style={{ height: 400 }}
+      style={{ maxHeight: 340 }}
       anchorEl={props.anchorEl}
       anchorOrigin={{
         vertical: 'bottom',
@@ -87,7 +87,7 @@ export function ListItemNotification({
       {/* <List> */}
       {listItem.map((item, index) => {
         return (
-          <>
+          <div>
             {index != 0 ? <Divider variant="inset" component="li" /> : ''}
             <MenuItem onClick={props.handleMenuClose}>
               <ListItem style={{ padding: 0 }}>
@@ -109,7 +109,7 @@ export function ListItemNotification({
                 />
               </ListItem>
             </MenuItem>
-          </>
+            </div>
         )
       })}
       {/* </List> */}
