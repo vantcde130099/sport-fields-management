@@ -11,7 +11,6 @@ const Field = require('../../models/Fields')
 const { ObjectId } = require('bson')
 const Fields = require('../../models/Fields')
 
-
 // @route   POST /api/owner/register
 // @desc    Register owner
 // @access  Public
@@ -26,7 +25,7 @@ router.post('/register', upload.array('image', 2), async (req, res) => {
 
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors })
+    return res.status(400).json({ errors: errors.array() })
   }
 
   //upload image
