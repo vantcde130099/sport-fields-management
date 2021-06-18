@@ -5,4 +5,4 @@ export default {
     title: 'layout'
 };
 
-const layoutComponent = () => <Layout></Layout>
+export const layoutComponent = () => <Layout></Layout>
