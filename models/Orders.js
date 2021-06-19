@@ -62,7 +62,7 @@ const OrderSchema = new Schema({
       type: String
     },
     status: {
-      type: String
+      type: Boolean
     }
   },
   dateCreated: {

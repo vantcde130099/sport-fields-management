@@ -11,7 +11,6 @@ const Field = require('../../models/Fields')
 const { ObjectId } = require('bson')
 const Fields = require('../../models/Fields')
 
-
 // @route   POST /api/owner/register
 // @desc    Register owner
 // @access  Public
@@ -20,8 +19,7 @@ router.post('/register', upload.array('image', 2), async (req, res) => {
   await check('name', 'Vui lòng nhập tên').not().isEmpty().run(req)
   await check('email', 'Vui lòng nhập email').isEmail().run(req)
   await check('password', 'Mật khẩu ít nhất 6 chữ')
-    .isLength({ min: 6 })
-    .run(req)
+  await check('brandName', 'Vui lòng nhập tên sân').not().isEmpty()
   await check('phoneNumber', 'Vui lòng nhập SDT').not().isEmpty().run(req)
 
   const errors = validationResult(req)
