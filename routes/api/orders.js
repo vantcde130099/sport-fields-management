@@ -35,6 +35,7 @@ router.post('/create', customer, async (req, res) => {
     if (!field) {
       return res.status(400).json({ message: 'Lỗi, sân này không tồn tại' })
     }
+    
     const owner = await Owner.findById(ownerId)
     if (!owner) {
       return res.status(400).json({ message: 'Lỗi, sân này không tồn tại' })
