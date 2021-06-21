@@ -1,31 +1,44 @@
 import React from 'react'
-import { fade, makeStyles } from '@material-ui/core/styles'
-import AppBar from '@material-ui/core/AppBar'
-import Toolbar from '@material-ui/core/Toolbar'
-import IconButton from '@material-ui/core/IconButton'
-import Link from '@material-ui/core/Link'
-import Badge from '@material-ui/core/Badge'
-import MenuItem from '@material-ui/core/MenuItem'
-import Menu from '@material-ui/core/Menu'
-import Button from '@material-ui/core/Button'
-import AccountCircle from '@material-ui/icons/AccountCircle'
-import NotificationsIcon from '@material-ui/icons/Notifications'
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  Link,
+  Badge,
+  MenuItem,
+  Menu,
+  Button,
+  InputBase,
+  Avatar
+} from '@material-ui/core'
+import {
+  ArrowDropDown,
+  Notifications as NotificationsIcon,
+  Search as SearchIcon,
+  MoreVert as MoreIcon,
+  AccountCircle
+} from '@material-ui/icons'
 import { ListItemNotification } from '../NotificationList/ListItemNotification'
-import MoreIcon from '@material-ui/icons/MoreVert'
 import { ListItemNotificationUser } from '../NotificationList/ListItemNotificationUser'
-import { Avatar } from '@material-ui/core'
-import { ArrowDropDown } from '@material-ui/icons'
 import { useStyles } from './AppBarHeader.styles'
 
 export interface AppBarHeaderProps {
-  user?: {}
+  user?: {
+    name?: String
+    tel?: String
+    img?: String
+  }
   onLogin: () => void
   onLogout: () => void
   onCreateAccount: () => void
 }
 
 export const AppBarHeader: React.FC<AppBarHeaderProps> = ({
-  user,
+  user = {
+    name: '',
+    tel: '',
+    img: ''
+  },
   onLogin,
   onLogout,
   onCreateAccount
@@ -72,6 +85,9 @@ export const AppBarHeader: React.FC<AppBarHeaderProps> = ({
       anchorEl={anchorEl}
       isMenuOpen={isMenuOpen}
       handleMenuClose={handleMenuClose}
+      name={`${user.name}`}
+      tel={`${user.tel}`}
+      img={`${user.img}`}
     />
   )
   const renderNotification = (
@@ -135,7 +151,8 @@ export const AppBarHeader: React.FC<AppBarHeaderProps> = ({
               onClick={() => handleIsActive(1)}
               style={{
                 color: 'rgb(255, 255, 255, 0.6  )',
-                textDecoration: 'none'
+                textDecoration: 'none',
+                fontSize: 15
               }}
               component="button"
               variant="body2"
@@ -151,7 +168,8 @@ export const AppBarHeader: React.FC<AppBarHeaderProps> = ({
               onClick={() => handleIsActive(2)}
               style={{
                 color: 'rgb(255, 255, 255, 0.6  )',
-                textDecoration: 'none'
+                textDecoration: 'none',
+                fontSize: 15
               }}
               component="button"
               variant="body2"
@@ -167,7 +185,8 @@ export const AppBarHeader: React.FC<AppBarHeaderProps> = ({
               onClick={() => handleIsActive(3)}
               style={{
                 color: 'rgb(255, 255, 255, 0.6 )',
-                textDecoration: 'none'
+                textDecoration: 'none',
+                fontSize: 15
               }}
               component="button"
               variant="body2"
@@ -176,6 +195,19 @@ export const AppBarHeader: React.FC<AppBarHeaderProps> = ({
             </Link>
           </div>
           <div className={classes.grow} />
+          <div className={classes.search1}>
+            <div className={classes.searchIcon}>
+              <SearchIcon />
+            </div>
+            <InputBase
+              placeholder="Search…"
+              classes={{
+                root: classes.inputRoot,
+                input: classes.inputInput
+              }}
+              inputProps={{ 'aria-label': 'search' }}
+            />
+          </div>
           <div className={classes.sectionDesktop}>
             {user ? (
               <>
@@ -198,7 +230,7 @@ export const AppBarHeader: React.FC<AppBarHeaderProps> = ({
                   onClick={handleProfileMenuOpen}
                   color="inherit"
                 >
-                  <Avatar src="https://www.dungplus.com/wp-content/uploads/2019/12/girl-xinh-1-480x600.jpg" />
+                  <Avatar src={`${user.img}`}>{user.name?.charAt(0)}</Avatar>
                   <ArrowDropDown
                     className={isMenuOpen ? classes.dropdowncolor : ''}
                   ></ArrowDropDown>

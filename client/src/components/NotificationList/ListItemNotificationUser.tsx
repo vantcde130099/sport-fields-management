@@ -1,36 +1,79 @@
 import React from 'react'
-import {  makeStyles } from '@material-ui/core/styles';
-import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
-import Avatar from '@material-ui/core/Avatar';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
-import AccountBoxRoundedIcon from '@material-ui/icons/AccountBoxRounded';
+import {
+  Menu,
+  MenuItem,
+  Divider,
+  Avatar,
+  ListItem,
+  ListItemAvatar,
+  ListItemText
+} from '@material-ui/core'
+import {
+  AccountBoxRounded as AccountBoxRoundedIcon,
+  ExitToAppOutlined as ExitToAppOutlinedIcon
+} from '@material-ui/icons'
 export interface ListItemNotificationUserProps {
-    isMenuOpen ?: boolean  
-    image ?: any
-  }
+  isMenuOpen?: boolean
+  image?: any
+  name?: any
+  img?: any
+  tel?: any
+}
 
-export  function ListItemNotificationUser({image = "https://www.dungplus.com/wp-content/uploads/2019/12/girl-xinh-1-480x600.jpg" , isMenuOpen=true,...props}) {
-    return (
-        <Menu
-        anchorEl={props.anchorEl}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'center',
-        }}
-        id={props.menuId}
-        keepMounted
-        open={isMenuOpen}
-        getContentAnchorEl={null}
-        onClose={props.handleMenuClose}
-      >
-        <MenuItem onClick={props.handleMenuClose}><Avatar style = {{marginRight : 15}}><AccountBoxRoundedIcon></AccountBoxRoundedIcon></Avatar>Thông tin cá nhân</MenuItem>
-        <MenuItem onClick={props.handleMenuClose}><Avatar style = {{marginRight : 15}}><ExitToAppOutlinedIcon ></ExitToAppOutlinedIcon></Avatar>Đăng Xuất</MenuItem>
-      </Menu>
-
-    )
+export function ListItemNotificationUser({
+  isMenuOpen = true,
+  name = '',
+  img = '',
+  tel = '',
+  ...props
+}) {
+  return (
+    <Menu
+      style={{ maxHeight: 340 }}
+      anchorEl={props.anchorEl}
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'left'
+      }}
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'center'
+      }}
+      id={props.menuId}
+      keepMounted
+      open={isMenuOpen}
+      getContentAnchorEl={null}
+      onClose={props.handleMenuClose}
+    >
+      <ListItem style={{ padding: 0, paddingLeft: 16 }} component="div">
+        <ListItemAvatar>
+          <Avatar src={img} alt="avatar">
+            {name.charAt(0)}
+          </Avatar>
+        </ListItemAvatar>
+        <ListItemText primary={name} secondary={tel} />
+      </ListItem>
+      <Divider component="div" />
+      <MenuItem onClick={props.handleMenuClose} style={{ fontSize: 12 }}>
+        <Avatar
+          style={{ marginRight: 15, fontSize: 10, height: 30, width: 30 }}
+        >
+          <AccountBoxRoundedIcon
+            style={{ fontSize: 20 }}
+          ></AccountBoxRoundedIcon>
+        </Avatar>
+        Thông tin cá nhân
+      </MenuItem>
+      <MenuItem onClick={props.handleMenuClose} style={{ fontSize: 12 }}>
+        <Avatar
+          style={{ marginRight: 15, fontSize: 10, height: 30, width: 30 }}
+        >
+          <ExitToAppOutlinedIcon
+            style={{ fontSize: 20 }}
+          ></ExitToAppOutlinedIcon>
+        </Avatar>
+        Đăng Xuất
+      </MenuItem>
+    </Menu>
+  )
 }
