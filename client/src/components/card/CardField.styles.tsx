@@ -26,7 +26,7 @@ export const useStyles = makeStyles({
   customBox: {
     display: '-webkit-box',
     boxOrient: 'vertical',
-    lineClamp: 1,
+    lineClamp: 2,
     wordBreak: 'break-all',
     overflow: 'hidden'
   },
@@ -38,7 +38,7 @@ export const useStyles = makeStyles({
       }
     },
     position: 'relative',
-    height: 170
+    height: 210
   },
   hoverDisabled: {},
   contentMedia: {
@@ -53,7 +53,7 @@ export const useStyles = makeStyles({
     color: 'white'
   },
   content: {
-    height: 75,
+    height: 65,
     fontWeight: 100,
     paddingTop: 10,
     paddingBottom: 10
@@ -79,7 +79,7 @@ export const useStyles = makeStyles({
   },
   typographyContent: {
     fontWeight: 300,
-    fontSize: 20
+    fontSize: 18
   },
   typographyDescription: {
     position: 'relative',
