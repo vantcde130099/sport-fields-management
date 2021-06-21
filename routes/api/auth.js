@@ -31,4 +31,6 @@ router.get('/coach', coach, async (req, res) => {
   }
 })
 
+router.get('/readjson')
+
 module.exports = router
