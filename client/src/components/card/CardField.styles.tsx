@@ -38,7 +38,7 @@ export const useStyles = makeStyles({
       }
     },
     position: 'relative',
-    height: 210
+    height: 180
   },
   hoverDisabled: {},
   contentMedia: {
@@ -55,8 +55,8 @@ export const useStyles = makeStyles({
   content: {
     height: 65,
     fontWeight: 100,
-    paddingTop: 10,
-    paddingBottom: 10
+    paddingTop: 5,
+    paddingBottom: 5
   },
   button: {
     fontSize: 8,
