@@ -7,7 +7,6 @@ const { check, validationResult } = require('express-validator')
 
 const upload = require('../../middleware/upload')
 const Coach = require('../../models/Coaches')
-const { array } = require('../../middleware/upload')
 
 // @route   POST /api/coach/register
 // @desc    Register coach
