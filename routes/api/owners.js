@@ -21,10 +21,7 @@ router.post('/register', upload.array('image', 2), async (req, res) => {
   await check('password', 'Mật khẩu ít nhất 6 chữ')
     .isLength({ min: 6 })
     .run(req)
-  await check('phoneNumber', 'Vui lòng nhập SDT')
-    .not()
-    .isEmpty()
-    .run(req)
+  await check('phoneNumber', 'Vui lòng nhập Số điện thoại').not().isEmpty().run(req)
 
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
@@ -163,9 +160,11 @@ router.get('/', async (req, res) => {
     }
 
     //filter owner have no field
-    const fileteredOwner = await listOwners.filter(function(e) {
+    const fileteredOwner = await listOwners.filter(function (e) {
       return e.fields.length > 0
     })
+    //add identityCard Id to owner
+    owner.identityCard = identityCard
 
     for (const owner of fileteredOwner) {
       const fields = await Field.find({
@@ -182,7 +181,7 @@ router.get('/', async (req, res) => {
         if (imageId !== '') break
       }
 
-      const listPrice = await fields.map(field => field.price) //list price from fields
+      const listPrice = await fields.map((field) => field.price) //list price from fields
 
       let info = {
         ownerId: owner.id,
@@ -234,7 +233,7 @@ router.get('/location', async (req, res) => {
     }
 
     //filter owner have no field
-    const fileteredOwner = await listOwners.filter(function(e) {
+    const fileteredOwner = await listOwners.filter(function (e) {
       return e.fields.length > 0
     })
 
@@ -254,7 +253,7 @@ router.get('/location', async (req, res) => {
         if (imageId !== '') break
       }
 
-      const listPrice = await fields.map(field => field.price) //list price from fields
+      const listPrice = await fields.map((field) => field.price) //list price from fields
 
       let info = {
         ownerId: owner.id,
@@ -289,7 +288,7 @@ router.get('/name', async (req, res) => {
     }
 
     //filter owner have no field
-    const fileteredOwner = await listOwners.filter(function(e) {
+    const fileteredOwner = await listOwners.filter(function (e) {
       return e.fields.length > 0
     })
 
@@ -309,7 +308,7 @@ router.get('/name', async (req, res) => {
         if (imageId !== '') break
       }
 
-      const listPrice = await fields.map(field => field.price) //list price from fields
+      const listPrice = await fields.map((field) => field.price) //list price from fields
 
       let info = {
         ownerId: owner.id,
@@ -358,7 +357,7 @@ router.get('/type', async (req, res) => {
     }
 
     //filter owner have no field
-    const filteredOwner = await listOwners.filter(function(e) {
+    const filteredOwner = await listOwners.filter(function (e) {
       return e.fields.length > 0
     })
 
@@ -378,7 +377,7 @@ router.get('/type', async (req, res) => {
         if (imageId !== '') break
       }
 
-      const listPrice = await fields.map(field => field.price) //list price from fields
+      const listPrice = await fields.map((field) => field.price) //list price from fields
 
       let info = {
         ownerId: owner.id,
