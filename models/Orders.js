@@ -52,7 +52,8 @@ const OrderSchema = new Schema({
     type: Number
   },
   coupon: {
-    type: String
+    type: Schema.Types.ObjectId,
+    ref: 'coupon'
   },
   total: {
     type: Number

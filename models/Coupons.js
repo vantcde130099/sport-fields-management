@@ -11,8 +11,13 @@ const CouponSchema = new Schema({
     required: true
   },
   type: {
-    type: String,
-    required: true
+    sportType: {
+      type: String,
+      enum: ['Bóng đá', 'Bóng rổ']
+    },
+    fieldType: {
+      type: String
+    }
   },
   discount: {
     type: Number,
@@ -24,7 +29,7 @@ const CouponSchema = new Schema({
   timeEnd: {
     type: Date
   },
-  quanlity: {
+  quantity: {
     type: Number
   },
   status: {
