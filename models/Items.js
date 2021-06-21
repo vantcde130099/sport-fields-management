@@ -10,15 +10,17 @@ const ItemSchema = new Schema({
     type: Number
   },
   quantity: {
-    type: int
+    type: Number
+  },
+  image: {
+    type: Schema.Types.ObjectId
   },
   dateCreated: {
     type: Date,
     default: Date.now
   },
   dateModified: {
-    type: Date,
-    default: Date.now
+    type: Date
   }
 })
 
