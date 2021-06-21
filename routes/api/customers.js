@@ -23,8 +23,8 @@ passport.use(
       clientSecret: config.get('googleSecret'),
       callbackURL: '/api/customers/auth/google/callback'
     },
-    async function(accessToken, refreshToken, profile, done) {
-      await Customer.findOne({ googleId: profile.id }).then(currentUser => {
+    async function (accessToken, refreshToken, profile, done) {
+      await Customer.findOne({ googleId: profile.id }).then((currentUser) => {
         if (currentUser) {
           done(null, currentUser)
         } else {
@@ -60,7 +60,7 @@ router.get(
 router.get(
   '/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/login' }),
-  function(req, res) {
+  function (req, res) {
     //return jsonwebtoken
     const payload = {
       customer: {
@@ -92,8 +92,8 @@ passport.use(
       callbackURL: '/api/customers/auth/facebook/callback',
       profileFields: ['emails', 'displayName', 'photos']
     },
-    async function(accessToken, refreshToken, profile, done) {
-      await Customer.findOne({ facebookId: profile.id }).then(currentUser => {
+    async function (accessToken, refreshToken, profile, done) {
+      await Customer.findOne({ facebookId: profile.id }).then((currentUser) => {
         if (currentUser) {
           done(null, currentUser)
         } else {

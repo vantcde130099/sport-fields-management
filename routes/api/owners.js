@@ -88,8 +88,8 @@ router.post('/register', upload.array('image', 2), async (req, res) => {
         res.json({ token }) //if have no err, send that token to the client
       }
     )
-  } catch (error) {
-    console.error(error.message)
+  } catch (err) {
+    console.error(err.message)
     res.status(500).send('Server error')
   }
 })
@@ -164,9 +164,10 @@ router.get('/', async (req, res) => {
     const fileteredOwner = await listOwners.filter(function (e) {
       return e.fields.length > 0
     })
+    //add identityCard Id to owner
+    owner.identityCard = identityCard
 
     for (const owner of fileteredOwner) {
-      // const field = await Field.findById(owner.fields[0]) // find field by id from owner
       const fields = await Field.find({
         // get all fields of owner
         _id: { $in: owner.fields }
@@ -397,5 +398,6 @@ router.get('/type', async (req, res) => {
     res.status(500).send('Lỗi server')
   }
 })
+
 
 module.exports = router
