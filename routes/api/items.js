@@ -18,6 +18,7 @@ router.post('/add', owner, upload.single('image'), async (req, res) => {
   await check('price', 'Vui lòng nhập số tiền').isNumeric().run(req)
   await check('inStock', 'Vui lòng nhập tên sản phẩm').notEmpty().run(req)
   await check('inStock', 'Vui lòng nhập số lượng').isNumeric().run(req)
+
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() })
@@ -78,4 +79,5 @@ router.get('/', async (req, res) => {
     return status(500).send('Lỗi server')
   }
 })
+
 module.exports = router
