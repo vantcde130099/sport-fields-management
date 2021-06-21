@@ -34,11 +34,7 @@ export interface AppBarHeaderProps {
 }
 
 export const AppBarHeader: React.FC<AppBarHeaderProps> = ({
-  user = {
-    name: '',
-    tel: '',
-    img: ''
-  },
+  user,
   onLogin,
   onLogout,
   onCreateAccount
@@ -85,9 +81,9 @@ export const AppBarHeader: React.FC<AppBarHeaderProps> = ({
       anchorEl={anchorEl}
       isMenuOpen={isMenuOpen}
       handleMenuClose={handleMenuClose}
-      name={`${user.name}`}
-      tel={`${user.tel}`}
-      img={`${user.img}`}
+      name={`${user?.name}`}
+      tel={`${user?.tel}`}
+      img={`${user?.img}`}
     />
   )
   const renderNotification = (
@@ -211,7 +207,7 @@ export const AppBarHeader: React.FC<AppBarHeaderProps> = ({
           <div className={classes.sectionDesktop}>
             {user ? (
               <>
-                <IconButton 
+                <IconButton
                   aria-label="show 17 new notifications"
                   aria-controls={menuId}
                   aria-haspopup="true"
