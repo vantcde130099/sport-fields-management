@@ -35,7 +35,7 @@ passport.use(
             avatar: profile.photos[0].value
           })
             .save()
-            .then((newCustomer) => {
+            .then(newCustomer => {
               done(null, newCustomer)
             })
         }
@@ -106,7 +106,7 @@ passport.use(
               : '/img/faces/unknown-user-pic.jpg'
           })
             .save()
-            .then((newCustomer) => {
+            .then(newCustomer => {
               done(null, newCustomer)
             })
         }
