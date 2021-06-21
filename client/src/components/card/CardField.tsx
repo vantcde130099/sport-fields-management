@@ -82,7 +82,7 @@ export const CardField: React.FC<CardProps> = ({
           <div>
             <Button
               className={`${classes.typographyDescription} , ${classes.hoverDisabled}`}
-              style={{ fontSize: 10 }}
+              style={{ fontSize: 10, backgroundColor: '#F94949' }}
               variant="contained"
               size="small"
               color="secondary"
@@ -114,7 +114,10 @@ export const CardField: React.FC<CardProps> = ({
           <Button
             size="small"
             className={classes.costsButton}
-            style={{ fontSize: 12 }}
+            style={{
+              borderColor: '#F94949',
+              fontSize: 12
+            }}
             variant="outlined"
             color="secondary"
           >
