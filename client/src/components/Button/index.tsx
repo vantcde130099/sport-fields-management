@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Button as MUIButton } from '@material-ui/core'
 
-import { useStyles } from './Button.styles'
+import { useStyles } from './index.styles'
 
 export interface Props {
   /**
@@ -36,8 +36,7 @@ export const Button: React.FC<Props> = ({
   size = 'medium',
   backgroundColor = '#F94949',
   label = 'Button',
-  disabled = false,
-  ...props
+  disabled = false
 }) => {
   const classes = useStyles({
     variant: variant,
