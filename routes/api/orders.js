@@ -5,6 +5,7 @@ const Order = require('../../models/Orders')
 const Field = require('../../models/Fields')
 const Coach = require('../../models/Coaches')
 const Item = require('../../models/Items')
+const Coupon = require('../../models/Coupons')
 const customer = require('../../middleware/customer')
 // @route   POST api/orders/create
 // @desc    create order
@@ -30,6 +31,20 @@ router.post('/create', customer, async (req, res) => {
     const field = await Field.findById(fieldId)
     if (!field) {
       return res.status(400).json({ message: 'Lỗi, sân này không tồn tại' })
+    }
+
+    //check coupon
+    let existCoupon = await Coupon.findOne({ code })
+    if (!existCoupon) {
+      return res.status(400).json({ message: 'Coupon này không tồn tại' })
+    }
+
+    if (existCoupon.status === false) {
+      if (quantity === 0) {
+        return res
+          .status(400)
+          .json({ message: 'Coupon này đã được sử dụng hết' })
+      }
     }
 
     //create new order
