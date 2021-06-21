@@ -60,12 +60,10 @@ export const CardField: React.FC<CardProps> = ({
             <Typography
               variant="body2"
               component="p"
-              className={classes.typographyDescription}
-              noWrap
+              className={`${classes.typographyDescription} ${classes.customBox}`}
+              style={{ fontSize: 13 }}
             >
-              {nameField}
-              <br></br>
-              Đường : {address}
+              Mô tả : {description}
             </Typography>
           </Paper>
         </CardMedia>
@@ -82,7 +80,7 @@ export const CardField: React.FC<CardProps> = ({
           <div>
             <Button
               className={`${classes.typographyDescription} , ${classes.hoverDisabled}`}
-              style={{ fontSize: 10, backgroundColor: '#F94949' }}
+              style={{ fontSize: 9, backgroundColor: '#F94949' }}
               variant="contained"
               size="small"
               color="secondary"
@@ -96,9 +94,10 @@ export const CardField: React.FC<CardProps> = ({
           style={{ fontSize: 12 }}
           color="textSecondary"
           component="div"
-          className={`${classes.typographyDescription} , ${classes.customBox}`}
+          className={`${classes.typographyDescription}`}
+          noWrap
         >
-          {description}
+          {address}
         </Typography>
       </CardContent>
 
@@ -116,7 +115,7 @@ export const CardField: React.FC<CardProps> = ({
             className={classes.costsButton}
             style={{
               borderColor: '#F94949',
-              fontSize: 12
+              fontSize: 10
             }}
             variant="outlined"
             color="secondary"

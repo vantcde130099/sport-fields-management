@@ -18,7 +18,7 @@ export const ListCard: React.FC<Props> = ({ listItem = [] }) => {
     <Container maxWidth="md">
       <Grid container className={classes.root} spacing={5}>
         {listItem.map((item) => (
-          <Grid item xs={4} >
+          <Grid item xs={4}>
             <CardField item={item} />
           </Grid>
         ))}
