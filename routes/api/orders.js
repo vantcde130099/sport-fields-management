@@ -8,6 +8,7 @@ const Coach = require('../../models/Coaches')
 const Item = require('../../models/Items')
 const Coupon = require('../../models/Coupons')
 const customer = require('../../middleware/customer')
+
 // @route   POST api/orders/create
 // @desc    create order
 // @access  Private
@@ -124,23 +125,24 @@ router.post('/create', customer, async (req, res) => {
     //save to DB
     await order.save()
 
-    console.log(`
-        customer: ${order.customer}
-        field: ${order.field}
-        owner: ${order.owner}
-        coach: ${order.coach}
-        items: ${order.items}
-        rental date: ${order.rentalDate.getDay()}-${order.rentalDate.getMonth()}-${order.rentalDate.getFullYear()}
-        start: ${order.start.getHours()}:${order.start.getMinutes()},
-        end: ${order.end.getHours()}:${order.end.getMinutes()}
-        total time: ${order.totalTime}
-        coupon: ${existCoupon ? existCoupon.code : null}
-        field price: ${order.fieldPrice}
-        coach price: ${order.coachPrice}
-        item price: ${order.itemsPrice}
-        total: ${order.total}
-        payment: ${order.payment.method} - ${order.payment.status}
-    `)
+//     console.log(`
+//         customer: ${order.customer}
+//         field: ${order.field}
+//         owner: ${order.owner}
+//         coach: ${order.coach}
+//         items: ${order.items}
+//         rental date: ${order.rentalDate.getDay()}-${order.rentalDate.getMonth()}-${order.rentalDate.getFullYear()}
+//         start: ${order.start.getHours()}:${order.start.getMinutes()},
+//         end: ${order.end.getHours()}:${order.end.getMinutes()}
+//         total time: ${order.totalTime}
+//         coupon: ${existCoupon ? existCoupon.code : null}
+//         field price: ${order.fieldPrice}
+//         coach price: ${order.coachPrice}
+//         item price: ${order.itemsPrice}
+//         total: ${order.total}
+//         payment: ${order.payment.method} - ${order.payment.status}
+//     `)
+    
     return res.status(200).json({ message: 'Đặt sân thành công.' })
   } catch (error) {
     console.error(error.message)
