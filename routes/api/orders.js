@@ -24,12 +24,14 @@ router.post('/create', customer, async (req, res) => {
     payment,
     code
   } = req.body
+  
   const [day, month, year] = date.split('-')
   const [startHour, startMinute] = startRental.split(':')
   const [endHour, endMinute] = endRental.split(':')
   const start = new Date(year, month, day, startHour, startMinute)
   const end = new Date(year, month, day, endHour, endMinute)
   const today = new Date()
+  
   try {
     const field = await Field.findById(fieldId)
     if (!field) {
@@ -117,6 +119,7 @@ router.post('/create', customer, async (req, res) => {
       }
       order.itemsPrice = itemsPrice
     }
+    
     //total cost
     order.total = order.fieldPrice + order.coachPrice + order.itemsPrice
 
