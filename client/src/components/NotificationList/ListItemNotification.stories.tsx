@@ -11,5 +11,5 @@ const Template: Story<ListItemNotificationProps> = args => <ListItemNotification
 export const ItemBell = Template.bind({});
 ItemBell.args = {
     isMenuOpen : true,
-};
+}; 
 

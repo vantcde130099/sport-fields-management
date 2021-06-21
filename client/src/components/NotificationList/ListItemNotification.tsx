@@ -26,7 +26,7 @@ export function ListItemNotification({
       title: 'mã đơn hàng : BK10001',
       description: 'Bạn đã đặt thành công'
     },
-    {
+    { 
       id: '1',
       title: 'mã đơn hàng : BK10001',
       description: 'Bạn đã đặt thành công'

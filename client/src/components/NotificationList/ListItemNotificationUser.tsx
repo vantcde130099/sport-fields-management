@@ -14,7 +14,7 @@ import {
 } from '@material-ui/icons'
 export interface ListItemNotificationUserProps {
   isMenuOpen?: boolean
-  image?: any
+  image?: any 
   name?: any
   img?: any
   tel?: any
