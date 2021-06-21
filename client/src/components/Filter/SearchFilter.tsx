@@ -13,16 +13,37 @@ export const SearchFilter: React.FC<Props> = ({
 }) => {
     const classes = useStyles();
     const [typeField, setTypeField] = React.useState(7);
-    const [timing, setTiming] = React.useState(1);
+    const [region, setRegion] = React.useState(1);
     const handleChange = (event : any) => {
         setTypeField(event.target.value);
       };
-      const handleChangeTiming = (event : any) => {
-        setTiming(event.target.value);
+      const handleChangeRegion = (event : any) => {
+        setRegion(event.target.value);
       };
+      console.log(new Date());
   return (
       <>
+      
       <Paper className = {classes.container}>
+      <FormControl variant="outlined" className={classes.formControl}>
+        <InputLabel htmlFor="outlined-age-native-simple">Trong</InputLabel>
+        <Select
+          native
+          value={region}
+          onChange={handleChangeRegion}
+          label="Trong"
+          inputProps={{
+            name: 'region',
+            id: 'outlined-region-native-simple',
+          }}
+        >
+          <option aria-label="None" value="" />
+          <option value={1}>Đà Nẵng</option>
+          <option value={2}>Sài Gòn</option>
+          <option value={3}>Hà Nội</option>
+
+        </Select>
+      </FormControl>
             <FormControl variant="outlined" className={classes.formControl}>
     <TextField
     id="datetime-local"
@@ -52,24 +73,6 @@ export const SearchFilter: React.FC<Props> = ({
           <option value={7}>7 người</option>
           <option value={9}>9 người</option>
           <option value={11}>11 người</option>
-        </Select>
-      </FormControl>
-      <FormControl variant="outlined" className={classes.formControl}>
-        <InputLabel htmlFor="outlined-age-native-simple">Trong</InputLabel>
-        <Select
-          native
-          value={timing}
-          onChange={handleChangeTiming}
-          label="Trong"
-          inputProps={{
-            name: 'timing',
-            id: 'outlined-timing-native-simple',
-          }}
-        >
-          <option aria-label="None" value="" />
-          <option value={1}>1 Tiếng</option>
-          <option value={2}>1 Tiếng rưỡi</option>
-          <option value={3}>2 Tiếng</option>
         </Select>
       </FormControl>
       </Paper>
