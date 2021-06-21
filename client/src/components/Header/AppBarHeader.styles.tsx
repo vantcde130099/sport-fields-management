@@ -63,7 +63,7 @@ export const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('md')]: {
       display: 'flex'
     }
-  },
+  }, 
   sectionMobile: {
     display: 'flex',
     [theme.breakpoints.up('md')]: {

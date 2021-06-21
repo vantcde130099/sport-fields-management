@@ -211,7 +211,7 @@ export const AppBarHeader: React.FC<AppBarHeaderProps> = ({
           <div className={classes.sectionDesktop}>
             {user ? (
               <>
-                <IconButton
+                <IconButton 
                   aria-label="show 17 new notifications"
                   aria-controls={menuId}
                   aria-haspopup="true"
