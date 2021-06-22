@@ -43,7 +43,7 @@ router.post('/register', upload.array('image', 2), async (req, res) => {
     if (coach) {
       return res
         .status(400)
-        .json({ errors: 'SĐT này đã tồn tại trong hệ thống' })
+        .json({ errors: 'Số điện thoại này đã tồn tại trong hệ thống' })
     }
 
     coach = new Coach({
@@ -72,11 +72,11 @@ router.post('/register', upload.array('image', 2), async (req, res) => {
       config.get('jwtSecret'),
       { expiresIn: 36000 },
       (err, token) => {
-        if (err) throw err
+        if (error) throw err
         res.json({ token }) //if have no err, send that token to the client
       }
     )
-  } catch (err) {
+  } catch (error) {
     console.error(err.message)
     res.status(500).send('Server error')
   }
@@ -130,8 +130,8 @@ router.post(
           res.json({ token })
         }
       )
-    } catch (err) {
-      console.error(err.message)
+    } catch (error) {
+      console.error(error.message)
       res.status(500).send('Lỗi server')
     }
   }
