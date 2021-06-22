@@ -11,7 +11,6 @@ const Field = require('../../models/Fields')
 const { ObjectId } = require('bson')
 const Fields = require('../../models/Fields')
 
-
 // @route   POST /api/owner/register
 // @desc    Register owner
 // @access  Public
@@ -166,7 +165,6 @@ router.get('/', async (req, res) => {
     })
 
     for (const owner of fileteredOwner) {
-      // const field = await Field.findById(owner.fields[0]) // find field by id from owner
       const fields = await Field.find({
         // get all fields of owner
         _id: { $in: owner.fields }
@@ -177,11 +175,16 @@ router.get('/', async (req, res) => {
       for (const field of fields) {
         if (field.image.length > 0) {
           imageId = field.image[0]
-        }
-        if (imageId !== '') break
+        } else if (imageId !== '') break
       }
 
       const listPrice = await fields.map((field) => field.price) //list price from fields
+
+      //calculating average of rate
+      const listRating = await owner.rate.map((rate) => rate.value)
+      const sumRating = listRating.reduce((accumulator, currentValue) => {
+        return accumulator + currentValue
+      })
 
       let info = {
         ownerId: owner.id,
@@ -190,7 +193,7 @@ router.get('/', async (req, res) => {
         price: Math.min(...listPrice),
         imageId,
         description: owner.description,
-        rate: owner.rate.value
+        rate: sumRating / listRating.length
       }
 
       infoBlock.push(info)
