@@ -1,6 +1,7 @@
 import React from 'react'
 import { Story, Meta } from '@storybook/react'
 import { ListCard } from './ListCard'
+
 export default {
   title: 'CommonComponent/ListCard',
   component: ListCard
