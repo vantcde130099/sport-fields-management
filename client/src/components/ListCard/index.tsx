@@ -1,6 +1,12 @@
 import React from 'react'
+
+//Components
 import CardField from '../card'
+
+//Material-ui
 import { Container, Grid } from '@material-ui/core'
+
+//Styles
 import { useStyles } from './index.styles'
 
 export interface Props {
@@ -16,7 +22,6 @@ export const ListCard: React.FC<Props> = ({ listItem = [] }) => {
   }
 
   return (
-    <Container maxWidth="md">
       <Grid container className={classes.root} spacing={5}>
         {listItem.map((item) => (
           <Grid item xs={4}>
@@ -24,6 +29,5 @@ export const ListCard: React.FC<Props> = ({ listItem = [] }) => {
           </Grid>
         ))}
       </Grid>
-    </Container>
   )
 }
