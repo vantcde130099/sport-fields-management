@@ -1,5 +1,4 @@
-import React from 'react'
-import CardField from './CardField'
+import CardField from '.'
 import { Story, Meta } from '@storybook/react'
 
 export default {

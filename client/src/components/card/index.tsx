@@ -10,7 +10,7 @@ import {
   Paper
 } from '@material-ui/core'
 import Rating from '@material-ui/lab/Rating'
-import { useStyles } from './CardField.styles'
+import { useStyles } from './index.styles'
 
 export interface CardProps {
   item?: {

@@ -1,7 +1,7 @@
 import React from 'react'
-import CardField from '../card/CardField'
+import CardField from '../card'
 import { Container, Grid } from '@material-ui/core'
-import { useStyles } from './ListCard.styles'
+import { useStyles } from './index.styles'
 
 export interface Props {
   listItem?: []
