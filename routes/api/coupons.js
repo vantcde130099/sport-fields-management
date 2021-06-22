@@ -100,4 +100,19 @@ router.post(
   }
 )
 
+// @route   GET /api/coupons
+// @desc    Customer get coupon of this owner
+// @access  Private
+router.get('/', async (req, res) => {
+  const { ownerId } = req.body
+
+  try {
+    let coupons = await Coupon.find({ owner: ownerId }).sort({
+      dateCreated: -1
+    })
+
+    res.status(200).json(coupons)
+  } catch (error) {}
+})
+
 module.exports = router
