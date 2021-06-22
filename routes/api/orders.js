@@ -30,7 +30,6 @@ router.post('/create', customer, async (req, res) => {
   const [endHour, endMinute] = endRental.split(':')
   const start = new Date(year, month, day, startHour, startMinute)
   const end = new Date(year, month, day, endHour, endMinute)
-  const today = new Date()
   
   try {
     const field = await Field.findById(fieldId)
