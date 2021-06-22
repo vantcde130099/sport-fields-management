@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     borderColor: '#1A222E'
   },
   paper: {
-    padding: theme.spacing(0),
+    padding: theme.spacing('10%', 0, 0, 0),
     textAlign: 'center',
     color: '#000000',
     backgroundColor: '#FCFCFC'
@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
     background: '#FCFCFC'
   },
   paper2: {
-    padding: theme.spacing('30%', 0, 0, '20%'),
+    padding: theme.spacing('20%', 0, 0, '20%'),
     textAlign: 'left',
     color: '#FCFCFC',
     background: 'none'
@@ -59,9 +59,6 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const theme = createMuiTheme({
-  palette: {
-    primary: red
-  },
   typography: {
     fontFamily: [
       '-apple-system',
@@ -76,10 +73,10 @@ const theme = createMuiTheme({
       '"Segoe UI Symbol"',
       'Fira Sans Extra Condensed'
     ].join(','),
-    h4: {
+    h3: {
       fontFamily: '"Segoe UI"',
       fontStyle: 'normal',
-      fontWeight: 700,
+      fontWeight: 600,
       fontSize: '42px',
       textAlign: 'left'
     },
@@ -88,15 +85,10 @@ const theme = createMuiTheme({
       fontStyle: 'normal',
       fontWeight: 400,
       paddingTop: '20px'
-    },
-    h6: {
-      fontFamily: '"Segoe UI"',
-      fontStyle: 'normal',
-      fontWeight: 700,
-      fontSize: '45px',
-      textAlign: 'center',
-      color: '#F94949'
     }
+  },
+  palette: {
+    primary: red
   }
 })
 
@@ -112,7 +104,7 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box p={3}>
+        <Box p={2}>
           <Typography>{children}</Typography>
         </Box>
       )}
@@ -155,7 +147,18 @@ export function LoginUser() {
             <Grid item xs={12}>
               <ThemeProvider theme={theme}>
                 <Paper className={classes.paper1} style={{ boxShadow: 'none' }}>
-                  <Typography variant="h6">BukSan</Typography>
+                  <Typography
+                    style={{
+                      fontFamily: '"Segoe UI"',
+                      fontStyle: 'normal',
+                      fontWeight: 700,
+                      fontSize: '45px',
+                      textAlign: 'center',
+                      color: '#F94949'
+                    }}
+                  >
+                    BUKSAN
+                  </Typography>
                 </Paper>
               </ThemeProvider>
             </Grid>
@@ -168,11 +171,7 @@ export function LoginUser() {
                       style={{
                         background: 'none',
                         color: '#000000',
-                        boxShadow: 'none',
-                        fontFamily: '"Segoe UI"',
-                        fontStyle: 'normal',
-                        fontWeight: 700,
-                        fontSize: '50px'
+                        boxShadow: 'none'
                       }}
                     >
                       <Tabs
@@ -220,7 +219,7 @@ export function LoginUser() {
                           style={{ boxShadow: 'none' }}
                         >
                           <GoogleButton
-                            style={{ marginLeft: '17%', boxShadow: 'none' }}
+                            style={{ marginLeft: '18%', boxShadow: 'none' }}
                           ></GoogleButton>
                           <Button
                             style={{
@@ -231,7 +230,7 @@ export function LoginUser() {
                               textTransform: 'none',
                               color: 'white',
                               fontSize: '1rem',
-                              marginTop: '20px'
+                              marginTop: '30px'
                             }}
                           >
                             <FacebookIcon
@@ -275,16 +274,15 @@ export function LoginUser() {
                               style={{
                                 height: '40px',
                                 width: '200px',
-                                borderRadius: '15px',
+                                borderRadius: '20px',
                                 backgroundColor: '#1976d2',
                                 textTransform: 'none',
                                 color: 'white',
                                 fontSize: '1.2rem',
-                                marginTop: '20px',
                                 backgroundColor: '#F94949'
                               }}
                             >
-                              Đăng Nhập
+                              ĐĂNG NHẬP
                             </Button>
                           </Paper>
                         </form>
@@ -306,9 +304,24 @@ export function LoginUser() {
             <Grid item xs={12}>
               <ThemeProvider theme={theme}>
                 <Paper className={classes.paper2} style={{ boxShadow: 'none' }}>
-                  <Typography variant="h4">What is Sport ?</Typography>
-                  <Typography variant="h4">
-                    Sport is What Buksan can do
+                  <Typography
+                    variant="h3"
+                    style={{
+                      fontWeight: 600,
+                      fontSize: '42px'
+                    }}
+                  >
+                    What is sport ?
+                  </Typography>
+                  <Typography
+                    variant="h3"
+                    style={{
+                      fontWeight: 'bold',
+                      fontWeight: 600,
+                      fontSize: '42px'
+                    }}
+                  >
+                    Sport is what buksan can do
                   </Typography>
                   <Typography variant="h5">
                     Làm Hết sức, chơi hết sức
