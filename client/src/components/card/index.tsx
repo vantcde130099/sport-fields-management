@@ -1,4 +1,6 @@
 import React, { Component, useState } from 'react'
+
+// Material-ui
 import {
   Card,
   CardActionArea,
@@ -10,17 +12,19 @@ import {
   Paper
 } from '@material-ui/core'
 import Rating from '@material-ui/lab/Rating'
+
+// Styles
 import { useStyles } from './index.styles'
 
 export interface CardProps {
   item?: {
-    image?: any
+    image?: string
     nameField?: String
     discount?: String
     description?: String
     price?: String
     address?: String
-    point?: any
+    point?: number
   }
   onClick?: () => void
 }
@@ -39,12 +43,6 @@ export const CardField: React.FC<CardProps> = ({
   }
 }) => {
   const classes = useStyles()
-  //   const [image, setImage] = useState("https://htsport.vn/wp-content/uploads/2020/06/anh-bia-danh-sach-san-bong-o-quan-binh-tan.jpg");
-  //   const [nameField, setNameField] = useState("Sân Chuyên Nghiệp")
-  //   const [description, setDescription] = useState("Sân rộng rãi , đẹp đẽ thoáng mát , có phòng xông hơi , massages sau buổi tập , phòng livestream hút cần,.....")
-  //   const [discount, setDiscount] = useState("GIẢM 30%");
-  //   const [price, setPrice] = useState("300.000 VNĐ");
-  //   const [address, setAddress] = useState("123 Phạm Ngũ Lão , Q. Ngũ Hành Sơn");
   const { image, nameField, description, discount, price, address, point } =
     item
 
@@ -125,7 +123,7 @@ export const CardField: React.FC<CardProps> = ({
           <Rating
             name="half-rating-read"
             defaultValue={point}
-            precision={0.01}
+            precision={0.1}
             readOnly
           />
         </div>
