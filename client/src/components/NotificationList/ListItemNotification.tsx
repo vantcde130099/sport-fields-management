@@ -106,7 +106,7 @@ export function ListItemNotification({
                 </ListItemAvatar>
                 <ListItemText
                   primary={
-                    <Typography style={{ fontSize: 12 }}>
+                    <Typography style={{ fontSize: 12 , fontWeight : 600 }}>
                       {item.title}
                     </Typography>
                   }
