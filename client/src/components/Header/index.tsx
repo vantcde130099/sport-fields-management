@@ -18,9 +18,9 @@ import {
   MoreVert as MoreIcon,
   AccountCircle
 } from '@material-ui/icons'
-import { ListItemNotification } from '../NotificationList/ListItemNotification'
-import { ListItemNotificationUser } from '../NotificationList/ListItemNotificationUser'
-import { useStyles } from './AppBarHeader.styles'
+import { ListItemNotification } from '../NotificationList'
+import { ListItemNotificationUser } from '../NotificationListUser'
+import { useStyles } from './index.styles'
 
 export interface AppBarHeaderProps {
   user?: {

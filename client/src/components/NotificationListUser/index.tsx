@@ -12,6 +12,7 @@ import {
   AccountBoxRounded as AccountBoxRoundedIcon,
   ExitToAppOutlined as ExitToAppOutlinedIcon
 } from '@material-ui/icons'
+
 export interface ListItemNotificationUserProps {
   isMenuOpen?: boolean
   image?: any 

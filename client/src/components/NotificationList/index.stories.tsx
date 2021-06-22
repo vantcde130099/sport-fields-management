@@ -1,6 +1,7 @@
 import React from 'react';
 import { Story, Meta } from '@storybook/react';
-import {ListItemNotification,ListItemNotificationProps} from './ListItemNotification'
+import {ListItemNotification,ListItemNotificationProps} from '.'
+
 export default {
   title: 'CommonComponent/Notification/NotificationBell',
   component: ListItemNotification,

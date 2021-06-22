@@ -1,6 +1,7 @@
 import React from 'react';
 import { Story, Meta } from '@storybook/react';
-import {ListItemNotificationUser,ListItemNotificationUserProps} from './ListItemNotificationUser'
+import {ListItemNotificationUser,ListItemNotificationUserProps} from '.'
+
 export default {
   title: 'CommonComponent/Notification/ListItemCart',
   component: ListItemNotificationUser,

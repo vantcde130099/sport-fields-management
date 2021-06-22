@@ -1,7 +1,6 @@
 import React from 'react';
 import { Story, Meta } from '@storybook/react';
-
-import { AppBarHeader, AppBarHeaderProps } from './AppBarHeader';
+import { AppBarHeader, AppBarHeaderProps } from './';
 
 export default {
   title: 'CommonComponent/Header',
