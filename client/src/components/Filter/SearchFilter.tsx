@@ -14,14 +14,18 @@ export const SearchFilter: React.FC<Props> = ({
     const classes = useStyles();
     const [typeField, setTypeField] = React.useState(7);
     const [region, setRegion] = React.useState(1);
+    const [selectedDate, setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));
+    const today = new Date();
     const handleChange = (event : any) => {
         setTypeField(event.target.value);
       };
       const handleChangeRegion = (event : any) => {
         setRegion(event.target.value);
       };
-      console.log(new Date());
-  return (
+      const handleDateChange = (date : any) => {
+        setSelectedDate(date);
+      };
+      return (
       <>
       
       <Paper className = {classes.container}>
@@ -49,8 +53,10 @@ export const SearchFilter: React.FC<Props> = ({
     id="datetime-local"
     label="Ngày Giờ"
     type="datetime-local"
-    defaultValue="2017-05-24T10:30"
+    value = {selectedDate}
+    defaultValue = {selectedDate.toString()}
     variant = "outlined"
+    onChange={handleDateChange}
     className={classes.textField}
     InputLabelProps={{
       shrink: true,
