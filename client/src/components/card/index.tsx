@@ -8,6 +8,7 @@ import {
   CardContent,
   CardMedia,
   Button,
+  Grid,
   Typography,
   Paper
 } from '@material-ui/core'
@@ -100,13 +101,11 @@ export const CardField: React.FC<CardProps> = ({
       </CardContent>
 
       <CardActions>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            width: '100%'
-          }}
+        <Grid
+          container
+          direction="row"
+          justify="space-between"
+          alignItems="center"
         >
           <Button
             size="small"
@@ -126,7 +125,7 @@ export const CardField: React.FC<CardProps> = ({
             precision={0.1}
             readOnly
           />
-        </div>
+        </Grid>
       </CardActions>
     </Card>
   )
