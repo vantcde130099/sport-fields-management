@@ -29,6 +29,14 @@ const CouponSchema = new Schema({
   timeEnd: {
     type: Date
   },
+  inDayOpen: {
+    type: Number,
+    default: 0
+  },
+  inDayClose: {
+    type: Number,
+    default: 1440
+  },
   quantity: {
     type: Number
   },
