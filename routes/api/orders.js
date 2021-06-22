@@ -88,6 +88,9 @@ router.post('/create', customer, async (req, res) => {
 
       //- coupon quantity if used
       existCoupon.quantity--
+      if(existCoupon.quantity == 0){
+        exist.status == false
+      }
       await existCoupon.save()
     }
 
@@ -140,25 +143,25 @@ router.post('/create', customer, async (req, res) => {
     order.payment = payment
 
     //save to DB
-    // await order.save()
+    await order.save()
 
-    console.log(`
-        customer: ${order.customer}
-        field: ${order.field}
-        owner: ${order.owner}
-        coach: ${order.coach}
-        items: ${order.items}
-        rental date: ${order.rentalDate.getDay()}-${order.rentalDate.getMonth()}-${order.rentalDate.getFullYear()}
-        start: ${order.start.getHours()}:${order.start.getMinutes()},
-        end: ${order.end.getHours()}:${order.end.getMinutes()}
-        total time: ${order.totalTime}
-        coupon: ${existCoupon ? existCoupon.code : null}
-        field price: ${order.fieldPrice}
-        coach price: ${order.coachPrice}
-        item price: ${order.itemsPrice}
-        total: ${order.total}
-        payment: ${order.payment.method} - ${order.payment.status}
-    `)
+    // console.log(`
+    //     customer: ${order.customer}
+    //     field: ${order.field}
+    //     owner: ${order.owner}
+    //     coach: ${order.coach}
+    //     items: ${order.items}
+    //     rental date: ${order.rentalDate.getDay()}-${order.rentalDate.getMonth()}-${order.rentalDate.getFullYear()}
+    //     start: ${order.start.getHours()}:${order.start.getMinutes()},
+    //     end: ${order.end.getHours()}:${order.end.getMinutes()}
+    //     total time: ${order.totalTime}
+    //     coupon: ${existCoupon ? existCoupon.code : null}
+    //     field price: ${order.fieldPrice}
+    //     coach price: ${order.coachPrice}
+    //     item price: ${order.itemsPrice}
+    //     total: ${order.total}
+    //     payment: ${order.payment.method} - ${order.payment.status}
+    // `)
     
     return res.status(200).json({ message: 'Đặt sân thành công.' })
   } catch (error) {
