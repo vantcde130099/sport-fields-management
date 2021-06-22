@@ -1,7 +1,7 @@
 import React from 'react'
 import { Story, Meta } from '@storybook/react'
 
-import { SearchFilter , Props } from './SearchFilter'
+import { SearchFilter, Props } from '.'
 
 export default {
   title: 'CommonComponent/Search',
