@@ -5,24 +5,18 @@ const { check, validationResult } = require('express-validator')
 
 const owner = require('../../middleware/owner')
 const upload = require('../../middleware/upload')
-
 const Owner = require('../../models/Owners')
 const Field = require('../../models/Fields')
 const { ReplSet } = require('mongodb')
+
 
 // @route   POST /api/fields/add
 // @desc    Owner add field
 // @access  Private
 router.post('/add', owner, upload.array('image', 10), async (req, res) => {
   req.body = JSON.parse(req.body.data)
-  await check('name', 'Vui lòng nhập tên sân')
-    .not()
-    .isEmpty()
-    .run(req)
-  await check('price', 'Vui lòng nhập tên giá sân/giờ')
-    .not()
-    .isEmpty()
-    .run(req)
+  await check('name', 'Vui lòng nhập tên sân').not().isEmpty().run(req)
+  await check('price', 'Vui lòng nhập tên giá sân/giờ').not().isEmpty().run(req)
   await check('openHour', 'Vui lòng nhập giờ mở cửa lớn hơn 0 và nhỏ hơn 24!')
     .isInt({ min: 0, max: 23 })
     .run(req)
@@ -59,9 +53,11 @@ router.post('/add', owner, upload.array('image', 10), async (req, res) => {
     closeMinutes,
     status
   } = req.body
+
   const type = { sportType, fieldType }
-  const open = { hour: openHour, minutes: openMinutes }
-  const close = { hour: closeHour, minutes: closeMinutes }
+  const open = openHour * 60 + openMinutes
+  const close = closeHour * 60 + closeMinutes
+
   try {
     const owner = await Owner.findById(req.owner.id).select('-password')
 
@@ -79,13 +75,12 @@ router.post('/add', owner, upload.array('image', 10), async (req, res) => {
       name,
       type,
       price,
-      close,
-      open,
+      hours: { open, close },
       status
     })
 
     //add images to field
-    req.files.forEach(e => {
+    req.files.forEach((e) => {
       newField.image.push(e.id)
     })
 
@@ -112,9 +107,11 @@ router.get('/', async (req, res) => {
     const owner = await Owner.findById(req.body.ownerId)
     const fieldId = owner.fields[owner.fields.length - 1]
     const theFirstField = await Field.findById(fieldId)
+
     if (!theFirstField) {
       res.status(400).json({ message: 'Sân không tồn tại' })
     }
+
     res.status(200).json({
       sport: theFirstField.type.sportType,
       type: theFirstField.type.fieldType,
@@ -147,7 +144,8 @@ router.get('/type', async (req, res) => {
 
     //add info to block response
     let fieldsInfo = []
-    fields.forEach(field => {
+    fields.forEach((field) => {
+
       fieldsInfo.push({
         sport: field.type.sportType,
         type: field.type.fieldType,
@@ -157,6 +155,7 @@ router.get('/type', async (req, res) => {
         price: field.price
       })
     })
+
     res.status(200).json(fieldsInfo)
   } catch (error) {
     console.error(error.message)
@@ -180,6 +179,7 @@ router.get('/name', async (req, res) => {
     if (!field) {
       res.status(400).json({ message: 'Sân không tồn tại' })
     }
+
     res.status(200).json({
       sport: field.type.sportType,
       type: field.type.fieldType,
@@ -191,6 +191,113 @@ router.get('/name', async (req, res) => {
   } catch (error) {
     console.error(error.message)
     res.status(500).send('Lỗi server')
+  }
+})
+
+// @route   GET /api/fields/time-generate-now
+// @desc    Generate booking for customer for date now
+// @access  Private
+router.get('/booking-time-now', async (req, res) => {
+  try {
+    let timeWorkingADay = await Field.findById(req.body.fieldId, { hours: 1 })
+
+    // const orderOnDay = Order.find()  //find order in day now
+
+    //set time for open and close
+    let open = new Date()
+    open.setHours(
+      timeWorkingADay.hours.open / 60,
+      timeWorkingADay.hours.open % 60,
+      00
+    )
+
+    let close = new Date()
+    close.setHours(
+      timeWorkingADay.hours.close / 60,
+      timeWorkingADay.hours.close % 60,
+      00
+    )
+
+    //generate hour booking
+    let listHours = []
+    for (
+      let i = timeWorkingADay.hours.open;
+      i, i <= timeWorkingADay.hours.close;
+      i += 60
+    ) {
+      if (i > timeWorkingADay.hours.close - 60) break
+      
+      let close = new Date(open)
+      close.setHours(close.getHours() + 1)
+
+      listHours.push({
+        start: `${open.getHours()}:${
+          open.getMinutes() === 0 ? '00' : open.getMinutes()
+        }`,
+        end: `${close.getHours()}:${
+          close.getMinutes() === 0 ? '00' : open.getMinutes()
+        }`
+      })
+      open.setHours(open.getHours() + 1)
+    }
+
+    return res.status(200).json(listHours)
+  } catch (error) {
+    console.error(error.message)
+    return res.status(500).send('Lỗi server')
+  }
+})
+
+// @route   GET /api/fields/time-generate-by-day
+// @desc    Generate booking for customer by day
+// @access  Private
+router.get('/booking-time-by-day', async (req, res) => {
+  try {
+    let timeWorkingADay = await Field.findById(req.body.fieldId, { hours: 1 })
+    // const ordersInDay = Order.find()   //find all order In day
+    const dateArray = req.body.date.split('-')
+    const [day, month, year] = dateArray
+
+    //set time for open and close
+    let open = new Date(year, month, day)
+    open.setHours(
+      timeWorkingADay.hours.open / 60,
+      timeWorkingADay.hours.open % 60,
+      00
+    )
+
+    let close = new Date(year, month, day)
+    close.setHours(
+      timeWorkingADay.hours.close / 60,
+      timeWorkingADay.hours.close % 60,
+      00
+    )
+
+    //generate hour booking
+    let listHours = []
+    for (
+      let i = timeWorkingADay.hours.open;
+      i, i <= timeWorkingADay.hours.close;
+      i += 60
+    ) {
+      if (i > timeWorkingADay.hours.close - 60) break
+      let close = new Date(open)
+      close.setHours(close.getHours() + 1)
+      listHours.push({
+        start: `${open.getHours()}:${
+          open.getMinutes() === 0 ? '00' : open.getMinutes()
+        }`,
+        end: `${close.getHours()}:${
+          close.getMinutes() === 0 ? '00' : open.getMinutes()
+        }`
+      })
+      open.setHours(open.getHours() + 1)
+    }
+
+    return res.status(200).json(listHours)
+  } catch (error) {
+    console.error(error.message)
+    return res.status(500).send('Lỗi server')
   }
 })
 

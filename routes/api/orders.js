@@ -3,9 +3,12 @@ const router = express.Router()
 
 const Order = require('../../models/Orders')
 const Field = require('../../models/Fields')
+const Owner = require('../../models/Owners')
 const Coach = require('../../models/Coaches')
 const Item = require('../../models/Items')
+const Coupon = require('../../models/Coupons')
 const customer = require('../../middleware/customer')
+
 // @route   POST api/orders/create
 // @desc    create order
 // @access  Private
@@ -19,18 +22,79 @@ router.post('/create', customer, async (req, res) => {
     startRental,
     endRental,
     payment,
-    coupon
+    code
   } = req.body
+  
   const [day, month, year] = date.split('-')
   const [startHour, startMinute] = startRental.split(':')
   const [endHour, endMinute] = endRental.split(':')
   const start = new Date(year, month, day, startHour, startMinute)
   const end = new Date(year, month, day, endHour, endMinute)
+  const today = new Date()
+  const current = today.getHours() * 60 +  today.getMinutes() 
+
   try {
     const field = await Field.findById(fieldId)
     if (!field) {
       return res.status(400).json({ message: 'Lỗi, sân này không tồn tại' })
     }
+    
+    const owner = await Owner.findById(ownerId)
+    if (!owner) {
+      return res.status(400).json({ message: 'Lỗi, sân này không tồn tại' })
+    }
+
+    //check code
+    let existCoupon = null
+    if (code.trim() !== '') {
+      existCoupon = await Coupon.findOne({ code })
+      if (existCoupon === null) {
+        return res.status(400).json({ message: 'Coupon này không tồn tại' })
+      }
+
+      //check owner
+      if (existCoupon.owner.equals(ownerId) == false) {
+        return res.status(400).json({ message: 'Coupon này không đúng' })
+      }
+
+      //check type
+      if (
+        existCoupon.type.sportType !== field.type.sportType ||
+        field.type.fieldType !== existCoupon.type.fieldType
+      ) {
+        return res
+          .status(400)
+          .json({ message: 'Coupon này ko thể áp dụng cho sân này' })
+      }
+
+      //check status
+      if (existCoupon.status === false) {
+        if (existCoupon.quantity == 0) {
+          return res
+            .status(400)
+            .json({ message: 'Coupon này đã được sử dụng hết' })
+        } 
+        else {
+          return res.status(400).json({
+            message: 'Coupon này đã quá hạn hoặc chưa tới ngày sử dụng'
+          }) 
+        }
+      }
+      
+      //check in day active
+      if(current < existCoupon.inDayOpen || current > existCoupon.inDayClose){
+        return res.status(400).json({message: 'Coupon không áp dụng thời gian này'})
+      }
+
+      //- coupon quantity if used
+      existCoupon.quantity--
+      if(existCoupon.quantity == 0){
+        exist.status == false
+      }
+      await existCoupon.save()
+    }
+
+    
 
     //create new order
     const order = await new Order({
@@ -41,10 +105,11 @@ router.post('/create', customer, async (req, res) => {
       start,
       end,
       totalTime: (end.getTime() - start.getTime()) / 60 / 60 / 1000, //milisecond to hour
+      coupon: existCoupon !== null ? existCoupon.id : null,
       fieldPrice: Math.round(
         (field.price *
           (end.getTime() - start.getTime()) *
-          (coupon ? 1 - coupon / 100 : 1)) / //check if has coupon
+          (existCoupon !== null ? 1 - existCoupon.discount / 100 : 1)) / //check if has coupon
           60 /
           60 /
           1000
@@ -70,6 +135,7 @@ router.post('/create', customer, async (req, res) => {
       }
       order.itemsPrice = itemsPrice
     }
+    
     //total cost
     order.total = order.fieldPrice + order.coachPrice + order.itemsPrice
 
@@ -89,12 +155,14 @@ router.post('/create', customer, async (req, res) => {
     //     start: ${order.start.getHours()}:${order.start.getMinutes()},
     //     end: ${order.end.getHours()}:${order.end.getMinutes()}
     //     total time: ${order.totalTime}
+    //     coupon: ${existCoupon ? existCoupon.code : null}
     //     field price: ${order.fieldPrice}
     //     coach price: ${order.coachPrice}
     //     item price: ${order.itemsPrice}
     //     total: ${order.total}
     //     payment: ${order.payment.method} - ${order.payment.status}
     // `)
+    
     return res.status(200).json({ message: 'Đặt sân thành công.' })
   } catch (error) {
     console.error(error.message)
