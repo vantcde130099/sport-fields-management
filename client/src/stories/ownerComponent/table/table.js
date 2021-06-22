@@ -39,7 +39,7 @@ const rows = [
     createData('A4', '5 Người', 200.000, true),
 ];
 
-function descendingComparator(a, b, orderBy) {
+let descendingComparator = (a, b, orderBy) => {
     if (b[orderBy] < a[orderBy]) {
         return -1;
     }
@@ -49,13 +49,13 @@ function descendingComparator(a, b, orderBy) {
     return 0;
 }
 
-function getComparator(order, orderBy) {
+let getComparator = (order, orderBy) => {
     return order === 'desc'
         ? (a, b) => descendingComparator(a, b, orderBy)
         : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-function stableSort(array, comparator) {
+let stableSort = (array, comparator) => {
     const stabilizedThis = array.map((el, index) => [el, index]);
     stabilizedThis.sort((a, b) => {
         const order = comparator(a[0], b[0]);
@@ -73,7 +73,7 @@ const headCells = [
 
 ];
 
-function EnhancedTableHead(props) {
+let EnhancedTableHead = (props) => {
     const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
     const createSortHandler = (property) => (event) => {
         onRequestSort(event, property);
