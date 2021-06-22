@@ -30,7 +30,9 @@ router.post('/create', customer, async (req, res) => {
   const [endHour, endMinute] = endRental.split(':')
   const start = new Date(year, month, day, startHour, startMinute)
   const end = new Date(year, month, day, endHour, endMinute)
-  
+  const today = new Date()
+  const current = today.getHours() * 60 +  today.getMinutes() 
+
   try {
     const field = await Field.findById(fieldId)
     if (!field) {
@@ -71,13 +73,25 @@ router.post('/create', customer, async (req, res) => {
           return res
             .status(400)
             .json({ message: 'Coupon này đã được sử dụng hết' })
-        } else {
+        } 
+        else {
           return res.status(400).json({
             message: 'Coupon này đã quá hạn hoặc chưa tới ngày sử dụng'
-          })
+          }) 
         }
       }
+      
+      //check in day active
+      if(current < existCoupon.inDayOpen || current > existCoupon.inDayClose){
+        return res.status(400).json({message: 'Coupon không áp dụng thời gian này'})
+      }
+
+      //- coupon quantity if used
+      existCoupon.quantity--
+      await existCoupon.save()
     }
+
+    
 
     //create new order
     const order = await new Order({
@@ -126,25 +140,25 @@ router.post('/create', customer, async (req, res) => {
     order.payment = payment
 
     //save to DB
-    await order.save()
+    // await order.save()
 
-//     console.log(`
-//         customer: ${order.customer}
-//         field: ${order.field}
-//         owner: ${order.owner}
-//         coach: ${order.coach}
-//         items: ${order.items}
-//         rental date: ${order.rentalDate.getDay()}-${order.rentalDate.getMonth()}-${order.rentalDate.getFullYear()}
-//         start: ${order.start.getHours()}:${order.start.getMinutes()},
-//         end: ${order.end.getHours()}:${order.end.getMinutes()}
-//         total time: ${order.totalTime}
-//         coupon: ${existCoupon ? existCoupon.code : null}
-//         field price: ${order.fieldPrice}
-//         coach price: ${order.coachPrice}
-//         item price: ${order.itemsPrice}
-//         total: ${order.total}
-//         payment: ${order.payment.method} - ${order.payment.status}
-//     `)
+    console.log(`
+        customer: ${order.customer}
+        field: ${order.field}
+        owner: ${order.owner}
+        coach: ${order.coach}
+        items: ${order.items}
+        rental date: ${order.rentalDate.getDay()}-${order.rentalDate.getMonth()}-${order.rentalDate.getFullYear()}
+        start: ${order.start.getHours()}:${order.start.getMinutes()},
+        end: ${order.end.getHours()}:${order.end.getMinutes()}
+        total time: ${order.totalTime}
+        coupon: ${existCoupon ? existCoupon.code : null}
+        field price: ${order.fieldPrice}
+        coach price: ${order.coachPrice}
+        item price: ${order.itemsPrice}
+        total: ${order.total}
+        payment: ${order.payment.method} - ${order.payment.status}
+    `)
     
     return res.status(200).json({ message: 'Đặt sân thành công.' })
   } catch (error) {
