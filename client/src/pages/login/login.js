@@ -164,135 +164,133 @@ export function LoginUser() {
             </Grid>
             <Grid item xs={12}>
               <Paper className={classes.paper1} style={{ boxShadow: 'none' }}>
-                <Typography>
-                  <div className={classes.root1}>
-                    <AppBar
-                      position="static"
-                      style={{
-                        background: 'none',
-                        color: '#000000',
-                        boxShadow: 'none'
+                <div className={classes.root1}>
+                  <AppBar
+                    position="static"
+                    style={{
+                      background: 'none',
+                      color: '#000000',
+                      boxShadow: 'none'
+                    }}
+                  >
+                    <Tabs
+                      value={value}
+                      onChange={handleChange}
+                      TabIndicatorProps={{
+                        style: {
+                          backgroundColor: '#F94949'
+                        }
                       }}
+                      aria-label="full width tabs example"
+                      centered
+                      wrapped
                     >
-                      <Tabs
-                        value={value}
-                        onChange={handleChange}
-                        TabIndicatorProps={{
-                          style: {
-                            backgroundColor: '#F94949'
-                          }
+                      <Tab
+                        label="Khách"
+                        style={{
+                          fontSize: '22px',
+                          fontFamily: '"Segoe UI"',
+                          fontStyle: 'normal',
+                          fontWeight: 600
                         }}
-                        aria-label="full width tabs example"
-                        centered
-                        wrapped
+                        {...a11yProps(0)}
+                      />
+                      <Tab
+                        label="Chủ Sân/HLV"
+                        style={{
+                          fontSize: '22px',
+                          fontFamily: '"Segoe UI"',
+                          fontStyle: 'normal',
+                          fontWeight: 600
+                        }}
+                        {...a11yProps(1)}
+                      />
+                    </Tabs>
+                  </AppBar>
+                  <SwipeableViews
+                    axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+                    index={value}
+                    onChangeIndex={handleChangeIndex}
+                  >
+                    <TabPanel value={value} index={0} dir={theme.direction}>
+                      <Paper
+                        className={classes.paper}
+                        style={{ boxShadow: 'none' }}
                       >
-                        <Tab
-                          label="Khách"
+                        <GoogleButton
                           style={{
-                            fontSize: '22px',
-                            fontFamily: '"Segoe UI"',
-                            fontStyle: 'normal',
-                            fontWeight: 600
+                            display: 'inline-block',
+                            boxShadow: 'none'
                           }}
-                          {...a11yProps(0)}
-                        />
-                        <Tab
-                          label="Chủ Sân/HLV"
+                        ></GoogleButton>
+                        <Button
                           style={{
-                            fontSize: '22px',
-                            fontFamily: '"Segoe UI"',
-                            fontStyle: 'normal',
-                            fontWeight: 600
+                            height: '50px',
+                            width: '240px',
+                            borderRadius: '0',
+                            backgroundColor: '#1976d2',
+                            textTransform: 'none',
+                            color: 'white',
+                            fontSize: '1rem',
+                            marginTop: '30px'
                           }}
-                          {...a11yProps(1)}
-                        />
-                      </Tabs>
-                    </AppBar>
-                    <SwipeableViews
-                      axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-                      index={value}
-                      onChangeIndex={handleChangeIndex}
-                    >
-                      <TabPanel value={value} index={0} dir={theme.direction}>
+                        >
+                          <FacebookIcon
+                            style={{
+                              width: '35px',
+                              height: '35px',
+                              marginRight: '20px '
+                            }}
+                          ></FacebookIcon>
+                          Login with Facebook
+                        </Button>
+                      </Paper>
+                    </TabPanel>
+                    <TabPanel value={value} index={1} dir={theme.direction}>
+                      <form>
+                        <ThemeProvider theme={theme}>
+                          <TextField
+                            className={classes.root3}
+                            id="outlined-userName-input"
+                            label="Số Điện Thoại"
+                            type="password"
+                            autoComplete="current-password"
+                            variant="outlined"
+                          />
+                        </ThemeProvider>
+                        <ThemeProvider theme={theme}>
+                          <TextField
+                            className={classes.root3}
+                            id="outlined-password-input"
+                            label="Mật Khẩu"
+                            type="password"
+                            autoComplete="current-password"
+                            variant="outlined"
+                          />
+                        </ThemeProvider>
                         <Paper
                           className={classes.paper}
                           style={{ boxShadow: 'none' }}
                         >
-                          <GoogleButton
-                            style={{
-                              display: 'inline-block',
-                              boxShadow: 'none'
-                            }}
-                          ></GoogleButton>
                           <Button
                             style={{
-                              height: '50px',
-                              width: '240px',
-                              borderRadius: '0',
+                              height: '40px',
+                              width: '200px',
+                              borderRadius: '20px',
                               backgroundColor: '#1976d2',
                               textTransform: 'none',
                               color: 'white',
-                              fontSize: '1rem',
-                              marginTop: '30px'
+                              fontSize: '1.2rem',
+                              backgroundColor: '#F94949'
                             }}
                           >
-                            <FacebookIcon
-                              style={{
-                                width: '35px',
-                                height: '35px',
-                                marginRight: '20px '
-                              }}
-                            ></FacebookIcon>
-                            Login with Facebook
+                            ĐĂNG NHẬP
                           </Button>
                         </Paper>
-                      </TabPanel>
-                      <TabPanel value={value} index={1} dir={theme.direction}>
-                        <form>
-                          <ThemeProvider theme={theme}>
-                            <TextField
-                              className={classes.root3}
-                              id="outlined-userName-input"
-                              label="Số Điện Thoại"
-                              type="password"
-                              autoComplete="current-password"
-                              variant="outlined"
-                            />
-                          </ThemeProvider>
-                          <ThemeProvider theme={theme}>
-                            <TextField
-                              className={classes.root3}
-                              id="outlined-password-input"
-                              label="Mật Khẩu"
-                              type="password"
-                              autoComplete="current-password"
-                              variant="outlined"
-                            />
-                          </ThemeProvider>
-                          <Paper
-                            className={classes.paper}
-                            style={{ boxShadow: 'none' }}
-                          >
-                            <Button
-                              style={{
-                                height: '40px',
-                                width: '200px',
-                                borderRadius: '20px',
-                                backgroundColor: '#1976d2',
-                                textTransform: 'none',
-                                color: 'white',
-                                fontSize: '1.2rem',
-                                backgroundColor: '#F94949'
-                              }}
-                            >
-                              ĐĂNG NHẬP
-                            </Button>
-                          </Paper>
-                        </form>
-                      </TabPanel>
-                    </SwipeableViews>
-                  </div>
-                </Typography>
+                      </form>
+                    </TabPanel>
+                  </SwipeableViews>
+                </div>
               </Paper>
             </Grid>
           </Grid>
