@@ -189,7 +189,7 @@ export function LoginUser() {
                         <Tab
                           label="Khách"
                           style={{
-                            fontSize: '25px',
+                            fontSize: '22px',
                             fontFamily: '"Segoe UI"',
                             fontStyle: 'normal',
                             fontWeight: 600
@@ -199,7 +199,7 @@ export function LoginUser() {
                         <Tab
                           label="Chủ Sân/HLV"
                           style={{
-                            fontSize: '25px',
+                            fontSize: '22px',
                             fontFamily: '"Segoe UI"',
                             fontStyle: 'normal',
                             fontWeight: 600
