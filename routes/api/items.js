@@ -52,10 +52,10 @@ router.post('/add', owner, upload.single('image'), async (req, res) => {
   }
 })
 
-// @route   GET /api/items/
-// @desc    Customer get all item in order
+// @route   GET /api/items/owner
+// @desc    Customer get all item in owner
 // @access  Public
-router.get('/', async (req, res) => {
+router.get('/owner', async (req, res) => {
   try {
     const owner = await Owners.findById(req.body.ownerId, (err, result) => {
       if (!result) {
@@ -70,7 +70,7 @@ router.get('/', async (req, res) => {
       {
         _id: { $in: owner.items }
       },
-      { name: 1, price: 1 }
+      { name: 1, price: 1, quantity: 1 }
     )
 
     return res.status(200).json(items)
