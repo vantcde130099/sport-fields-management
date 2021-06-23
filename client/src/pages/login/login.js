@@ -219,7 +219,10 @@ export function LoginUser() {
                           style={{ boxShadow: 'none' }}
                         >
                           <GoogleButton
-                            style={{ marginLeft: '18%', boxShadow: 'none' }}
+                            style={{
+                              display: 'inline-block',
+                              boxShadow: 'none'
+                            }}
                           ></GoogleButton>
                           <Button
                             style={{
