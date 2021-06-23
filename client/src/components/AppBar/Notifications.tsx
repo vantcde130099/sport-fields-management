@@ -26,7 +26,7 @@ interface NotificationItem {
   description: string
 }
 
-export const ListItemNotification = ({
+export const Notifications = ({
   anchorEl,
   image,
   isMenuOpen,

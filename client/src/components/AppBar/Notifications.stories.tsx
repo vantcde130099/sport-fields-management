@@ -1,17 +1,17 @@
 import React from 'react'
 import { Story, Meta } from '@storybook/react'
 
-import { ListItemNotification, Props } from './ListItemNotification'
+import { Notifications, Props } from './Notifications'
 
 export default {
-  title: 'NotificationBell',
-  component: ListItemNotification
+  title: 'Header/Notifications',
+  component: Notifications
 } as Meta
 
-const Template: Story<Props> = (args) => <ListItemNotification {...args} />
+const Template: Story<Props> = (args) => <Notifications {...args} />
 
-export const ItemBell = Template.bind({})
-ItemBell.args = {
+export const Popup = Template.bind({})
+Popup.args = {
   isMenuOpen: true,
   image:
     'https://scontent.fhan2-3.fna.fbcdn.net/v/t1.15752-9/186166767_873508483198315_7845554615604546962_n.jpg?_nc_cat=107&ccb=1-3&_nc_sid=ae9488&_nc_ohc=iGf1uc_PN2sAX_zaAOx&_nc_ht=scontent.fhan2-3.fna&oh=2e3b8c4de9e6f772016ed6b51205be05&oe=60D0A454',

@@ -1,8 +1,8 @@
 import React from 'react'
 
 // Components
-import { ListItemNotification } from '../NotificationList/ListItemNotification'
-import { ListItemNotificationUser } from '../NotificationList/ListItemNotificationUser'
+import { Notifications } from './/Notifications'
+import { UserSettings } from './UserSettings'
 
 // Material-UI
 import {
@@ -28,7 +28,7 @@ import {
 // Styles
 import { useStyles } from './index.styles'
 
-interface Props {
+export interface Props {
   user?: {
     name?: String
     tel?: String
@@ -75,7 +75,7 @@ export const AppBar: React.FC<Props> = ({ user }) => {
 
   const menuId = 'primary-search-account-menu'
   const renderMenu = (
-    <ListItemNotificationUser
+    <UserSettings
       anchorEl={anchorEl}
       isMenuOpen={isMenuOpen}
       onClose={handleMenuClose}
@@ -85,7 +85,7 @@ export const AppBar: React.FC<Props> = ({ user }) => {
     />
   )
   const renderNotification = (
-    <ListItemNotification
+    <Notifications
       anchorEl={notificationAnchorEl}
       isMenuOpen={isNotificationOpen}
       listItem={[]}

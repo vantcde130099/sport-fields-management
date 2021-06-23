@@ -21,7 +21,7 @@ export interface Props {
   onClose: () => void
 }
 
-export const ListItemNotificationUser = ({
+export const UserSettings = ({
   name = '',
   image = '',
   tel = '',
