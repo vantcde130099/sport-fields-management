@@ -17,7 +17,7 @@ import Rating from '@material-ui/lab/Rating'
 // Styles
 import { useStyles } from './index.styles'
 
-export interface CardProps {
+export interface Props {
   item?: {
     image?: string
     nameField?: String
@@ -30,29 +30,16 @@ export interface CardProps {
   onClick?: () => void
 }
 
-export const CardField: React.FC<CardProps> = ({
-  item = {
-    image:
-      'https://htsport.vn/wp-content/uploads/2020/06/anh-bia-danh-sach-san-bong-o-quan-binh-tan.jpg',
-    nameField: 'Sân Chuyên Nghiệp',
-    description:
-      'Sân rộng rãi , đẹp đẽ thoáng mát , có phòng xông hơi , massages sau buổi tập , phòng livestream hút cần,.....',
-    discount: 'GIẢM 30%',
-    price: '300.000 VNĐ',
-    address: '123 Phạm Ngũ Lão , Q. Ngũ Hành Sơn',
-    point: 4.6
-  }
-}) => {
+export const CardField: React.FC<Props> = ({item}) => {
+  
   const classes = useStyles()
-  const { image, nameField, description, discount, price, address, point } =
-    item
-
+  
   return (
     <Card className={classes.root}>
       <CardActionArea className={classes.hoverShowAll}>
         <CardMedia
           className={classes.media}
-          image={image}
+          image={item?.image}
           title="Select To Card"
         >
           <Paper className={classes.contentMedia}>
@@ -62,7 +49,7 @@ export const CardField: React.FC<CardProps> = ({
               className={`${classes.typographyDescription} ${classes.customBox}`}
               style={{ fontSize: 13 }}
             >
-              Mô tả : {description}
+              Mô tả : {item?.description}
             </Typography>
           </Paper>
         </CardMedia>
@@ -75,7 +62,7 @@ export const CardField: React.FC<CardProps> = ({
           className={classes.typographyContent}
           noWrap
         >
-          {nameField}
+          {item?.nameField}
           <div>
             <Button
               className={`${classes.typographyDescription} , ${classes.hoverDisabled}`}
@@ -84,7 +71,7 @@ export const CardField: React.FC<CardProps> = ({
               size="small"
               color="secondary"
             >
-              {discount}
+              {item?.discount}
             </Button>
           </div>
         </Typography>
@@ -96,7 +83,7 @@ export const CardField: React.FC<CardProps> = ({
           className={`${classes.typographyDescription}`}
           noWrap
         >
-          {address}
+          {item?.address}
         </Typography>
       </CardContent>
 
@@ -117,11 +104,11 @@ export const CardField: React.FC<CardProps> = ({
             variant="outlined"
             color="secondary"
           >
-            {price}
+            {item?.price}
           </Button>
           <Rating
             name="half-rating-read"
-            defaultValue={point}
+            defaultValue={item?.point}
             precision={0.1}
             readOnly
           />

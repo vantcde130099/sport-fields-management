@@ -1,7 +1,7 @@
 import React from 'react'
 
 //Components
-import CardField from '../card'
+import CardField from '../CardField'
 
 //Material-ui
 import { Container, Grid } from '@material-ui/core'
