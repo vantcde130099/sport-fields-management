@@ -18,29 +18,26 @@ const OrderSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'coach'
   },
-  item: {
-    type: Schema.Types.ObjectId,
-    ref: 'item'
-  },
+  item: [
+    {
+      id: {
+        type: Schema.Types.ObjectId,
+        ref: 'item'
+      },
+      quantity: {
+        type: Number
+      }
+    }
+  ],
   rentalDate: {
     type: Date,
     required: true
   },
   start: {
-    hour: {
-      type: Number
-    },
-    minutes: {
-      type: Number
-    }
+    type: Date
   },
   end: {
-    hour: {
-      type: Number
-    },
-    minutes: {
-      type: Number
-    }
+    type: Date
   },
   totalTime: {
     type: Number
@@ -51,8 +48,12 @@ const OrderSchema = new Schema({
   coachPrice: {
     type: Number
   },
+  itemsPrice: {
+    type: Number
+  },
   coupon: {
-    type: String
+    type: Schema.Types.ObjectId,
+    ref: 'coupon'
   },
   total: {
     type: Number
@@ -62,7 +63,7 @@ const OrderSchema = new Schema({
       type: String
     },
     status: {
-      type: String
+      type: Boolean
     }
   },
   dateCreated: {

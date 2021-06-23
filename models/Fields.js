@@ -19,24 +19,14 @@ const FieldSchema = new Schema({
     type: Number,
     required: true
   },
-  open: {
-    hour: {
+  hours: {
+    open: {
       type: Number,
-      default: 6
+      required: true
     },
-    minutes: {
+    close: {
       type: Number,
-      default: 0
-    }
-  },
-  close: {
-    hour: {
-      type: Number,
-      default: 22
-    },
-    minutes: {
-      type: Number,
-      default: 0
+      required: true
     }
   },
   image: [

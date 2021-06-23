@@ -21,7 +21,7 @@ router.post('/register', upload.array('image', 2), async (req, res) => {
   await check('password', 'Mật khẩu ít nhất 6 chữ')
     .isLength({ min: 6 })
     .run(req)
-  await check('phoneNumber', 'Vui lòng nhập SDT').not().isEmpty().run(req)
+  await check('phoneNumber', 'Vui lòng nhập Số điện thoại').not().isEmpty().run(req)
 
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
@@ -87,8 +87,8 @@ router.post('/register', upload.array('image', 2), async (req, res) => {
         res.json({ token }) //if have no err, send that token to the client
       }
     )
-  } catch (error) {
-    console.error(error.message)
+  } catch (err) {
+    console.error(err.message)
     res.status(500).send('Server error')
   }
 })
@@ -163,9 +163,10 @@ router.get('/', async (req, res) => {
     const fileteredOwner = await listOwners.filter(function (e) {
       return e.fields.length > 0
     })
+    //add identityCard Id to owner
+    owner.identityCard = identityCard
 
     for (const owner of fileteredOwner) {
-      // const field = await Field.findById(owner.fields[0]) // find field by id from owner
       const fields = await Field.find({
         // get all fields of owner
         _id: { $in: owner.fields }
