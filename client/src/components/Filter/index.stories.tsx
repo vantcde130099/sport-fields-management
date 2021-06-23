@@ -1,6 +1,5 @@
 import React from 'react'
 import { Story, Meta } from '@storybook/react'
-
 import { SearchFilter, Props } from '.'
 
 export default {

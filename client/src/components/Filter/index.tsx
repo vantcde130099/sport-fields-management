@@ -1,7 +1,14 @@
 import React from 'react'
+
+//material-ui Component
 import { Grid, IconButton, InputAdornment, InputLabel, FormControl, Select, Paper, TextField, Input } from '@material-ui/core'
 import { Search as SearchIcon } from '@material-ui/icons'
-import { useStyles } from './index.styles'
+
+//material-ui styles
+import { MuiThemeProvider } from '@material-ui/core/styles'
+
+//styles
+import { useStyles , theme } from './index.styles'
 
 export interface Props {
   onSubmitSearch?: (value?: any) => void
@@ -52,6 +59,7 @@ export const SearchFilter: React.FC<Props> = ({ ...props
   }
   return (
     <>
+    <MuiThemeProvider theme = {theme}>
       <Paper className={classes.container}>
         <Grid container className={classes.root} spacing={2}>
           <Grid item xs={12} style={{ display: 'flex', justifyContent: 'center' }}>
@@ -154,6 +162,7 @@ export const SearchFilter: React.FC<Props> = ({ ...props
           </Grid>
         </Grid>
       </Paper>
+      </MuiThemeProvider>
     </>
   )
 }
