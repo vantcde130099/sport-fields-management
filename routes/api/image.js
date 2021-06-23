@@ -9,7 +9,7 @@ const url = config.get('mongoURI')
 // @route   GET /:id
 // @desc    Get image by id
 // @access  Public
-router.get('/:image_id', function(req, res) {
+router.get('/:image_id', function (req, res) {
   Grid.mongo = mongoose.mongo
   var conn = mongoose.createConnection(url, {
     useUnifiedTopology: true,
@@ -20,7 +20,7 @@ router.get('/:image_id', function(req, res) {
     const id = new mongoose.Types.ObjectId(req.params.image_id)
     gfs.collection('photos') //bucket collection
     const readstream = gfs.createReadStream({ _id: id })
-    readstream.on('error', function(err) {
+    readstream.on('error', function (err) {
       res.send('No image found with that title')
     })
     readstream.pipe(res)
