@@ -21,7 +21,6 @@ router.post('/create', customer, async (req, res) => {
     date,
     startRental,
     endRental,
-    payment,
     code
   } = req.body
   
@@ -115,7 +114,8 @@ router.post('/create', customer, async (req, res) => {
           1000
       ),
       coachPrice: 0,
-      itemsPrice: 0
+      itemsPrice: 0,
+      status: 'Đang chờ'
     })
 
     //check coach execute
@@ -139,9 +139,6 @@ router.post('/create', customer, async (req, res) => {
     //total cost
     order.total = order.fieldPrice + order.coachPrice + order.itemsPrice
 
-    //payment
-    order.payment = payment
-
     //save to DB
     await order.save()
 
@@ -160,7 +157,6 @@ router.post('/create', customer, async (req, res) => {
     //     coach price: ${order.coachPrice}
     //     item price: ${order.itemsPrice}
     //     total: ${order.total}
-    //     payment: ${order.payment.method} - ${order.payment.status}
     // `)
     
     return res.status(200).json({ message: 'Đặt sân thành công.' })
