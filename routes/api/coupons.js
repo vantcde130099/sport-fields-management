@@ -57,6 +57,7 @@ router.post(
       inDayOpen += parseInt(hourOpen) * 60 + parseInt(minOpen)
       inDayClose += parseInt(hourClose) * 60 + parseInt(minClose)
     }
+
     const type = { sportType, fieldType }
 
     try {
@@ -90,9 +91,8 @@ router.post(
       })
 
       await coupon.save()
-      return res
-        .status(200)
-        .json({ message: `Tạo thành công coupon ${coupon.code}` })
+
+      res.status(200).json({ message: `Tạo thành công coupon ${coupon.code}` })
     } catch (error) {
       console.error(error.message)
       return res.status(500).json({ message: 'Lỗi server' })
