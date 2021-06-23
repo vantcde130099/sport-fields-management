@@ -15,11 +15,10 @@ module.exports = function (req, res, next) {
   //Verify
   try {
     const decoded = jwt.verify(token, config.get('jwtSecret'))
-
-    req.owner = decoded.owner
+    req.customer = decoded.customer
     next()
   } catch (err) {
     console.error(err.message)
-    res.status(401).json({ msg: 'Không có mã thông báo, ủy quyền bị từ chối' })
+    res.status(401).json({ msg: 'Mã thông báo không đúng hoặc đã hết hạn' })
   }
 }

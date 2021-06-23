@@ -32,9 +32,21 @@ router.post('/register', upload.array('image', 2), async (req, res) => {
     identityCard.push(e.id)
   })
 
-  const { name, email, phoneNumber, password, city, district, ward } = req.body
+  const {
+    name,
+    email,
+    phoneNumber,
+    password,
+    city,
+    district,
+    ward,
+    price,
+    description
+  } = req.body
+
   const address = { city, district, ward }
   const contact = { email, phoneNumber, address }
+  
   try {
     //see if coach exist
     let coach = await Coach.findOne({ 'contact.phoneNumber': phoneNumber })
@@ -46,7 +58,9 @@ router.post('/register', upload.array('image', 2), async (req, res) => {
 
     coach = new Coach({
       name,
-      contact
+      contact,
+      price,
+      description
     })
     //add identityCard Id to Coaches
     coach.identityCard = identityCard
@@ -65,13 +79,12 @@ router.post('/register', upload.array('image', 2), async (req, res) => {
     }
 
     jwt.sign(
-      //sign the token pass and the payload pass
       payload,
       config.get('jwtSecret'),
       { expiresIn: 36000 },
       (err, token) => {
         if (err) throw err
-        res.json({ token }) //if have no err, send that token to the client
+        res.json({ token })
       }
     )
   } catch (err) {
