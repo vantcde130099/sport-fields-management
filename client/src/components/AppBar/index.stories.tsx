@@ -1,14 +1,14 @@
 import React from 'react'
 import { Story, Meta } from '@storybook/react'
 
-import { AppBarHeader, AppBarHeaderProps } from './AppBarHeader'
+import { AppBar, AppBarProps } from '.'
 
 export default {
   title: 'Header',
-  component: AppBarHeader
+  component: AppBar
 } as Meta
 
-const Template: Story<AppBarHeaderProps> = (args) => <AppBarHeader {...args} />
+const Template: Story<AppBarProps> = (args) => <AppBar {...args} />
 
 export const HeaderLogin = Template.bind({})
 HeaderLogin.args = {

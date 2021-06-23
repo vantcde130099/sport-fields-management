@@ -1,17 +1,14 @@
 import React from 'react'
 import { Story, Meta } from '@storybook/react'
-import {
-  ListItemNotificationUser,
-  ListItemNotificationUserProps
-} from './ListItemNotificationUser'
+
+import { ListItemNotificationUser, Props } from './ListItemNotificationUser'
+
 export default {
-  title: 'Notification/ListItemCart',
+  title: 'ListItemCart',
   component: ListItemNotificationUser
 } as Meta
 
-const Template: Story<ListItemNotificationUserProps> = (args) => (
-  <ListItemNotificationUser {...args} />
-)
+const Template: Story<Props> = (args) => <ListItemNotificationUser {...args} />
 
 export const ItemUser = Template.bind({})
 ItemUser.args = {

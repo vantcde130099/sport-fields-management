@@ -1,4 +1,6 @@
 import React from 'react'
+
+// Material-UI
 import {
   Menu,
   MenuItem,
@@ -8,72 +10,62 @@ import {
   ListItemAvatar,
   ListItemText
 } from '@material-ui/core'
-import {
-  AccountBoxRounded as AccountBoxRoundedIcon,
-  ExitToAppOutlined as ExitToAppOutlinedIcon
-} from '@material-ui/icons'
-export interface ListItemNotificationUserProps {
+import { AccountBoxRounded, ExitToAppOutlined } from '@material-ui/icons'
+
+export interface Props {
+  anchorEl: Element | ((element: Element) => Element) | null | undefined
   isMenuOpen?: boolean
-  image?: any 
-  name?: any
-  img?: any
-  tel?: any
+  name: string
+  image: string
+  tel: string
+  onClose: () => void
 }
 
-export function ListItemNotificationUser({
-  isMenuOpen = true,
+export const ListItemNotificationUser = ({
   name = '',
-  img = '',
+  image = '',
   tel = '',
-  ...props
-}) {
-  return (
-    <Menu
-      style={{ maxHeight: 340 }}
-      anchorEl={props.anchorEl}
-      anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'left'
-      }}
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'center'
-      }}
-      id={props.menuId}
-      keepMounted
-      open={isMenuOpen}
-      getContentAnchorEl={null}
-      onClose={props.handleMenuClose}
-    >
-      <ListItem style={{ padding: 0, paddingLeft: 16 }} component="div">
-        <ListItemAvatar>
-          <Avatar src={img} alt="avatar">
-            {name.charAt(0)}
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary={name} secondary={tel} />
-      </ListItem>
-      <Divider component="div" />
-      <MenuItem onClick={props.handleMenuClose} style={{ fontSize: 12 }}>
-        <Avatar
-          style={{ marginRight: 15, fontSize: 10, height: 30, width: 30 }}
-        >
-          <AccountBoxRoundedIcon
-            style={{ fontSize: 20 }}
-          ></AccountBoxRoundedIcon>
+  anchorEl,
+  isMenuOpen = true,
+  onClose
+}: Props) => (
+  <Menu
+    keepMounted
+    open={isMenuOpen}
+    id="notification-list"
+    anchorEl={anchorEl}
+    getContentAnchorEl={null}
+    style={{ maxHeight: 340 }}
+    anchorOrigin={{
+      vertical: 'bottom',
+      horizontal: 'left'
+    }}
+    transformOrigin={{
+      vertical: 'top',
+      horizontal: 'center'
+    }}
+    onClose={onClose}
+  >
+    <ListItem style={{ padding: 0, paddingLeft: 16 }} component="div">
+      <ListItemAvatar>
+        <Avatar src={image} alt="avatar">
+          {name.charAt(0)}
         </Avatar>
-        Thông tin cá nhân
-      </MenuItem>
-      <MenuItem onClick={props.handleMenuClose} style={{ fontSize: 12 }}>
-        <Avatar
-          style={{ marginRight: 15, fontSize: 10, height: 30, width: 30 }}
-        >
-          <ExitToAppOutlinedIcon
-            style={{ fontSize: 20 }}
-          ></ExitToAppOutlinedIcon>
-        </Avatar>
-        Đăng Xuất
-      </MenuItem>
-    </Menu>
-  )
-}
+      </ListItemAvatar>
+      <ListItemText primary={name} secondary={tel} />
+    </ListItem>
+    <Divider component="div" />
+    <MenuItem onClick={onClose} style={{ fontSize: 12 }}>
+      <Avatar style={{ marginRight: 15, fontSize: 10, height: 30, width: 30 }}>
+        <AccountBoxRounded style={{ fontSize: 20 }}></AccountBoxRounded>
+      </Avatar>
+      Thông tin cá nhân
+    </MenuItem>
+    <MenuItem onClick={onClose} style={{ fontSize: 12 }}>
+      <Avatar style={{ marginRight: 15, fontSize: 10, height: 30, width: 30 }}>
+        <ExitToAppOutlined style={{ fontSize: 20 }}></ExitToAppOutlined>
+      </Avatar>
+      Đăng Xuất
+    </MenuItem>
+  </Menu>
+)

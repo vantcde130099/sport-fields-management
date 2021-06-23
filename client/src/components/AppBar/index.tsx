@@ -1,6 +1,12 @@
 import React from 'react'
+
+// Components
+import { ListItemNotification } from '../NotificationList/ListItemNotification'
+import { ListItemNotificationUser } from '../NotificationList/ListItemNotificationUser'
+
+// Material-UI
 import {
-  AppBar,
+  AppBar as AppBarMUI,
   Toolbar,
   IconButton,
   Link,
@@ -18,27 +24,19 @@ import {
   MoreVert as MoreIcon,
   AccountCircle
 } from '@material-ui/icons'
-import { ListItemNotification } from '../NotificationList/ListItemNotification'
-import { ListItemNotificationUser } from '../NotificationList/ListItemNotificationUser'
-import { useStyles } from './AppBarHeader.styles'
 
-export interface AppBarHeaderProps {
+// Styles
+import { useStyles } from './index.styles'
+
+interface Props {
   user?: {
     name?: String
     tel?: String
     img?: String
   }
-  onLogin: () => void
-  onLogout: () => void
-  onCreateAccount: () => void
 }
 
-export const AppBarHeader: React.FC<AppBarHeaderProps> = ({
-  user,
-  onLogin,
-  onLogout,
-  onCreateAccount
-}) => {
+export const AppBar: React.FC<Props> = ({ user }) => {
   const classes = useStyles()
   const [anchorEl, setAnchorEl] = React.useState(null)
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null)
@@ -80,18 +78,19 @@ export const AppBarHeader: React.FC<AppBarHeaderProps> = ({
     <ListItemNotificationUser
       anchorEl={anchorEl}
       isMenuOpen={isMenuOpen}
-      handleMenuClose={handleMenuClose}
+      onClose={handleMenuClose}
       name={`${user?.name}`}
       tel={`${user?.tel}`}
-      img={`${user?.img}`}
+      image={`${user?.img}`}
     />
   )
   const renderNotification = (
     <ListItemNotification
       anchorEl={notificationAnchorEl}
       isMenuOpen={isNotificationOpen}
-      handleMenuClose={handleNotificationClose}
-      typeList="notification"
+      listItem={[]}
+      image=""
+      onClose={handleNotificationClose}
     />
   )
 
@@ -130,15 +129,12 @@ export const AppBarHeader: React.FC<AppBarHeaderProps> = ({
 
   return (
     <div className={classes.grow}>
-      <AppBar position="static" style={{ backgroundColor: '#2c2c2c' }}>
+      <AppBarMUI position="static" style={{ backgroundColor: '#2c2c2c' }}>
         <Toolbar>
           <img
             src="https://scontent.fhan2-3.fna.fbcdn.net/v/t1.15752-9/186166767_873508483198315_7845554615604546962_n.jpg?_nc_cat=107&ccb=1-3&_nc_sid=ae9488&_nc_ohc=iGf1uc_PN2sAX_zaAOx&_nc_ht=scontent.fhan2-3.fna&oh=2e3b8c4de9e6f772016ed6b51205be05&oe=60D0A454"
             style={{ width: 64, height: 64, marginRight: 15 }}
           ></img>
-          {/* <Typography className={classes.title} variant="h6" noWrap>
-            Buksan
-          </Typography> */}
           <div className={`${classes.search} `}>
             <Link
               className={`${classes.link} ${
@@ -251,7 +247,7 @@ export const AppBarHeader: React.FC<AppBarHeaderProps> = ({
             </IconButton>
           </div>
         </Toolbar>
-      </AppBar>
+      </AppBarMUI>
       {renderMobileMenu}
       {renderMenu}
       {renderNotification}
