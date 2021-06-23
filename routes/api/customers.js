@@ -179,8 +179,10 @@ router.put('/contact', customer, [
   if(!errors.isEmpty()){
     return res.status(400).json({errors: errors.array()})
   }
+
   const {phoneNumber, address}  = req.body
   try {
+    
     const updateCustomer = await Customer.findOneAndUpdate({_id: req.customer.id}, {$set: {
       'contact.phoneNumber': phoneNumber,
       'contact.address.city':address.city,

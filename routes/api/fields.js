@@ -107,9 +107,11 @@ router.get('/', async (req, res) => {
     const owner = await Owner.findById(req.body.ownerId)
     const fieldId = owner.fields[owner.fields.length - 1]
     const theFirstField = await Field.findById(fieldId)
+
     if (!theFirstField) {
       res.status(400).json({ message: 'Sân không tồn tại' })
     }
+
     res.status(200).json({
       sport: theFirstField.type.sportType,
       type: theFirstField.type.fieldType,
@@ -143,6 +145,7 @@ router.get('/type', async (req, res) => {
     //add info to block response
     let fieldsInfo = []
     fields.forEach((field) => {
+
       fieldsInfo.push({
         sport: field.type.sportType,
         type: field.type.fieldType,
@@ -152,6 +155,7 @@ router.get('/type', async (req, res) => {
         price: field.price
       })
     })
+
     res.status(200).json(fieldsInfo)
   } catch (error) {
     console.error(error.message)
@@ -175,6 +179,7 @@ router.get('/name', async (req, res) => {
     if (!field) {
       res.status(400).json({ message: 'Sân không tồn tại' })
     }
+
     res.status(200).json({
       sport: field.type.sportType,
       type: field.type.fieldType,
@@ -221,8 +226,10 @@ router.get('/booking-time-now', async (req, res) => {
       i += 60
     ) {
       if (i > timeWorkingADay.hours.close - 60) break
+      
       let close = new Date(open)
       close.setHours(close.getHours() + 1)
+
       listHours.push({
         start: `${open.getHours()}:${
           open.getMinutes() === 0 ? '00' : open.getMinutes()
