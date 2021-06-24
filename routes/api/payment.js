@@ -2,11 +2,9 @@ const express = require('express')
 const router = express.Router()
 
 const Order = require('../../models/Orders')
-const Field = require('../../models/Fields')
 const Owner = require('../../models/Owners')
+const Coach = require('../../models/Coaches')
 const Customer = require('../../models/Customers')
-const Item = require('../../models/Items')
-const Coupon = require('../../models/Coupons')
 const customer = require('../../middleware/customer')
 const owner = require('../../middleware/owner')
 
@@ -81,6 +79,20 @@ router.put('/offline/confirm', owner, async (req, res) => {
       { new: true }
     )
 
+    if (status == 'Hoàn thành') {
+      await Owner.findOneAndUpdate(
+        { _id: order.owner },
+        { $inc: { bookings: 1 } },
+        { new: true }
+      )
+      if (order.coach != undefined || order.coach != 'None') {
+        await Coach.findOneAndUpdate(
+          { _id: order.coach },
+          { $inc: { bookings: 1 } },
+          { new: true }
+        )
+      }
+    }
     res.status(200).json({ message: `Đã ${order.status} thanh toán` })
   } catch (error) {}
 })
