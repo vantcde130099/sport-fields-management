@@ -20,7 +20,10 @@ export const Footer = () => {
           </Typography>
         </Grid>
         <Grid item xs={12} sm={2} className={classes.paper2}>
-          <Typography variant="h5" style={{ marginBottom: '10px' }}>
+          <Typography
+            variant="h5"
+            style={{ marginBottom: '10px', fontWeight: 'bold' }}
+          >
             Các loại sân
           </Typography>
           <Typography variant="h6">Bóng đá</Typography>
@@ -29,7 +32,10 @@ export const Footer = () => {
           <Typography variant="h6">Bóng bàn</Typography>
         </Grid>
         <Grid item xs={12} sm={2} className={classes.paper2}>
-          <Typography variant="h5" style={{ marginBottom: '10px' }}>
+          <Typography
+            variant="h5"
+            style={{ marginBottom: '10px', fontWeight: 'bold' }}
+          >
             Hỗ trợ
           </Typography>
           <Typography variant="h6">Liên hệ</Typography>
