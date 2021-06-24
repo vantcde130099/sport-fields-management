@@ -8,6 +8,7 @@ const Coach = require('../../models/Coaches')
 const Item = require('../../models/Items')
 const Coupon = require('../../models/Coupons')
 const customer = require('../../middleware/customer')
+const owner = require('../../middleware/owner')
 
 // @route   POST api/orders/create
 // @desc    create order
@@ -174,9 +175,15 @@ router.post('/create', customer, async (req, res) => {
 // @access  Private
 router.get('/owner', owner, async (req, res) => {
   try {
-    const orders = Order.find({ owner: req.owner.id }).sort({ dateCreated: -1 })
+    const orders = await Order.find({ owner: req.owner.id }).sort({
+      dateCreated: -1
+    })
 
-    res.status(200).json({ orders })
+    if (orders == undefined || orders.length == 0) {
+      return res.status(400).json({ message: 'Không có thông tin đặt sân.' })
+    }
+
+    res.status(200).json(orders)
   } catch (error) {
     console.error(error.message)
     return res.status(500).send('Lỗi server')
