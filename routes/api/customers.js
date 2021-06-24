@@ -9,6 +9,8 @@ const { check, validationResult } = require('express-validator')
 
 const Customer = require('../../models/Customers')
 const customer = require('../../middleware/customer')
+const upload = require('../../middleware/upload')
+
 passport.serializeUser((user, done) => {
   done(null, user.id)
 })
@@ -193,6 +195,22 @@ router.put('/contact', customer, [
     
   } catch (error) {
     console.error(error)
+    return res.status(500).json('Lỗi server')
+  }
+})
+
+// @route   PUT api/customers/avatar
+// @desc    Customer update avatar
+// @access  Public
+router.put('/avatar', customer, upload.single('image'), async(req, res) => {
+  try {
+    
+    const avatar = req.file.id
+    const updateCustomer = await Customer.findOneAndUpdate({_id: req.customer.id}, {avatar: avatar}, {new: true})
+
+    res.status(200).json({message: 'Thêm thành công'})
+  } catch (error) {
+    console.error(error.message)
     return res.status(500).json('Lỗi server')
   }
 })
