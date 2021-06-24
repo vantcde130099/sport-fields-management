@@ -21,7 +21,10 @@ router.post('/register', upload.array('image', 2), async (req, res) => {
   await check('password', 'Mật khẩu ít nhất 6 chữ')
     .isLength({ min: 6 })
     .run(req)
-  await check('phoneNumber', 'Vui lòng nhập Số điện thoại').not().isEmpty().run(req)
+  await check('phoneNumber', 'Vui lòng nhập Số điện thoại')
+    .not()
+    .isEmpty()
+    .run(req)
 
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
@@ -37,6 +40,7 @@ router.post('/register', upload.array('image', 2), async (req, res) => {
 
   const {
     name,
+    dateOfBirth,
     email,
     phoneNumber,
     password,
@@ -58,6 +62,7 @@ router.post('/register', upload.array('image', 2), async (req, res) => {
 
     owner = new Owner({
       name,
+      dateOfBirth,
       contact,
       description
     })
