@@ -20,9 +20,11 @@ router.post(
     const { orderId, value, text } = req.body
 
     const errors = validationResult(req)
+
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() })
     }
+
     try {
       //check payment
       const order = await Order.findById(orderId)
@@ -32,6 +34,7 @@ router.post(
 
       //check customer exist
       const customer = await Customer.findById(req.customer.id)
+
       if (!customer) {
         return res
           .status(400)
@@ -40,6 +43,7 @@ router.post(
 
       //check owner exist
       const coachRate = await Owner.findById(order.owner)
+
       if (!coachRate) {
         return res.status(400).json({ message: 'Sân không tồn tại' })
       }
@@ -69,6 +73,7 @@ router.post(
     const { orderId, value, text } = req.body
 
     const errors = validationResult(req)
+
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() })
     }
