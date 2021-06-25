@@ -7,9 +7,6 @@ import { Comment, Props } from './index'
 export default {
   title: 'CommonComponent/Comment',
   component: Comment,
-  argTypes: {
-    backgroundColor: { control: 'color' }
-  }
 } as Meta
 
 const Template: Story<Props> = (args) => <Comment {...args} />
