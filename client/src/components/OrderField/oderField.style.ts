@@ -36,7 +36,7 @@ export const useStyles = makeStyles((theme: Theme) =>
       border: 0,
       color: 'white',
       height: 40,
-      width: '100%',
+      width: '90%',
       padding: '0 30px',
       '&:hover': {
         backgroundColor: '#F94949'
@@ -48,7 +48,7 @@ export const useStyles = makeStyles((theme: Theme) =>
       border: 0,
       color: 'white',
       height: 40,
-      width: '100%',
+      width: '90%',
       padding: '0 30px',
       marginTop: '10px',
       '&:hover': {

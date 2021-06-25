@@ -26,7 +26,7 @@ export const OderField = () => {
               style={{ width: '150px', height: '110px', marginLeft: '20%' }}
             />
           </Grid>
-          <Grid xs={7} container>
+          <Grid xs={7} container style={{ paddingRight: '10px' }}>
             <Grid xs={6}>
               <Typography variant="h5">Sân 5c</Typography>
             </Grid>
