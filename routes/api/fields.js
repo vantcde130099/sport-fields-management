@@ -79,7 +79,7 @@ router.post('/add', owner, upload.array('image', 10), async (req, res) => {
       status
     })
 
-    //add images to field
+    //add images to field 
     req.files.forEach((e) => {
       newField.image.push(e.id)
     })
@@ -299,6 +299,26 @@ router.get('/booking-time-by-day', async (req, res) => {
     console.error(error.message)
     return res.status(500).send('Lỗi server')
   }
+})
+
+// @route   GET /api/fields/owner-get-fields
+// @desc    Owner get fields info
+// @access  Private
+router.get('/owner-get-fields',owner ,async(req, res) => {
+   const ownerId = req.owner.id
+
+   try {
+    const owner = await Owner.findById(ownerId, {fields: 1})
+    if(owner.fields.length == 0) {
+      return res.status(400).json({message: 'Không có sân nào'})
+    }
+
+    const fields = await Field.find({_id: {$in: owner.fields} })
+     res.status(200).json(fields)
+   } catch (error) {
+     console.error(error.message);
+     return res.status(500).send('Lỗi server')
+   }
 })
 
 module.exports = router
