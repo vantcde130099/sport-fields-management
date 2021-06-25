@@ -18,5 +18,5 @@ CommentUser.args = {
   comment : 'Sân xịn đẹp đẽ , Chuyên nghiệp ,Sân xịn đẹp đẽ , Sân xịn đẹp đẽ , Sân xịn đẹp đẽ , ',
   name : 'Nguyễn Hoàng Minh',
   date : '11/5/1999',
-  point : 5
+  point : 4.5
 }
