@@ -8,7 +8,6 @@ const upload = require('../../middleware/upload')
 const Owner = require('../../models/Owners')
 const Field = require('../../models/Fields')
 
-
 // @route   POST /api/fields/add
 // @desc    Owner add field
 // @access  Private
@@ -144,7 +143,6 @@ router.get('/type', async (req, res) => {
     //add info to block response
     let fieldsInfo = []
     fields.forEach((field) => {
-
       fieldsInfo.push({
         sport: field.type.sportType,
         type: field.type.fieldType,
@@ -225,7 +223,7 @@ router.get('/booking-time-now', async (req, res) => {
       i += 60
     ) {
       if (i > timeWorkingADay.hours.close - 60) break
-      
+
       let close = new Date(open)
       close.setHours(close.getHours() + 1)
 
@@ -299,5 +297,100 @@ router.get('/booking-time-by-day', async (req, res) => {
     return res.status(500).send('Lỗi server')
   }
 })
+
+// @route   PUT /api/fields/info-modify
+// @desc    Owner modify field info
+// @access  Private
+router.put(
+  '/info-modify',
+  owner,
+  [
+    check('name', 'Vui lòng nhập tên').not().isEmpty(),
+    check('type', 'Vui lòng nhập tên').not().isEmpty(),
+    check('price', 'Vui lòng nhập tên').isNumeric(),
+    check(
+      'openHour',
+      'Vui lòng nhập giờ mở cửa lớn hơn 0 và nhỏ hơn 24!'
+    ).isInt({ min: 0, max: 23 }),
+    check(
+      'closeHour',
+      'Vui lòng nhập giờ đóng cửa lớn hơn 0 và nhỏ hơn 24!'
+    ).isInt({ min: 0, max: 23 }),
+    check(
+      'closeMinutes',
+      'Vui lòng nhập phút đóng cửa lớn hơn 0 và nhỏ hơn 59!'
+    ).isInt({ min: 0, max: 59 }),
+    check(
+      'openMinutes',
+      'Vui lòng nhập phút đóng cửa lớn hơn 0 và nhỏ hơn 59!'
+    ).isInt({ min: 0, max: 59 })
+  ],
+  async (req, res) => {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() })
+    }
+
+    const {
+      id,
+      name,
+      type,
+      price,
+      openHour,
+      closeHour,
+      openMinutes,
+      closeMinutes,
+      status
+    } = req.body
+
+    const open = openHour * 60 + openMinutes
+    const close = closeHour * 60 + closeMinutes
+    const hours = { open, close }
+    try {
+      let field = await Field.findOneAndUpdate(
+        id,
+        { name, 'type.fieldType': type, price, status, hours },
+        { new: true }
+      )
+
+      res.status(200).json({ message: `Thay đổi thành công` })
+    } catch (error) {
+      console.error(error.message)
+      return res.status(500).send('Lỗi server')
+    }
+  }
+)
+
+// @route   PUT /api/fields/add-images
+// @desc    Owner modify field image
+// @access  Private
+router.put(
+  '/add-images',
+  owner,
+  upload.array('image', 10),
+  async (req, res) => {
+    req.body = JSON.parse(req.body.data)
+
+    const { id } = req.body
+
+    try {
+      let field = await Field.findById(id)
+
+      //add images to field
+      req.files.forEach((e) => {
+        field.image.push(e.id)
+      })
+
+      field.save()
+
+      res
+        .status(200)
+        .json({ message: `Thêm ${req.files.length} ảnh thành công.` })
+    } catch (error) {
+      console.error(error.message)
+      return res.status(500).send('Lỗi server')
+    }
+  }
+)
 
 module.exports = router
