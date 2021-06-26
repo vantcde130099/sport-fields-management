@@ -21,7 +21,10 @@ router.post('/register', upload.array('image', 2), async (req, res) => {
   await check('password', 'Mật khẩu ít nhất 6 chữ')
     .isLength({ min: 6 })
     .run(req)
-  await check('phoneNumber', 'Vui lòng nhập Số điện thoại').not().isEmpty().run(req)
+  await check('phoneNumber', 'Vui lòng nhập Số điện thoại')
+    .not()
+    .isEmpty()
+    .run(req)
 
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
@@ -190,7 +193,7 @@ router.get('/', async (req, res) => {
         price: Math.min(...listPrice),
         imageId,
         description: owner.description,
-        rate: owner.rate.value
+        rate: owner.averageRating
       }
 
       infoBlock.push(info)
@@ -262,7 +265,7 @@ router.get('/location', async (req, res) => {
         price: Math.min(...listPrice),
         imageId,
         description: owner.description,
-        rate: owner.rate.value
+        rate: owner.averageRating
       }
 
       infoBlock.push(info)
@@ -317,7 +320,7 @@ router.get('/name', async (req, res) => {
         price: Math.min(...listPrice),
         imageId,
         description: owner.description,
-        rate: owner.rate.value
+        rate: owner.averageRating
       }
 
       infoBlock.push(info)
@@ -386,7 +389,7 @@ router.get('/type', async (req, res) => {
         price: Math.min(...listPrice),
         imageId,
         description: owner.description,
-        rate: owner.rate.value
+        rate: owner.averageRating
       }
 
       infoBlock.push(info)

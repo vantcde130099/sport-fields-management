@@ -74,9 +74,14 @@ const OwnerSchema = new Schema({
       }
     }
   ],
+  averageRating: {
+    type: Number,
+    default: 0,
+    max: 5
+  },
   bookings: {
     type: Number,
-    default: 0
+    default: -1
   },
   description: {
     type: String
