@@ -105,9 +105,16 @@ router.post(
 // @access  Private
 router.get('/', async (req, res) => {
   const { ownerId } = req.body
-
+  const date = new Date()
+  console.log(date)
   try {
-    let coupons = await Coupon.find({ owner: ownerId }).sort({
+    //get coupon can use in expired and quantity > 0
+    let coupons = await Coupon.find({
+      owner: ownerId,
+      status: true,
+      timeStart: { $lte: date },
+      timeEnd: { $gte: date }
+    }).sort({
       dateCreated: -1
     })
 
