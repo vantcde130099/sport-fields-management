@@ -130,4 +130,103 @@ router.delete(
   }
 )
 
+// @route   GET /api/coupons/all
+// @desc    Owner get all their coupons
+// @access  Private
+router.get('/all', owner, async (req, res) => {
+  try {
+    const coupons = await Coupon.find({ owner: req.owner.id }).sort({
+      dateCreated: -1
+    })
+
+    //check coupons exist
+    if (coupons.length == 0) {
+      return res.status(400).json({ message: 'Trống' })
+    }
+
+    res.status(200).json({ coupons })
+  } catch (error) {
+    console.error(error.message)
+    return res.status(500).json({ message: 'Lỗi server' })
+  }
+})
+
+// @route   GET /api/coupons/search
+// @desc    Owner search code their coupons
+// @access  Private
+router.get('/search', owner, async (req, res) => {
+  const { code } = req.body
+  try {
+    const coupons = await Coupon.find(
+      {
+        owner: req.owner.id,
+        code: { $regex: `.*${code}.*` }
+      },
+      {
+        dateCreated: 0,
+        owner: 0
+      }
+    ).sort({
+      dateCreated: -1
+    })
+
+    res.status(200).json({ coupons })
+  } catch (error) {
+    console.error(error.message)
+    return res.status(500).json({ message: 'Lỗi server' })
+  }
+})
+
+// @route   GET /api/coupons/filter
+// @desc    Owner filter their coupons
+// @access  Private
+router.get(
+  '/filter',
+  owner,
+  [
+    check('code', 'Vui lòng nhập code').not().isEmpty(),
+    check('sportType', 'Vui lòng chọn loại thể thao').not().isEmpty(),
+    check('fieldType', 'Vui lòng loại sân').not().isEmpty(),
+    check('start', 'Vui lòng chọn ngày bắt đầu').not().isEmpty(),
+    check('end', 'Vui lòng chọn ngày kết thúc').not().isEmpty()
+  ],
+  async (req, res) => {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() })
+    }
+
+    const { code, sportType, fieldType, start, end } = req.body
+
+    const [dayStart, monthStart, yearStart] = start.split('-')
+    const [dayEnd, monthEnd, yearEnd] = end.split('-')
+
+    const timeStartFilter = new Date(yearStart, monthStart, dayStart)
+    const timeEndFilter = new Date(yearEnd, monthEnd, dayEnd)
+
+    try {
+      //filter
+      const coupons = await Coupon.find(
+        {
+          owner: req.owner.id,
+          code: { $regex: `.*${code}.*` },
+          'type.sportType': sportType,
+          'type.fieldType': fieldType,
+          timeStart: { $gte: timeStartFilter },
+          timeEnd: { $lte: timeEndFilter }
+        },
+        {
+          dateCreated: 0,
+          owner: 0
+        }
+      ).sort({ dateCreated: -1 })
+
+      res.status(200).json({ coupons })
+    } catch (error) {
+      console.error(error.message)
+      return res.status(500).json({ message: 'Lỗi server' })
+    }
+  }
+)
+
 module.exports = router
