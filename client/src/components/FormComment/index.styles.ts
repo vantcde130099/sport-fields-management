@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles, createMuiTheme } from '@material-ui/core/styles'
 
 export const useStyles = makeStyles((theme) => ({
   root: {
@@ -8,7 +8,7 @@ export const useStyles = makeStyles((theme) => ({
     },
   },
   contain: {
-    width : 600,
+    width: 600,
     flexGrow: 1,
   },
 
@@ -28,3 +28,12 @@ export const useStyles = makeStyles((theme) => ({
     maxHeight: '100%',
   },
 }));
+
+
+export const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#F94949'
+    }
+  }
+});
