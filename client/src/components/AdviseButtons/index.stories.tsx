@@ -10,9 +10,9 @@ export default {
 
 const Template: Story<Props> = (args) => <AdviseButtons {...args} />
 
-export const Contained1 = Template.bind({})
+export const Advise = Template.bind({})
 
-Contained1.args = {
+Advise.args = {
   instructions : [
     'Sản phẩm tuyệt cú mèo !' , " Ngon bỗ rẻ !" , "Dịch vụ đa dạng !"
   ]
