@@ -128,5 +128,3 @@ export const Card: React.FC<Props> = ({ item }) => {
     </CardMUI>
   )
 }
-
-export default Card
