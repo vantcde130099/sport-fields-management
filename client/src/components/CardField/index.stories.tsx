@@ -2,7 +2,7 @@ import CardField from '.'
 import { Story, Meta } from '@storybook/react'
 
 export default {
-  title: 'CommonComponent/CardFields',
+  title: 'CardFields',
   component: CardField
 }
 
