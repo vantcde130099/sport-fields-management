@@ -6,7 +6,6 @@ const owner = require('../../middleware/owner')
 const upload = require('../../middleware/upload')
 const Owner = require('../../models/Owners')
 const Field = require('../../models/Fields')
-const { ReplSet } = require('mongodb')
 
 
 // @route   POST /api/fields/add
