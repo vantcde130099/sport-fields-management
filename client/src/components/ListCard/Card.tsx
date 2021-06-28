@@ -2,7 +2,7 @@ import React, { Component, useState } from 'react'
 
 // Material-ui
 import {
-  Card,
+  Card as CardMUI,
   CardActionArea,
   CardActions,
   CardContent,
@@ -15,7 +15,7 @@ import {
 import Rating from '@material-ui/lab/Rating'
 
 // Styles
-import { useStyles } from './CardField.styles'
+import { useStyles } from './Card.styles'
 
 export interface Props {
   item?: {
@@ -30,11 +30,11 @@ export interface Props {
   onClick?: () => void
 }
 
-export const CardField: React.FC<Props> = ({ item }) => {
+export const Card: React.FC<Props> = ({ item }) => {
   const classes = useStyles()
 
   return (
-    <Card className={classes.root}>
+    <CardMUI className={classes.root}>
       <CardActionArea className={classes.hoverShowAll}>
         <CardMedia
           className={classes.media}
@@ -125,8 +125,8 @@ export const CardField: React.FC<Props> = ({ item }) => {
 
         <CardActions></CardActions>
       </CardActionArea>
-    </Card>
+    </CardMUI>
   )
 }
 
-export default CardField
+export default Card

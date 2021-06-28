@@ -1,12 +1,12 @@
 import React from 'react'
-import { ListCard } from '.'
+import { CardList as List } from '.'
 
 export default {
   title: 'CardList',
-  component: ListCard
+  component: List
 }
 
-const Template = (args) => <ListCard {...args}></ListCard>
+const Template = (args) => <List {...args}></List>
 
 export const CardList = Template.bind({})
 CardList.args = {

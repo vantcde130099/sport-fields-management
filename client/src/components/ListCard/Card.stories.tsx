@@ -1,11 +1,11 @@
-import CardField from './CardField'
+import {Card as CardComponent} from './Card'
 
 export default {
   title : 'CardList',
-  component: CardField
+  component: CardComponent
 }
 
-const Template = (args) => <CardField {...args}></CardField>
+const Template = (args) => <CardComponent {...args}></CardComponent>
 
 export const Card = Template.bind({})
 Card.args = {
