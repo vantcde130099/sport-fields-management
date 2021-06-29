@@ -18,7 +18,7 @@ export const ItemCard = () => {
       <div className={classes.details}>
         <CardContent className={classes.root1} style={{ padding: 0 }}>
           <Typography>tên sản phẩm</Typography>
-          <Typography>giá sản phẩm</Typography>
+          <Typography style={{ color: '#F94949' }}>giá sản phẩm</Typography>
         </CardContent>
         <CardActions className={classes.root2}>
           <IconButton className={classes.button} size="small">
