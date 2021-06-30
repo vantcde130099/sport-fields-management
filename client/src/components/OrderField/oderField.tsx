@@ -6,8 +6,6 @@ import fieldimg from './img/orderField.png'
 import Button from '@material-ui/core/Button'
 import { useStyles } from './oderField.style'
 
-// import { useStyles } from './oderField.style'
-
 export const OderField = () => {
   const classes = useStyles()
   return (
@@ -57,7 +55,6 @@ export const OderField = () => {
               <Button className={classes.button1}>Đánh giá</Button>
             </div>
           </Grid>
-          {/* <Grid xs={1}></Grid> */}
         </Grid>
         <Grid xs={1}></Grid>
       </Grid>

@@ -22,7 +22,6 @@ export const useStyles = makeStyles((theme: Theme) =>
     },
     paper2: {
       textAlign: 'center'
-      // marginLeft: '3px'
     },
     paper3: {
       borderLeft: '2px solid #747070',
