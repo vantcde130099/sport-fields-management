@@ -182,9 +182,12 @@ router.get('/', async (req, res) => {
 
       //calculating average of rate
       const listRating = await owner.rate.map((rate) => rate.value)
-      const sumRating = listRating.reduce((accumulator, currentValue) => {
-        return accumulator + currentValue
-      })
+      let sumRating = 0
+      if (listRating.length > 0) {
+        sumRating = listRating.reduce((accumulator, currentValue) => {
+          return accumulator + currentValue
+        })
+      }
 
       let info = {
         ownerId: owner.id,
@@ -193,7 +196,10 @@ router.get('/', async (req, res) => {
         price: Math.min(...listPrice),
         imageId,
         description: owner.description,
-        rate: sumRating / listRating.length
+        rate:
+          sumRating != 0
+            ? sumRating / listRating.length
+            : 'Chưa có đánh giá nào'
       }
 
       infoBlock.push(info)
