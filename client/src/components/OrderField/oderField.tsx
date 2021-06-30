@@ -17,7 +17,6 @@ export const OderField = () => {
           container
           style={{ boxShadow: '5px 5px 5px 1px #888888', borderRadius: '5px' }}
         >
-          {/* <Grid xs={1}></Grid> */}
           <Grid xs={3}>
             <img
               src={fieldimg}
