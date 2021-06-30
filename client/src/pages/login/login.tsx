@@ -1,124 +1,22 @@
-import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
-import Paper from '@material-ui/core/Paper'
-import Grid from '@material-ui/core/Grid'
-import Typography from '@material-ui/core/Typography'
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
-import AppBar from '@material-ui/core/AppBar'
-import Tabs from '@material-ui/core/Tabs'
-import Tab from '@material-ui/core/Tab'
-import SwipeableViews from 'react-swipeable-views'
-import Box from '@material-ui/core/Box'
-import PropTypes from 'prop-types'
-import GoogleButton from 'react-google-button'
-import Button from '@material-ui/core/Button'
+import {
+  AppBar,
+  Button,
+  Grid,
+  Paper,
+  Tab,
+  Tabs,
+  TextField,
+  Typography
+} from '@material-ui/core'
+import { ThemeProvider } from '@material-ui/core/styles'
 import FacebookIcon from '@material-ui/icons/Facebook'
-import TextField from '@material-ui/core/TextField'
-import { red } from '@material-ui/core/colors'
+import React from 'react'
+import GoogleButton from 'react-google-button'
+import SwipeableViews from 'react-swipeable-views'
+import { TabPanel } from './components/TabPanel'
+import { theme, useStyles } from './login.styles'
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    backgroundColor: '#151B26',
-    height: '85vh',
-    borderStyle: 'solid',
-    borderWidth: '45px 0px',
-    borderColor: '#1A222E'
-  },
-  paper: {
-    padding: theme.spacing('10%', 0, 0, 0),
-    textAlign: 'center',
-    color: '#000000',
-    backgroundColor: '#FCFCFC'
-  },
-  paper1: {
-    margin: theme.spacing('18%', 0, 0, 0),
-    textAlign: 'left',
-    color: '#000000',
-    background: '#FCFCFC'
-  },
-  paper2: {
-    padding: theme.spacing('20%', 0, 0, '20%'),
-    textAlign: 'left',
-    color: '#FCFCFC',
-    background: 'none'
-  },
-  node: {
-    backgroundColor: '#FCFCFC',
-    height: '86vh',
-    borderRadius: '25px 0 0 25px'
-  },
-  root1: {
-    width: '100%'
-  },
-  root3: {
-    margin: theme.spacing(1),
-    width: '90%',
-    marginLeft: '5%'
-  }
-}))
-
-const theme = createMuiTheme({
-  typography: {
-    fontFamily: [
-      '-apple-system',
-      'BlinkMacSystemFont',
-      '"Segoe UI"',
-      'Roboto',
-      '"Helvetica Neue"',
-      'Arial',
-      'sans-serif',
-      '"Apple Color Emoji"',
-      '"Segoe UI Emoji"',
-      '"Segoe UI Symbol"',
-      'Fira Sans Extra Condensed'
-    ].join(','),
-    h3: {
-      fontFamily: '"Segoe UI"',
-      fontStyle: 'normal',
-      fontWeight: 600,
-      fontSize: '42px',
-      textAlign: 'left'
-    },
-    h5: {
-      fontFamily: '"Segoe UI"',
-      fontStyle: 'normal',
-      fontWeight: 400,
-      paddingTop: '20px'
-    }
-  },
-  palette: {
-    primary: red
-  }
-})
-
-function TabPanel(props) {
-  const { children, value, index, ...other } = props
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`full-width-tabpanel-${index}`}
-      aria-labelledby={`full-width-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box p={2}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  )
-}
-
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.any.isRequired,
-  value: PropTypes.any.isRequired
-}
-
-function a11yProps(index) {
+function a11yProps(index: any) {
   return {
     id: `full-width-tab-${index}`,
     'aria-controls': `full-width-tabpanel-${index}`
@@ -128,11 +26,11 @@ function a11yProps(index) {
 export function LoginUser() {
   const [value, setValue] = React.useState(0)
 
-  const handleChange = (event, newValue) => {
+  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue)
   }
 
-  const handleChangeIndex = (index) => {
+  const handleChangeIndex = (index: number) => {
     setValue(index)
   }
 
@@ -183,7 +81,6 @@ export function LoginUser() {
                       }}
                       aria-label="full width tabs example"
                       centered
-                      wrapped
                     >
                       <Tab
                         label="Khách"
@@ -277,7 +174,6 @@ export function LoginUser() {
                               height: '40px',
                               width: '200px',
                               borderRadius: '20px',
-                              backgroundColor: '#1976d2',
                               textTransform: 'none',
                               color: 'white',
                               fontSize: '1.2rem',
@@ -318,7 +214,6 @@ export function LoginUser() {
                     variant="h3"
                     style={{
                       fontWeight: 'bold',
-                      fontWeight: 600,
                       fontSize: '42px'
                     }}
                   >
