@@ -2,7 +2,7 @@ import { Button, Grid, Paper, Typography } from '@material-ui/core'
 import { ThemeProvider } from '@material-ui/core/styles'
 import { useStyles, theme } from './landingPage.styles'
 import React from 'react'
-import Image from './image/imageLandingPage.png'
+import Image from '../assets/image/imageLandingPage.png'
 
 export function LandingPage() {
   const classes = useStyles()
