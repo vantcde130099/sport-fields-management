@@ -66,6 +66,7 @@ router.post(
 
       //find if exist
       const existCode = await Coupon.findOne({ owner: owner.id, code })
+      
       if (existCode) {
         return res.status(400).json({ message: 'Code đã tồn tại' })
       }
