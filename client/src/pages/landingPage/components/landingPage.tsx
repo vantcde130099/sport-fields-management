@@ -8,7 +8,7 @@ export function LandingPage() {
   const classes = useStyles()
 
   return (
-    <div className={classes.root}>
+    <Grid container className={classes.root}>
       <Grid container style={{ boxShadow: '0' }}>
         <Grid item xs={12} style={{ boxShadow: 'none' }}>
           <Paper className={classes.paper} style={{ boxShadow: 'none' }}>
@@ -48,6 +48,6 @@ export function LandingPage() {
           <Paper className={classes.paper}></Paper>
         </Grid>
       </Grid>
-    </div>
+    </Grid>
   )
 }
