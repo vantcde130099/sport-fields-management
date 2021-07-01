@@ -28,7 +28,7 @@ router.post('/register', upload.array('image', 2), async (req, res) => {
 
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors })
+    return res.status(400).json({ errors: errors.array() })
   }
 
   //upload image
@@ -160,6 +160,7 @@ router.get('/', async (req, res) => {
   try {
     let infoBlock = []
     const listOwners = await Owner.find().sort({ dateCreated: -1 })
+
     if (listOwners.isEmpty) {
       return res.status(400).json({ msg: 'Không có sân' })
     }
@@ -182,11 +183,21 @@ router.get('/', async (req, res) => {
       for (const field of fields) {
         if (field.image.length > 0) {
           imageId = field.image[0]
-        }
-        if (imageId !== '') break
+        } else if (imageId !== '') break
       }
 
-      const listPrice = await fields.map((field) => field.price) //list price from fields
+      //list price from fields
+      const listPrice = await fields.map((field) => field.price)
+
+      //calculating average of rate
+      let sumRating = 0
+      const listRating = await owner.rate.map((rate) => rate.value)
+
+      if (listRating.length > 0) {
+        sumRating = listRating.reduce((accumulator, currentValue) => {
+          return accumulator + currentValue
+        })
+      }
 
       let info = {
         ownerId: owner.id,
@@ -195,7 +206,10 @@ router.get('/', async (req, res) => {
         price: Math.min(...listPrice),
         imageId,
         description: owner.description,
-        rate: owner.rate.value
+        rate:
+          sumRating != 0
+            ? sumRating / listRating.length
+            : 'Chưa có đánh giá nào'
       }
 
       infoBlock.push(info)
@@ -217,6 +231,7 @@ router.get('/location', async (req, res) => {
     let infoBlock = []
 
     let listOwners
+
     if (city && district && ward) {
       listOwners = await Owner.find({ 'contact.address': req.body }).sort({
         dateCreated: -1
@@ -285,9 +300,11 @@ router.get('/location', async (req, res) => {
 router.get('/name', async (req, res) => {
   try {
     let infoBlock = []
+
     const listOwners = await Owner.find({
       name: { $regex: `.*${req.body.name}.*` }
     }).sort({ dateCreated: -1 })
+
     if (listOwners.isEmpty) {
       return res.status(400).json({ msg: 'Không có sân' })
     }
@@ -298,7 +315,7 @@ router.get('/name', async (req, res) => {
     })
 
     for (const owner of fileteredOwner) {
-      // const field = await Field.findById(owner.fields[0]) // find field by id from owner
+      // find field by id from owner
       const fields = await Field.find({
         // get all fields of owner
         _id: { $in: owner.fields }
@@ -306,11 +323,11 @@ router.get('/name', async (req, res) => {
 
       //get first imageId if exist
       var imageId = ''
+
       for (const field of fields) {
         if (field.image.length > 0) {
           imageId = field.image[0]
-        }
-        if (imageId !== '') break
+        } else if (imageId !== '') break
       }
 
       const listPrice = await fields.map((field) => field.price) //list price from fields
@@ -352,6 +369,7 @@ router.get('/type', async (req, res) => {
 
     //find owners with field id
     let listOwners = []
+
     for (const field of listFields) {
       let owner = await Owner.findOne({ fields: field.id }).sort({
         dateCreated: -1
@@ -375,6 +393,7 @@ router.get('/type', async (req, res) => {
 
       //get first imageId if exist
       var imageId = ''
+
       for (const field of fields) {
         if (field.image.length > 0) {
           imageId = field.image[0]
