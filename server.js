@@ -20,6 +20,7 @@ app.use('/api/coaches', require('./routes/api/coaches'))
 app.use('/api/fields', require('./routes/api/fields'))
 app.use('/image', require('./routes/api/image'))
 app.use('/api/coupons', require('./routes/api/coupons'))
+app.use('/api/rate', require('./routes/api/rate'))
 app.use('/api/orders', require('./routes/api/orders'))
 app.use('/api/items', require('./routes/api/items'))
 

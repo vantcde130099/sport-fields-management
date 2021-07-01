@@ -30,6 +30,7 @@ router.put(
 
     const {
       id,
+      code,
       sportType,
       fieldType,
       discount,
@@ -40,7 +41,8 @@ router.put(
       quantity
     } = req.body
 
-    //execute date data
+    const type = { sportType, fieldType }
+
     const [hourStart, minStart] = start.hours.split(':')
     const [dayStart, monthStart, yearStart] = start.date.split('/')
     const [hourEnd, minEnd] = end.hours.split(':')
@@ -232,5 +234,27 @@ router.get(
     }
   }
 )
+
+// @route   GET /api/coupons
+// @desc    Customer get coupon of this owner
+// @access  Private
+router.get('/', async (req, res) => {
+  const { ownerId } = req.body
+  const date = new Date()
+
+  try {
+    //get coupon can use in expired and quantity > 0
+    let coupons = await Coupon.find({
+      owner: ownerId,
+      status: true,
+      timeStart: { $lte: date },
+      timeEnd: { $gte: date }
+    }).sort({
+      dateCreated: -1
+    })
+
+    res.status(200).json(coupons)
+  } catch (error) {}
+})
 
 module.exports = router
