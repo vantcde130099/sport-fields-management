@@ -178,11 +178,12 @@ router.get('/', async (req, res) => {
         } else if (imageId !== '') break
       }
 
-      const listPrice = await fields.map((field) => field.price) //list price from fields
+      //list price from fields
+      const listPrice = await fields.map((field) => field.price)
 
       //calculating average of rate
-      const listRating = await owner.rate.map((rate) => rate.value)
       let sumRating = 0
+      const listRating = await owner.rate.map((rate) => rate.value)
       if (listRating.length > 0) {
         sumRating = listRating.reduce((accumulator, currentValue) => {
           return accumulator + currentValue
