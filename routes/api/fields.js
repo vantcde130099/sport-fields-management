@@ -1,6 +1,5 @@
 const express = require('express')
 const router = express.Router()
-const mongoose = require('mongoose')
 const { check, validationResult } = require('express-validator')
 
 const owner = require('../../middleware/owner')
