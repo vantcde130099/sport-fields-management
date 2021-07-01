@@ -155,6 +155,7 @@ router.get('/', async (req, res) => {
   try {
     let infoBlock = []
     const listOwners = await Owner.find().sort({ dateCreated: -1 })
+
     if (listOwners.isEmpty) {
       return res.status(400).json({ msg: 'Không có sân' })
     }
@@ -223,6 +224,7 @@ router.get('/location', async (req, res) => {
     let infoBlock = []
 
     let listOwners
+
     if (city && district && ward) {
       listOwners = await Owner.find({ 'contact.address': req.body }).sort({
         dateCreated: -1
@@ -291,9 +293,11 @@ router.get('/location', async (req, res) => {
 router.get('/name', async (req, res) => {
   try {
     let infoBlock = []
+
     const listOwners = await Owner.find({
       name: { $regex: `.*${req.body.name}.*` }
     }).sort({ dateCreated: -1 })
+
     if (listOwners.isEmpty) {
       return res.status(400).json({ msg: 'Không có sân' })
     }
@@ -304,7 +308,7 @@ router.get('/name', async (req, res) => {
     })
 
     for (const owner of fileteredOwner) {
-      // const field = await Field.findById(owner.fields[0]) // find field by id from owner
+      // find field by id from owner
       const fields = await Field.find({
         // get all fields of owner
         _id: { $in: owner.fields }
@@ -312,11 +316,11 @@ router.get('/name', async (req, res) => {
 
       //get first imageId if exist
       var imageId = ''
+
       for (const field of fields) {
         if (field.image.length > 0) {
           imageId = field.image[0]
-        }
-        if (imageId !== '') break
+        } else if (imageId !== '') break
       }
 
       const listPrice = await fields.map((field) => field.price) //list price from fields
@@ -358,6 +362,7 @@ router.get('/type', async (req, res) => {
 
     //find owners with field id
     let listOwners = []
+
     for (const field of listFields) {
       let owner = await Owner.findOne({ fields: field.id }).sort({
         dateCreated: -1
@@ -381,6 +386,7 @@ router.get('/type', async (req, res) => {
 
       //get first imageId if exist
       var imageId = ''
+
       for (const field of fields) {
         if (field.image.length > 0) {
           imageId = field.image[0]
