@@ -42,6 +42,8 @@ router.post(
       quantity
     } = req.body
 
+    const type = { sportType, fieldType }
+
     const [hourStart, minStart] = start.hours.split(':')
     const [dayStart, monthStart, yearStart] = start.date.split('/')
     const [hourEnd, minEnd] = end.hours.split(':')
@@ -57,8 +59,6 @@ router.post(
       inDayOpen += parseInt(hourOpen) * 60 + parseInt(minOpen)
       inDayClose += parseInt(hourClose) * 60 + parseInt(minClose)
     }
-
-    const type = { sportType, fieldType }
 
     try {
       const owner = await Owner.findById(req.owner.id)
