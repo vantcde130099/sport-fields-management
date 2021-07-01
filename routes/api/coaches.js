@@ -23,6 +23,7 @@ router.post('/register', upload.array('image', 2), async (req, res) => {
   await check('phoneNumber', 'Vui lòng nhập SDT').not().isEmpty().run(req)
 
   const errors = validationResult(req)
+
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors })
   }
@@ -52,6 +53,7 @@ router.post('/register', upload.array('image', 2), async (req, res) => {
   try {
     //see if coach exist
     let coach = await Coach.findOne({ 'contact.phoneNumber': phoneNumber })
+
     if (coach) {
       return res
         .status(400)
@@ -106,6 +108,7 @@ router.post(
   ],
   async (req, res) => {
     const errors = validationResult(req)
+
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() })
     }
@@ -113,6 +116,7 @@ router.post(
     try {
       //see if owner exists
       let coach = await Coach.findOne({ 'contact.phoneNumber': phoneNumber })
+
       if (!coach) {
         return res
           .status(400)
@@ -120,6 +124,7 @@ router.post(
       }
 
       const isMatch = await bcrypt.compare(password, coach.password)
+
       if (!isMatch) {
         return res
           .status(400)
