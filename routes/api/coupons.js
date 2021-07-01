@@ -106,7 +106,7 @@ router.post(
 router.get('/', async (req, res) => {
   const { ownerId } = req.body
   const date = new Date()
-  console.log(date)
+
   try {
     //get coupon can use in expired and quantity > 0
     let coupons = await Coupon.find({
