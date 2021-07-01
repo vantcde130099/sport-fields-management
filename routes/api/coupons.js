@@ -23,6 +23,7 @@ router.put(
   ],
   async (req, res) => {
     const errors = validationResult(req)
+
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() })
     }
@@ -110,6 +111,7 @@ router.delete(
   [check('id', 'Vui lòng truyền ID').matches(/^[0-9a-fA-F]{24}$/)],
   async (req, res) => {
     const errors = validationResult(req)
+
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() })
     }
@@ -156,6 +158,7 @@ router.get('/all', owner, async (req, res) => {
 // @access  Private
 router.get('/search', owner, async (req, res) => {
   const { code } = req.body
+
   try {
     const coupons = await Coupon.find(
       {
@@ -192,6 +195,7 @@ router.get(
   ],
   async (req, res) => {
     const errors = validationResult(req)
+
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() })
     }
