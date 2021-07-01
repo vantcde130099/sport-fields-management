@@ -1,5 +1,6 @@
 import { makeStyles , createMuiTheme , ThemeProvider  } from '@material-ui/core/styles'
 
+// 'theme' to change color all component in search filter 
 export const theme = createMuiTheme({
   palette: {
       primary: {
@@ -7,6 +8,7 @@ export const theme = createMuiTheme({
       }
      }
    });
+
 export const useStyles = makeStyles((theme) => ({
   container: {
     maxWidth: 650,
