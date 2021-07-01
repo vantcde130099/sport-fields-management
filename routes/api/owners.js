@@ -24,7 +24,7 @@ router.post('/register', upload.array('image', 2), async (req, res) => {
 
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors })
+    return res.status(400).json({ errors: errors.array() })
   }
 
   //upload image
