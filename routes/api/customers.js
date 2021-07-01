@@ -157,6 +157,7 @@ router.get(
 router.get('/', async (req, res) => {
   try {
     let allCustomers = await Customers.find()
+
     if (!allCustomers) {
       return res.status(400).json({ message: 'No Customer found' })
     }
@@ -183,6 +184,7 @@ router.put(
   ],
   async (req, res) => {
     const errors = validationResult(req)
+
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() })
     }
@@ -240,7 +242,6 @@ router.get('/story-coaches', customer, async (req, res) => {
       coach: { $exists: true }
     }).sort({ dateCreated: -1 })
 
-    console.log(orders)
     if (orders === undefined || orders.length == 0) {
       return res.status(400).json({ message: 'Bạn chưa có lịch sử thuê nào.' })
     }
