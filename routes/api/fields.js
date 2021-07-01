@@ -136,6 +136,7 @@ router.get('/type', async (req, res) => {
       _id: { $in: owner.fields },
       type: req.body.type
     })
+
     if (!fields) {
       res.status(400).json({ message: 'Sân không tồn tại' })
     }
@@ -225,6 +226,7 @@ router.get('/booking-time-now', async (req, res) => {
       if (i > timeWorkingADay.hours.close - 60) break
 
       let close = new Date(open)
+
       close.setHours(close.getHours() + 1)
 
       listHours.push({
@@ -251,6 +253,7 @@ router.get('/booking-time-now', async (req, res) => {
 router.get('/booking-time-by-day', async (req, res) => {
   try {
     let timeWorkingADay = await Field.findById(req.body.fieldId, { hours: 1 })
+
     // const ordersInDay = Order.find()   //find all order In day
     const dateArray = req.body.date.split('-')
     const [day, month, year] = dateArray
@@ -264,6 +267,7 @@ router.get('/booking-time-by-day', async (req, res) => {
     )
 
     let close = new Date(year, month, day)
+
     close.setHours(
       timeWorkingADay.hours.close / 60,
       timeWorkingADay.hours.close % 60,
@@ -272,12 +276,14 @@ router.get('/booking-time-by-day', async (req, res) => {
 
     //generate hour booking
     let listHours = []
+
     for (
       let i = timeWorkingADay.hours.open;
       i, i <= timeWorkingADay.hours.close;
       i += 60
     ) {
       if (i > timeWorkingADay.hours.close - 60) break
+
       let close = new Date(open)
       close.setHours(close.getHours() + 1)
       listHours.push({
@@ -288,6 +294,7 @@ router.get('/booking-time-by-day', async (req, res) => {
           close.getMinutes() === 0 ? '00' : open.getMinutes()
         }`
       })
+
       open.setHours(open.getHours() + 1)
     }
 
@@ -327,6 +334,7 @@ router.put(
   ],
   async (req, res) => {
     const errors = validationResult(req)
+
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() })
     }
@@ -346,6 +354,7 @@ router.put(
     const open = openHour * 60 + openMinutes
     const close = closeHour * 60 + closeMinutes
     const hours = { open, close }
+
     try {
       let field = await Field.findOneAndUpdate(
         id,
