@@ -184,6 +184,7 @@ router.get('/', async (req, res) => {
       //calculating average of rate
       let sumRating = 0
       const listRating = await owner.rate.map((rate) => rate.value)
+
       if (listRating.length > 0) {
         sumRating = listRating.reduce((accumulator, currentValue) => {
           return accumulator + currentValue
