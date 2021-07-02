@@ -13,6 +13,7 @@ const owner = require('../../middleware/owner')
 // @access  Private
 router.put('/offline', customer, async (req, res) => {
   const { orderId, payment } = req.body
+
   try {
     const existCustomerId = await Customer.findById(req.customer.id, { _id: 1 })
 
@@ -33,9 +34,7 @@ router.put('/offline', customer, async (req, res) => {
     let order = await Order.findOneAndUpdate(
       { _id: orderId },
       { payment: payment, status: 'Chờ thanh toán' },
-      {
-        new: true
-      }
+      { new: true }
     )
 
     res
