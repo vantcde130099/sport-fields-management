@@ -7,10 +7,9 @@ export const useStyles = makeStyles((theme: Theme) =>
       backgroundColor: '#F94949',
       color: 'white',
       textAlign: 'center',
-      boxShadow: '3px 3px 10px 0px #888888'
-    },
-    pos: {
-      padding: '0px'
+      boxShadow: '3px 3px 10px 0px #888888',
+      display: 'inline-block',
+      margin: '0 5px'
     }
   })
 )

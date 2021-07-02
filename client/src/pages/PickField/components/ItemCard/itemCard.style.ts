@@ -4,7 +4,9 @@ export const useStyles = makeStyles({
   root: {
     maxWidth: '170px',
     height: '240px',
-    padding: '0px'
+    padding: '0px',
+    display: 'inline-block',
+    margin: '5px 10px'
   },
   image: {
     width: '170px',
