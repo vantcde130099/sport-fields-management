@@ -2,8 +2,8 @@ import React from 'react'
 import { LandingPage } from './landingPage'
 
 export default {
-  title: 'Page/landing',
+  title: 'Pages/landing',
   component: LandingPage
 }
 
-export const landing = () => <LandingPage />
+export const landingPage = () => <LandingPage />

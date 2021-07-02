@@ -47,7 +47,7 @@ export const LandingPage = () => {
                 fontSize: '30px'
               }}
             >
-              Làm Hết sức, chơi hết sức
+              Làm hết sức, chơi hết sức
             </Typography>
           </Paper>
           <Paper className={classes.paper3} style={{ boxShadow: 'none' }}>
