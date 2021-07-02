@@ -194,6 +194,7 @@ router.put(
   async (req, res) => {
     //check validate
     const errors = validationResult(req)
+
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() })
     }
@@ -217,6 +218,7 @@ router.put(
     const [dayEnd, monthEnd, yearEnd] = endDay.split('-')
 
     const workingInDay = { startInDay, endInDay, allDay }
+
     try {
       // check id
       if (fieldId.match(/^[0-9a-fA-F]{24}$/) == null) {
@@ -225,6 +227,7 @@ router.put(
 
       //check field exist
       const field = await Field.findById(fieldId)
+
       if (!field) {
         return res.status(400).json({ message: 'Sân không tồn tại' })
       }
@@ -233,6 +236,7 @@ router.put(
       const isFieldRegistered = await Coach.find({
         'fieldsRegistered.field': { $in: fieldId }
       })
+
       if (isFieldRegistered.length > 0) {
         return res.status(400).json({ message: 'Bạn đã đăng ký sân này rồi!' })
       }

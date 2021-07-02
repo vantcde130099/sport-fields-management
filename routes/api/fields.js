@@ -2,10 +2,13 @@ const express = require('express')
 const router = express.Router()
 const { check, validationResult } = require('express-validator')
 
+// middleware
 const owner = require('../../middleware/owner')
 const coach = require('../../middleware/coach')
-const Coach = require('../../models/Coaches')
 const upload = require('../../middleware/upload')
+
+// models
+const Coach = require('../../models/Coaches')
 const Owner = require('../../models/Owners')
 const Field = require('../../models/Fields')
 
