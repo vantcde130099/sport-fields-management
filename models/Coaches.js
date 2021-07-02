@@ -103,6 +103,11 @@ const CoachSchema = new Schema({
       }
     }
   ],
+  averageRating: {
+    type: Number,
+    default: 0,
+    max: 5
+  },
   booking: {
     type: Number,
     default: 0
