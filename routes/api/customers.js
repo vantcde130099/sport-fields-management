@@ -8,7 +8,10 @@ const config = require('config')
 const { check, validationResult } = require('express-validator')
 
 const Customer = require('../../models/Customers')
+const Order = require('../../models/Orders')
 const customer = require('../../middleware/customer')
+const upload = require('../../middleware/upload')
+
 passport.serializeUser((user, done) => {
   done(null, user.id)
 })
@@ -156,6 +159,7 @@ router.get(
 router.get('/', async (req, res) => {
   try {
     let allCustomers = await Customers.find()
+
     if (!allCustomers) {
       return res.status(400).json({ message: 'No Customer found' })
     }
@@ -169,30 +173,100 @@ router.get('/', async (req, res) => {
 // @route   PUT api/customers/contact
 // @desc    Customer update contact
 // @access  Public
-router.put('/contact', customer, [
-  check('phoneNumber', 'Vui lòng nhập đúng số điện thoại').matches(/(84|0[3|5|7|8|9])+([0-9]{8})\b/),
-  check('address.city', 'Vui lòng nhập thành phố').not().isEmpty(),
-  check('address.district', 'Vui lòng nhập quận').not().isEmpty(),
-  check('address.ward', 'Vui lòng nhập phường').not().isEmpty(),
-],async (req, res) => {
-  const errors = validationResult(req)
-  if(!errors.isEmpty()){
-    return res.status(400).json({errors: errors.array()})
-  }
+router.put(
+  '/contact',
+  customer,
+  [
+    check('phoneNumber', 'Vui lòng nhập đúng số điện thoại').matches(
+      /(84|0[3|5|7|8|9])+([0-9]{8})\b/
+    ),
+    check('address.city', 'Vui lòng nhập thành phố').not().isEmpty(),
+    check('address.district', 'Vui lòng nhập quận').not().isEmpty(),
+    check('address.ward', 'Vui lòng nhập phường').not().isEmpty()
+  ],
+  async (req, res) => {
+    const errors = validationResult(req)
 
-  const {phoneNumber, address}  = req.body
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() })
+    }
+
+    const { phoneNumber, address } = req.body
+    try {
+      const updateCustomer = await Customer.findOneAndUpdate(
+        { _id: req.customer.id },
+        {
+          $set: {
+            'contact.phoneNumber': phoneNumber,
+            'contact.address.city': address.city,
+            'contact.address.district': address.district,
+            'contact.address.ward': address.ward
+          }
+        },
+        { new: true }
+      )
+
+      res.status(200).json(updateCustomer)
+    } catch (error) {
+      console.error(error)
+      return res.status(500).json('Lỗi server')
+    }
+  }
+)
+
+// @route   GET api/customers/story-orders
+// @desc    Customer see booking story
+// @access  Private
+router.get('/story-orders', customer, async (req, res) => {
+  try {
+    const orders = await Order.find({ customer: req.customer.id }).sort({
+      dateCreated: -1
+    })
+
+    if (orders === undefined || orders.length == 0) {
+      return res.status(400).json({ message: 'Bạn chưa có hóa đơn nào.' })
+    }
+
+    res.status(200).json({ orders })
+  } catch (error) {
+    console.error(error.message)
+    return res.status(500).send('Lỗi server')
+  }
+})
+
+// @route   GET api/customers/story-coaches
+// @desc    Customer see booking coaches story
+// @access  Private
+router.get('/story-coaches', customer, async (req, res) => {
+  try {
+    const orders = await Order.find({
+      customer: req.customer.id,
+      coach: { $exists: true }
+    }).sort({ dateCreated: -1 })
+
+    if (orders === undefined || orders.length == 0) {
+      return res.status(400).json({ message: 'Bạn chưa có lịch sử thuê nào.' })
+    }
+
+    res.status(200).json({ orders })
+  } catch (error) {
+    console.error(error.message)
+    return res.status(500).send('Lỗi server')
+  }
+})
+
+// @route   PUT api/customers/avatar
+// @desc    Customer update avatar
+// @access  Public
+router.put('/avatar', customer, upload.single('image'), async(req, res) => {
   try {
     
-    const updateCustomer = await Customer.findOneAndUpdate({_id: req.customer.id}, {$set: {
-      'contact.phoneNumber': phoneNumber,
-      'contact.address.city':address.city,
-      'contact.address.district': address.district,
-      'contact.address.ward': address.ward}}, {new: true})
+    const avatar = req.file.id
+    const updateCustomer = await Customer.findOneAndUpdate({_id: req.customer.id}, {avatar: avatar}, {new: true})
 
-    res.status(200).json(updateCustomer)
-    
+    res.status(200).json({message: 'Thêm thành công'})
   } catch (error) {
-    console.error(error)
+    console.error(error.message)
     return res.status(500).json('Lỗi server')
   }
 })

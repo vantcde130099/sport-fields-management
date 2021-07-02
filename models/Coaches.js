@@ -59,20 +59,27 @@ const CoachSchema = new Schema({
   price: {
     type: Number
   },
-  rate: {
-    customerId: {
-      type: Schema.Types.ObjectId
-    },
-    rateValue: {
-      type: Number
-    },
-    text: {
-      type: String
-    },
-    dateCreated: {
-      type: Date,
-      default: Date.now
+  rate: [
+    {
+      customer: {
+        type: Schema.Types.ObjectId,
+        ref: 'customer'
+      },
+      rateValue: {
+        type: Number
+      },
+      text: {
+        type: String
+      },
+      dateCreated: {
+        type: Date,
+        default: Date.now
+      }
     }
+  ],
+  booking: {
+    type: Number,
+    default: 0
   },
   description: {
     type: String

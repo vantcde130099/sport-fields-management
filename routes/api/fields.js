@@ -1,13 +1,11 @@
 const express = require('express')
 const router = express.Router()
-const mongoose = require('mongoose')
 const { check, validationResult } = require('express-validator')
 
 const owner = require('../../middleware/owner')
 const upload = require('../../middleware/upload')
 const Owner = require('../../models/Owners')
 const Field = require('../../models/Fields')
-const { ReplSet } = require('mongodb')
 
 
 // @route   POST /api/fields/add
