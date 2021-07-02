@@ -35,7 +35,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   node: {
     backgroundColor: '#FCFCFC',
-    height: '86vh',
+    height: '100%',
     borderRadius: '25px 0 0 25px'
   },
   root1: {

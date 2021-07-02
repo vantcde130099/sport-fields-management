@@ -1,3 +1,9 @@
+import React from 'react'
+
+//Component
+import { TabPanel } from './components/TabPanel'
+
+//Material UI
 import {
   AppBar,
   Button,
@@ -6,14 +12,16 @@ import {
   Tab,
   Tabs,
   TextField,
-  Typography
+  Typography,
+  ThemeProvider
 } from '@material-ui/core'
-import { ThemeProvider } from '@material-ui/core/styles'
+
+//Icons
 import FacebookIcon from '@material-ui/icons/Facebook'
-import React from 'react'
 import GoogleButton from 'react-google-button'
 import SwipeableViews from 'react-swipeable-views'
-import { TabPanel } from './components/TabPanel'
+
+//Styles
 import { theme, useStyles } from './login.styles'
 
 function a11yProps(index: any) {
@@ -37,7 +45,7 @@ export function LoginUser() {
   const classes = useStyles()
 
   return (
-    <div className={classes.root}>
+    <Grid className={classes.root}>
       <Grid container>
         <Grid item xs={1} style={{ backgroundColor: '#1A222E' }}></Grid>
         <Grid item xs={10} container style={{ backgroundColor: '#1A222E' }}>
@@ -229,6 +237,6 @@ export function LoginUser() {
         </Grid>
         <Grid item xs={1} style={{ backgroundColor: '#1A222E' }}></Grid>
       </Grid>
-    </div>
+    </Grid>
   )
 }
