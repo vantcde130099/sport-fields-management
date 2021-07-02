@@ -1,5 +1,7 @@
 import { createMuiTheme, makeStyles } from '@material-ui/core/styles'
 
+import { Props } from '.'
+
 export const theme = createMuiTheme({
   palette: {
     primary: {
