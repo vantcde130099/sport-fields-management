@@ -60,11 +60,16 @@ const OrderSchema = new Schema({
   },
   payment: {
     method: {
-      type: String
+      type: String,
+      enum: ['Thanh toán tại chỗ', 'Online']
     },
     status: {
       type: Boolean
     }
+  },
+  status: {
+    type: String,
+    enum: ['Chờ thanh toán', 'Hoàn thành', 'Hủy']
   },
   dateCreated: {
     type: Date,
