@@ -35,10 +35,12 @@ router.get('/:image_id', function (req, res) {
 // @access  Private
 router.delete('/remove', owner, async (req, res) => {
   const { fieldId, imageId } = req.body
+
   try {
     //check field of owner
     const owner = await Owner.findById(req.owner.id, { fields: true })
     const indexOfField = owner.fields.indexOf(fieldId)
+
     if (indexOfField == -1) {
       return res.status(400).json({ message: 'Lỗi, Sân không thuộc chủ sân.' })
     }
@@ -46,6 +48,7 @@ router.delete('/remove', owner, async (req, res) => {
     //find index of image in field
     let field = await Field.findById(fieldId, { image: true })
     const indexOfImage = field.image.indexOf(imageId)
+
     if (indexOfImage == -1) {
       return res
         .status(400)
