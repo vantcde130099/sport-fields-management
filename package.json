@@ -15,7 +15,6 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "@material-ui/lab": "^4.0.0-alpha.58",
     "bcryptjs": "^2.4.3",
     "config": "^3.3.6",
     "express": "^4.17.1",
