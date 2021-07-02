@@ -34,6 +34,7 @@ router.post('/register', upload.array('image', 2), async (req, res) => {
 
   const {
     name,
+    dateOfBirth,
     email,
     phoneNumber,
     password,
@@ -46,7 +47,7 @@ router.post('/register', upload.array('image', 2), async (req, res) => {
 
   const address = { city, district, ward }
   const contact = { email, phoneNumber, address }
-  
+
   try {
     //see if coach exist
     let coach = await Coach.findOne({ 'contact.phoneNumber': phoneNumber })
@@ -58,6 +59,7 @@ router.post('/register', upload.array('image', 2), async (req, res) => {
 
     coach = new Coach({
       name,
+      dateOfBirth,
       contact,
       price,
       description
