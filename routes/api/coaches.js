@@ -24,7 +24,7 @@ router.post('/register', upload.array('image', 2), async (req, res) => {
 
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors })
+    return res.status(400).json({ errors: errors.array() })
   }
 
   //upload image
@@ -36,6 +36,7 @@ router.post('/register', upload.array('image', 2), async (req, res) => {
 
   const {
     name,
+    dateOfBirth,
     email,
     phoneNumber,
     password,
@@ -60,10 +61,12 @@ router.post('/register', upload.array('image', 2), async (req, res) => {
 
     coach = new Coach({
       name,
+      dateOfBirth,
       contact,
       price,
       description
     })
+
     //add identityCard Id to Coaches
     coach.identityCard = identityCard
 
@@ -109,7 +112,9 @@ router.post(
     if (!err.isEmpty()) {
       return res.status(400).json({ err: err.array() })
     }
+
     const { phoneNumber, password } = req.body
+
     try {
       //see if owner exists
       let coach = await Coach.findOne({ 'contact.phoneNumber': phoneNumber })
