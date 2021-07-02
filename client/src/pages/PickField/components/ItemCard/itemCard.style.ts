@@ -6,7 +6,7 @@ export const useStyles = makeStyles({
     height: '240px',
     padding: '0px',
     display: 'inline-block',
-    margin: '5px 10px'
+    margin: '10px 20px'
   },
   image: {
     width: '170px',

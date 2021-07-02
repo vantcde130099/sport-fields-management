@@ -1,7 +1,7 @@
 import { ItemCard } from './itemCard'
 
 export default {
-  title: 'PickField/ItemCard',
+  title: 'Pages/PickField/ItemCard',
   component: ItemCard
 }
 

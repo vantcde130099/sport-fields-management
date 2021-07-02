@@ -76,6 +76,11 @@ export const PickField = () => {
               <ItemCard />
               <ItemCard />
               <ItemCard />
+              <ItemCard />
+              <ItemCard />
+              <ItemCard />
+              <ItemCard />
+              <ItemCard />
             </TabPanel>
           </SwipeableViews>
         </Grid>

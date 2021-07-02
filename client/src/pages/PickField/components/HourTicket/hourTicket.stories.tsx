@@ -2,7 +2,7 @@ import React from 'react'
 import { HourTicket } from './hourTicket'
 
 export default {
-  title: 'PickField/HourTicket',
+  title: 'Pages/PickField/HourTicket',
   component: HourTicket
 }
 

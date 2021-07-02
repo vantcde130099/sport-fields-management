@@ -2,7 +2,7 @@ import React from 'react'
 import { PickField } from './index'
 
 export default {
-  title: 'Page/PickField',
+  title: 'Pages/PickField',
   component: PickField
 }
 
