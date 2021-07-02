@@ -9,7 +9,7 @@ export const useStyles = makeStyles((theme: Theme) =>
       textAlign: 'center',
       boxShadow: '3px 3px 10px 0px #888888',
       display: 'inline-block',
-      margin: '0 5px'
+      margin: '10px 10px'
     }
   })
 )

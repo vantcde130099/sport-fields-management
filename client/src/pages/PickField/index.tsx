@@ -1,4 +1,6 @@
 import React from 'react'
+
+//Material-UI
 import {
   Container,
   Grid,
@@ -6,11 +8,12 @@ import {
   AppBar,
   Tabs,
   Tab,
-  Theme,
   useTheme
 } from '@material-ui/core'
-import { Bill } from './components/Bill/bill'
 import SwipeableViews from 'react-swipeable-views'
+
+//Components
+import { Bill } from './components/Bill/bill'
 import { TabPanel } from './components/TabPanel/TabPanel'
 import { HourTicket } from './components/HourTicket/hourTicket'
 import { ItemCard } from './components/ItemCard/itemCard'
@@ -37,22 +40,67 @@ export const PickField = () => {
   return (
     <Container>
       <Grid container>
-        <Grid item xs={12}>
-          <Typography>Title flow tab</Typography>
+        <Grid item xs={12} style={{ padding: '20px 0' }}>
+          <Typography
+            style={{
+              textAlign: 'center',
+              fontSize: '2rem',
+              fontWeight: 'bold'
+            }}
+          >
+            Title flow tab
+          </Typography>
         </Grid>
         <Grid item xs={9}>
-          <AppBar position="static" color="default">
+          <AppBar
+            position="static"
+            style={{
+              background: 'none',
+              color: '#000000',
+              boxShadow: 'none'
+            }}
+          >
             <Tabs
               value={value}
               onChange={handleChange}
-              indicatorColor="primary"
-              textColor="primary"
-              variant="fullWidth"
+              TabIndicatorProps={{
+                style: {
+                  backgroundColor: '#F94949'
+                }
+              }}
               aria-label="full width tabs example"
+              centered
             >
-              <Tab label="Giờ Sân" {...a11yProps(0)} />
-              <Tab label="Huấn Luyên Viên" {...a11yProps(1)} />
-              <Tab label="Vật dụng cần thiết" {...a11yProps(2)} />
+              <Tab
+                label="Giờ Sân"
+                style={{
+                  fontSize: '22px',
+                  fontFamily: '"Segoe UI"',
+                  fontStyle: 'normal',
+                  fontWeight: 600
+                }}
+                {...a11yProps(0)}
+              />
+              <Tab
+                label="Huấn Luyên Viên"
+                style={{
+                  fontSize: '22px',
+                  fontFamily: '"Segoe UI"',
+                  fontStyle: 'normal',
+                  fontWeight: 600
+                }}
+                {...a11yProps(1)}
+              />
+              <Tab
+                label="Vật dụng cần thiết"
+                style={{
+                  fontSize: '22px',
+                  fontFamily: '"Segoe UI"',
+                  fontStyle: 'normal',
+                  fontWeight: 600
+                }}
+                {...a11yProps(2)}
+              />
             </Tabs>
           </AppBar>
           <SwipeableViews
@@ -71,11 +119,6 @@ export const PickField = () => {
               Item Two
             </TabPanel>
             <TabPanel value={value} index={2} dir={theme.direction}>
-              <ItemCard />
-              <ItemCard />
-              <ItemCard />
-              <ItemCard />
-              <ItemCard />
               <ItemCard />
               <ItemCard />
               <ItemCard />
