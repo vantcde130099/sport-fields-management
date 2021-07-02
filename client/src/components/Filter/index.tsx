@@ -14,11 +14,9 @@ import {
 } from '@material-ui/core'
 import { Search as SearchIcon } from '@material-ui/icons'
 
-//material-ui styles
-import { MuiThemeProvider } from '@material-ui/core/styles'
-
 //styles
 import { useStyles, theme } from './index.styles'
+import { MuiThemeProvider } from '@material-ui/core/styles'
 
 export interface Props {
   onSubmitSearch?: (value?: string) => void
@@ -39,7 +37,7 @@ export const SearchFilter: React.FC<Props> = ({ listCity , listDistrict ,...prop
   //state
   const [typeField, setTypeField] = React.useState(7)
   const [region, setRegion] = React.useState(0)
-  const [district, setDistrict] = React.useState(1)
+  const [district, setDistrict] = React.useState(0)
   const [searchValue, setSearchValue] = React.useState('')
   const [selectedDate, setSelectedDate] = React.useState(new Date())
 
@@ -64,7 +62,7 @@ export const SearchFilter: React.FC<Props> = ({ listCity , listDistrict ,...prop
     setSearchValue(event.target.value)
   }
 
-  //use for 'enter' key
+  //use for 'enter' key to search
   const onKeySearch = (event: any) => {
     if (event.charCode == 13) {
       console.log('click here')
