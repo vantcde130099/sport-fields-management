@@ -1,16 +1,13 @@
 import React from 'react'
-import Grid from '@material-ui/core/Grid'
-import Typography from '@material-ui/core/Typography'
-import { useStyles } from './footer.styles'
-import logo from './img/buksan.png'
-import Button from '@material-ui/core/Button'
-import { ThemeProvider } from '@material-ui/core/styles'
+import { Grid, Button, Typography } from '@material-ui/core'
+import { useStyles } from './index.styles'
+import logo from '../../images/buksan.png'
 
 export const Footer = () => {
   const classes = useStyles()
 
   return (
-    <div className={classes.root}>
+    <Grid className={classes.root}>
       <Grid container style={{ borderRadius: '0px' }}>
         <Grid item xs={12} sm={4} className={classes.paper1}>
           <img src={logo} />
@@ -68,6 +65,6 @@ export const Footer = () => {
           <Typography variant="h6">Power by NerdGang</Typography>
         </Grid>
       </Grid>
-    </div>
+    </Grid>
   )
 }
