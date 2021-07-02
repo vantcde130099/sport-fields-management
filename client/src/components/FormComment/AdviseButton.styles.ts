@@ -1,7 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles'
 
-import { Props } from '.'
-
 export const useStyles = makeStyles((theme) => ({
   activeButton : {
     backgroundColor : "rgba(249, 73, 73, 0.2)",

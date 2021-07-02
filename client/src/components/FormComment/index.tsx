@@ -1,7 +1,7 @@
 import React from 'react'
 
 //component
-import { AdviseButtons } from '../AdviseButtons';
+import { AdviseButtons } from './AdviseButton';
 
 //material-ui
 import { Divider, Box, Button, ButtonBase, Grid, Paper, TextareaAutosize, Typography, ThemeProvider, MuiThemeProvider } from '@material-ui/core'
@@ -10,6 +10,7 @@ import { Rating } from '@material-ui/lab';
 //styles
 import { useStyles, theme } from './index.styles'
 
+//props
 export interface Props {
   image?: string,
   id?: string,
@@ -17,6 +18,7 @@ export interface Props {
   instructions?: [],
 }
 
+//labels for rating
 const labels = {
   0.5: 'Useless',
   1: 'Useless+',
@@ -35,13 +37,13 @@ const labels = {
 export const FormComment: React.FC<Props> = ({
   image, name, id, instructions
 }) => {
-  const classes = useStyles({
-  })
+  const classes = useStyles()
+
+  //states
   const [value, setValue] = React.useState(2);
   const [hover, setHover] = React.useState(-1);
   const [lengthArea, setLengthArea] = React.useState(0);
   const [valueArea, setValueArea] = React.useState("");
-  const [current, setCurrent] = React.useState([] as any)
 
   const changeSizeArea = (event: any) => {
     if (event.target.value.length <= 300) {
@@ -49,7 +51,7 @@ export const FormComment: React.FC<Props> = ({
       setValueArea(event.target.value)
     }
   }
-  const valueCurrent = valueArea + current
+
   return (
     <>
       <MuiThemeProvider theme={theme}>

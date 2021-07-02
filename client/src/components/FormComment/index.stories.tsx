@@ -5,7 +5,7 @@ import { Story, Meta } from '@storybook/react'
 import { FormComment, Props } from './index'
 
 export default {
-  title: 'CommentComponent/FormComment',
+  title: 'FormComment',
   component: FormComment,
 } as Meta
 

@@ -4,7 +4,7 @@ import React from 'react'
 import { Button } from '@material-ui/core';
 
 //slyles
-import { useStyles } from './index.styles'
+import { useStyles } from './AdviseButton.styles'
 
 export interface Props {
   /**
