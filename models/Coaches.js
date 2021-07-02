@@ -77,6 +77,10 @@ const CoachSchema = new Schema({
       }
     }
   ],
+  booking: {
+    type: Number,
+    default: 0
+  },
   description: {
     type: String
   },
