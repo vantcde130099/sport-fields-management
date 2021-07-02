@@ -5,9 +5,12 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const { check, validationResult } = require('express-validator')
 
+// middleware
 const upload = require('../../middleware/upload')
-const Coach = require('../../models/Coaches')
 const coach = require('../../middleware/coach')
+
+// models
+const Coach = require('../../models/Coaches')
 const Order = require('../../models/Orders')
 
 // @route   POST /api/coach/register
