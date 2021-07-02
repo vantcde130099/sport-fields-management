@@ -13,16 +13,15 @@ import {
   Tabs,
   TextField,
   Typography,
-  ThemeProvider
+  useTheme
 } from '@material-ui/core'
 
 //Icons
 import FacebookIcon from '@material-ui/icons/Facebook'
-import GoogleButton from 'react-google-button'
 import SwipeableViews from 'react-swipeable-views'
 
 //Styles
-import { theme, useStyles } from './login.styles'
+import { useStyles } from './login.styles'
 
 function a11yProps(index: any) {
   return {
@@ -42,31 +41,30 @@ export function LoginUser() {
     setValue(index)
   }
 
+  const theme = useTheme()
   const classes = useStyles()
 
   return (
     <Grid className={classes.root}>
-      <Grid container>
+      <Grid container style={{ height: '101%' }}>
         <Grid item xs={1} style={{ backgroundColor: '#1A222E' }}></Grid>
         <Grid item xs={10} container style={{ backgroundColor: '#1A222E' }}>
           <Grid item xs={4} className={classes.node}>
             <Grid item xs={12}>
-              <ThemeProvider theme={theme}>
-                <Paper className={classes.paper1} style={{ boxShadow: 'none' }}>
-                  <Typography
-                    style={{
-                      fontFamily: '"Segoe UI"',
-                      fontStyle: 'normal',
-                      fontWeight: 700,
-                      fontSize: '45px',
-                      textAlign: 'center',
-                      color: '#F94949'
-                    }}
-                  >
-                    BUKSAN
-                  </Typography>
-                </Paper>
-              </ThemeProvider>
+              <Paper className={classes.paper1} style={{ boxShadow: 'none' }}>
+                <Typography
+                  style={{
+                    fontFamily: '"Segoe UI"',
+                    fontStyle: 'normal',
+                    fontWeight: 700,
+                    fontSize: '45px',
+                    textAlign: 'center',
+                    color: '#F94949'
+                  }}
+                >
+                  BUKSAN
+                </Typography>
+              </Paper>
             </Grid>
             <Grid item xs={12}>
               <Paper className={classes.paper1} style={{ boxShadow: 'none' }}>
@@ -122,12 +120,20 @@ export function LoginUser() {
                         className={classes.paper}
                         style={{ boxShadow: 'none' }}
                       >
-                        <GoogleButton
+                        <Button
                           style={{
-                            display: 'inline-block',
-                            boxShadow: 'none'
+                            height: '50px',
+                            width: '240px',
+                            borderRadius: '0',
+                            backgroundColor: '#1976d2',
+                            textTransform: 'none',
+                            color: 'white',
+                            fontSize: '1rem',
+                            marginTop: '30px'
                           }}
-                        ></GoogleButton>
+                        >
+                          Login with Google
+                        </Button>
                         <Button
                           style={{
                             height: '50px',
@@ -153,26 +159,24 @@ export function LoginUser() {
                     </TabPanel>
                     <TabPanel value={value} index={1} dir={theme.direction}>
                       <form>
-                        <ThemeProvider theme={theme}>
-                          <TextField
-                            className={classes.root3}
-                            id="outlined-userName-input"
-                            label="Số Điện Thoại"
-                            type="password"
-                            autoComplete="current-password"
-                            variant="outlined"
-                          />
-                        </ThemeProvider>
-                        <ThemeProvider theme={theme}>
-                          <TextField
-                            className={classes.root3}
-                            id="outlined-password-input"
-                            label="Mật Khẩu"
-                            type="password"
-                            autoComplete="current-password"
-                            variant="outlined"
-                          />
-                        </ThemeProvider>
+                        <TextField
+                          className={classes.root3}
+                          id="outlined-userName-input"
+                          label="Số Điện Thoại"
+                          type="password"
+                          autoComplete="current-password"
+                          variant="outlined"
+                          color="secondary"
+                        />
+                        <TextField
+                          className={classes.root3}
+                          id="outlined-password-input"
+                          label="Mật Khẩu"
+                          type="password"
+                          autoComplete="current-password"
+                          variant="outlined"
+                          color="secondary"
+                        />
                         <Paper
                           className={classes.paper}
                           style={{ boxShadow: 'none' }}
@@ -207,31 +211,27 @@ export function LoginUser() {
             }}
           >
             <Grid item xs={12}>
-              <ThemeProvider theme={theme}>
-                <Paper className={classes.paper2} style={{ boxShadow: 'none' }}>
-                  <Typography
-                    variant="h3"
-                    style={{
-                      fontWeight: 600,
-                      fontSize: '42px'
-                    }}
-                  >
-                    What is sport ?
-                  </Typography>
-                  <Typography
-                    variant="h3"
-                    style={{
-                      fontWeight: 'bold',
-                      fontSize: '42px'
-                    }}
-                  >
-                    Sport is what buksan can do
-                  </Typography>
-                  <Typography variant="h5">
-                    Làm Hết sức, chơi hết sức
-                  </Typography>
-                </Paper>
-              </ThemeProvider>
+              <Paper className={classes.paper2} style={{ boxShadow: 'none' }}>
+                <Typography
+                  variant="h3"
+                  style={{
+                    fontWeight: 600,
+                    fontSize: '42px'
+                  }}
+                >
+                  What is sport ?
+                </Typography>
+                <Typography
+                  variant="h3"
+                  style={{
+                    fontWeight: 'bold',
+                    fontSize: '42px'
+                  }}
+                >
+                  Sport is what buksan can do
+                </Typography>
+                <Typography variant="h5">Làm Hết sức, chơi hết sức</Typography>
+              </Paper>
             </Grid>
           </Grid>
         </Grid>
