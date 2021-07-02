@@ -413,6 +413,7 @@ router.get('/coach-register', coach, async (req, res) => {
       'contact.address': 1,
       fieldsRegistered: 1
     })
+
     if (!coach) {
       return res.status(400).json({ message: 'Huấn luyện viên không tồn tại' })
     }
@@ -421,6 +422,7 @@ router.get('/coach-register', coach, async (req, res) => {
 
     //khai báo list chủ sân
     let listOwners = null
+
     if (city && district && ward) {
       listOwners = await Owner.find(
         {
