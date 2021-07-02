@@ -220,6 +220,14 @@ router.put(
         return res.status(400).json({ message: 'Sân không tồn tại' })
       }
 
+      //check if field registered
+      const isFieldRegistered = await Coach.find({
+        'fieldsRegistered.field': { $in: fieldId }
+      })
+      if (isFieldRegistered.length > 0) {
+        return res.status(400).json({ message: 'Bạn đã đăng ký sân này rồi!' })
+      }
+
       const newSchedule = {
         field: fieldId,
         workingTime: {

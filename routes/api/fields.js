@@ -3,6 +3,8 @@ const router = express.Router()
 const { check, validationResult } = require('express-validator')
 
 const owner = require('../../middleware/owner')
+const coach = require('../../middleware/coach')
+const Coach = require('../../models/Coaches')
 const upload = require('../../middleware/upload')
 const Owner = require('../../models/Owners')
 const Field = require('../../models/Fields')
@@ -284,7 +286,9 @@ router.get('/booking-time-by-day', async (req, res) => {
       if (i > timeWorkingADay.hours.close - 60) break
 
       let close = new Date(open)
+
       close.setHours(close.getHours() + 1)
+
       listHours.push({
         start: `${open.getHours()}:${
           open.getMinutes() === 0 ? '00' : open.getMinutes()
@@ -400,5 +404,90 @@ router.put(
     }
   }
 )
+// @route   GET /api/fields/coach-register
+// @desc    Generate field for coach can register in that city
+// @access  Private
+router.get('/coach-register', coach, async (req, res) => {
+  try {
+    const coach = await Coach.findById(req.coach.id, {
+      'contact.address': 1,
+      fieldsRegistered: 1
+    })
+    if (!coach) {
+      return res.status(400).json({ message: 'Huấn luyện viên không tồn tại' })
+    }
+
+    const { city, district, ward } = coach.contact.address
+
+    //khai báo list chủ sân
+    let listOwners = null
+    if (city && district && ward) {
+      listOwners = await Owner.find(
+        {
+          'contact.address': coach.contact.address
+        },
+        {
+          name: 1,
+          booking: 1,
+          contact: 1,
+          brandName: 1,
+          averageRating: 1,
+          fieldSize: { $size: '$fields' }
+        }
+      ).sort({
+        brandName: 1
+      })
+    } else if (city && district) {
+      listOwners = await Owner.find(
+        {
+          'contact.address.city': city,
+          'contact.address.district': district
+        },
+        {
+          name: 1,
+          booking: 1,
+          contact: 1,
+          averageRating: 1,
+          fieldSize: { $size: '$fields' },
+          brandName: 1,
+          averageRating
+        }
+      ).sort({
+        brandName: 1
+      })
+    } else if (city) {
+      listOwners = await Owner.find(
+        {
+          'contact.address.city': city
+        },
+        {
+          name: 1,
+          booking: 1,
+          contact: 1,
+          averageRating: 1,
+          fieldSize: { $size: '$fields' },
+          brandName: 1,
+          averageRating
+        }
+      ).sort({
+        brandName: 1
+      })
+    } else {
+      return res.status(400).json({
+        message: `Huấn luyện viên ${coach.name} chưa nhập thông tin địa chỉ`
+      })
+    }
+
+    //check empty list owner found
+    if (listOwners == null) {
+      return res.status(400).json({ msg: 'Không có sân' })
+    }
+
+    res.status(200).json({ listOwners })
+  } catch (error) {
+    console.error(error.message)
+    return res.status(500).send('Lỗi server')
+  }
+})
 
 module.exports = router
