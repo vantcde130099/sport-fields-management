@@ -1,7 +1,7 @@
 import React from 'react'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
-import { useStyles, theme } from './footer.styles'
+import { useStyles } from './footer.styles'
 import logo from './img/buksan.png'
 import Button from '@material-ui/core/Button'
 import { ThemeProvider } from '@material-ui/core/styles'
@@ -48,9 +48,20 @@ export const Footer = () => {
           className={classes.paper1}
           style={{ marginTop: '50px' }}
         >
-          <ThemeProvider theme={theme}>
-            <Button>Đặt sân ngay</Button>
-          </ThemeProvider>
+          <Button
+            style={{
+              background: '#F94949',
+              borderRadius: '5px',
+              border: 0,
+              color: '#FCFCFC',
+              height: '60px',
+              width: '250px',
+              padding: '0 30px',
+              fontSize: '1.2rem'
+            }}
+          >
+            Đặt sân ngay
+          </Button>
         </Grid>
         <Grid item xs={12} className={classes.paper}>
           <Typography variant="h6">2021 | No copyright</Typography>

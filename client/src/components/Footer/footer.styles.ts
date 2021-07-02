@@ -1,9 +1,4 @@
-import {
-  makeStyles,
-  createStyles,
-  Theme,
-  createMuiTheme
-} from '@material-ui/core/styles'
+import { makeStyles, createStyles, Theme } from '@material-ui/core/styles'
 
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -37,27 +32,3 @@ export const useStyles = makeStyles((theme: Theme) =>
     }
   })
 )
-
-export const theme = createMuiTheme({
-  // spacing: 4,
-  overrides: {
-    // Style sheet name ⚛️
-    MuiButton: {
-      // Name of the rule
-      text: {
-        // Some CSS
-        background: '#F94949',
-        borderRadius: '5px',
-        border: 0,
-        color: '#FCFCFC',
-        height: '60px',
-        width: '250px',
-        padding: '0 30px',
-        '&:hover': {
-          backgroundColor: '#F94949'
-        },
-        fontSize: '1.2rem'
-      }
-    }
-  }
-})
