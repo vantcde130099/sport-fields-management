@@ -37,9 +37,8 @@ export const AdviseButtons: React.FC<Props> = ({ instructions }) => {
           variant="outlined"
           onClick={(e: any) => toggleButton(e, index)}
           color="secondary"
-          className={`${classes.button} ${
-            button.indexOf(index) > -1 ? classes.activeButton : ''
-          }`}
+          className={`${classes.button} ${button.indexOf(index) > -1 ? classes.activeButton : ''
+            }`}
         >
           {instruction}
         </Button>
