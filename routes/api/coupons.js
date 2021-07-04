@@ -68,8 +68,6 @@ router.put(
       inDayClose = parseInt(hourClose) * 60 + parseInt(minClose)
     }
 
-    const type = { sportType, fieldType }
-
     try {
       //update coupon
       const existCoupon = await Coupon.findOneAndUpdate(
