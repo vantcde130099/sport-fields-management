@@ -7,9 +7,6 @@ import { Carousel, Props } from './Carousel'
 export default {
   title: 'CardInfo/Carousel',
   component: Carousel,
-  argTypes: {
-    backgroundColor: { control: 'color' }
-  }
 } as Meta
 
 const Template: Story<Props> = (args) => <Carousel {...args} />

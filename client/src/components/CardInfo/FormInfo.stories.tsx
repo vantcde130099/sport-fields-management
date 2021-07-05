@@ -7,9 +7,6 @@ import { FormInfo, Props } from './FormInfo'
 export default {
   title: 'CardInfo/FormInfo',
   component: FormInfo,
-  argTypes: {
-    backgroundColor: { control: 'color' }
-  }
 } as Meta
 
 const Template: Story<Props> = (args) => <FormInfo {...args} />

@@ -7,9 +7,6 @@ import { CardInfo, Props } from './index'
 export default {
   title: 'CardInfo',
   component: CardInfo,
-  argTypes: {
-    backgroundColor: { control: 'color' }
-  }
 } as Meta
 
 const Template: Story<Props> = (args) => <CardInfo {...args} />
