@@ -3,13 +3,16 @@ const router = express.Router()
 const config = require('config')
 const { check, validationResult } = require('express-validator')
 
-const Customer = require('../../models/Customers')
+// middleware
 const customer = require('../../middleware/customer')
-const Owner = require('../../models/Owners')
 const owner = require('../../middleware/owner')
-const Coach = require('../../models/Coaches')
 const coach = require('../../middleware/coach')
 const upload = require('../../middleware/upload')
+
+// models
+const Customer = require('../../models/Customers')
+const Owner = require('../../models/Owners')
+const Coach = require('../../models/Coaches')
 
 // @route   GET api/profile/customer
 // @desc    Customer get profile
@@ -110,6 +113,7 @@ router.put(
   ],
   async (req, res) => {
     const errors = validationResult(req)
+
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() })
     }
@@ -184,6 +188,7 @@ router.put(
   ],
   async (req, res) => {
     const errors = validationResult(req)
+
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() })
     }
@@ -237,6 +242,7 @@ router.put(
   ],
   async (req, res) => {
     const errors = validationResult(req)
+
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() })
     }
@@ -277,6 +283,7 @@ router.put(
 router.put('/coach/avatar', coach, upload.single('image'), async (req, res) => {
   try {
     const avatar = req.file.id
+
     await Coach.findOneAndUpdate(
       { _id: req.coach.id },
       { avatar: avatar },
