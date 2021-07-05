@@ -3,14 +3,14 @@ import { makeStyles } from '@material-ui/core/styles'
 export const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
-    width : 250,
-    minWidth: 120,
+    width: 250,
+    minWidth: 120
   },
   paper: {
-    padding: theme.spacing(2),
+    padding: theme.spacing(2)
   },
   selectEmpty: {
-    marginTop: theme.spacing(2),
+    marginTop: theme.spacing(2)
   },
   customBox: {
     display: '-webkit-box',
@@ -18,5 +18,5 @@ export const useStyles = makeStyles((theme) => ({
     lineClamp: 2,
     wordBreak: 'break-all',
     overflow: 'hidden'
-  },
-}));
+  }
+}))
