@@ -5,8 +5,12 @@ const jwt = require('jsonwebtoken')
 const GoogleStrategy = require('passport-google-oauth20')
 const FacebookStrategy = require('passport-facebook')
 const config = require('config')
+const { check, validationResult } = require('express-validator')
 
 const Customer = require('../../models/Customers')
+const Order = require('../../models/Orders')
+const customer = require('../../middleware/customer')
+const upload = require('../../middleware/upload')
 
 passport.serializeUser((user, done) => {
   done(null, user.id)
@@ -148,12 +152,14 @@ router.get(
     )
   }
 )
+
 // @route   GET api/customer
 // @desc    get all customer
 // @access  Public
 router.get('/', async (req, res) => {
   try {
     let allCustomers = await Customers.find()
+
     if (!allCustomers) {
       return res.status(400).json({ message: 'No Customer found' })
     }
@@ -162,13 +168,6 @@ router.get('/', async (req, res) => {
     console.error(err.message)
     return res.status(500).json({ message: 'Lỗi server' })
   }
-})
-
-// @route   GET api/customers/current
-// @desc    get current customer
-// @access  Public
-router.get('/current', async (req, res) => {
-  res.send(req.customer)
 })
 
 module.exports = router

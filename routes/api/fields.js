@@ -1,13 +1,11 @@
 const express = require('express')
 const router = express.Router()
-const mongoose = require('mongoose')
 const { check, validationResult } = require('express-validator')
 
 const owner = require('../../middleware/owner')
 const upload = require('../../middleware/upload')
 const Owner = require('../../models/Owners')
 const Field = require('../../models/Fields')
-const { ReplSet } = require('mongodb')
 
 // @route   POST /api/fields/add
 // @desc    Owner add field
@@ -106,9 +104,11 @@ router.get('/', async (req, res) => {
     const owner = await Owner.findById(req.body.ownerId)
     const fieldId = owner.fields[owner.fields.length - 1]
     const theFirstField = await Field.findById(fieldId)
+
     if (!theFirstField) {
       res.status(400).json({ message: 'Sân không tồn tại' })
     }
+
     res.status(200).json({
       sport: theFirstField.type.sportType,
       type: theFirstField.type.fieldType,
@@ -135,6 +135,7 @@ router.get('/type', async (req, res) => {
       _id: { $in: owner.fields },
       type: req.body.type
     })
+
     if (!fields) {
       res.status(400).json({ message: 'Sân không tồn tại' })
     }
@@ -151,6 +152,7 @@ router.get('/type', async (req, res) => {
         price: field.price
       })
     })
+
     res.status(200).json(fieldsInfo)
   } catch (error) {
     console.error(error.message)
@@ -174,6 +176,7 @@ router.get('/name', async (req, res) => {
     if (!field) {
       res.status(400).json({ message: 'Sân không tồn tại' })
     }
+
     res.status(200).json({
       sport: field.type.sportType,
       type: field.type.fieldType,
@@ -218,8 +221,11 @@ router.get('/booking-time-now', async (req, res) => {
       i += 60
     ) {
       if (i > timeWorkingADay.hours.close - 60) break
+
       let close = new Date(open)
+
       close.setHours(close.getHours() + 1)
+
       listHours.push({
         start: `${open.getHours()}:${
           open.getMinutes() === 0 ? '00' : open.getMinutes()
@@ -246,6 +252,7 @@ router.get('/booking-time-by-day', async (req, res) => {
     let timeWorkingADay = await Field.findById(req.query.fieldId, { hours: 1 })
 
     const dateArray = req.query.date.split('-')
+    
     const [day, month, year] = dateArray
 
     //set time for open and close
@@ -257,6 +264,7 @@ router.get('/booking-time-by-day', async (req, res) => {
     )
 
     let close = new Date(year, month, day)
+
     close.setHours(
       timeWorkingADay.hours.close / 60,
       timeWorkingADay.hours.close % 60,
@@ -265,12 +273,14 @@ router.get('/booking-time-by-day', async (req, res) => {
 
     //generate hour booking
     let listHours = []
+
     for (
       let i = timeWorkingADay.hours.open;
       i, i <= timeWorkingADay.hours.close;
       i += 60
     ) {
       if (i > timeWorkingADay.hours.close - 60) break
+
       let close = new Date(open)
       close.setHours(close.getHours() + 1)
       listHours.push({
@@ -281,6 +291,7 @@ router.get('/booking-time-by-day', async (req, res) => {
           close.getMinutes() === 0 ? '00' : open.getMinutes()
         }`
       })
+
       open.setHours(open.getHours() + 1)
     }
 
@@ -290,5 +301,102 @@ router.get('/booking-time-by-day', async (req, res) => {
     return res.status(500).send('Lỗi server')
   }
 })
+
+// @route   PUT /api/fields/info-modify
+// @desc    Owner modify field info
+// @access  Private
+router.put(
+  '/info-modify',
+  owner,
+  [
+    check('name', 'Vui lòng nhập tên').not().isEmpty(),
+    check('type', 'Vui lòng nhập tên').not().isEmpty(),
+    check('price', 'Vui lòng nhập tên').isNumeric(),
+    check(
+      'openHour',
+      'Vui lòng nhập giờ mở cửa lớn hơn 0 và nhỏ hơn 24!'
+    ).isInt({ min: 0, max: 23 }),
+    check(
+      'closeHour',
+      'Vui lòng nhập giờ đóng cửa lớn hơn 0 và nhỏ hơn 24!'
+    ).isInt({ min: 0, max: 23 }),
+    check(
+      'closeMinutes',
+      'Vui lòng nhập phút đóng cửa lớn hơn 0 và nhỏ hơn 59!'
+    ).isInt({ min: 0, max: 59 }),
+    check(
+      'openMinutes',
+      'Vui lòng nhập phút đóng cửa lớn hơn 0 và nhỏ hơn 59!'
+    ).isInt({ min: 0, max: 59 })
+  ],
+  async (req, res) => {
+    const errors = validationResult(req)
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() })
+    }
+
+    const {
+      id,
+      name,
+      type,
+      price,
+      openHour,
+      closeHour,
+      openMinutes,
+      closeMinutes,
+      status
+    } = req.body
+
+    const open = openHour * 60 + openMinutes
+    const close = closeHour * 60 + closeMinutes
+    const hours = { open, close }
+
+    try {
+      let field = await Field.findOneAndUpdate(
+        id,
+        { name, 'type.fieldType': type, price, status, hours },
+        { new: true }
+      )
+
+      res.status(200).json({ message: `Thay đổi thành công` })
+    } catch (error) {
+      console.error(error.message)
+      return res.status(500).send('Lỗi server')
+    }
+  }
+)
+
+// @route   PUT /api/fields/add-images
+// @desc    Owner modify field image
+// @access  Private
+router.put(
+  '/add-images',
+  owner,
+  upload.array('image', 10),
+  async (req, res) => {
+    req.body = JSON.parse(req.body.data)
+
+    const { id } = req.body
+
+    try {
+      let field = await Field.findById(id)
+
+      //add images to field
+      req.files.forEach((e) => {
+        field.image.push(e.id)
+      })
+
+      field.save()
+
+      res
+        .status(200)
+        .json({ message: `Thêm ${req.files.length} ảnh thành công.` })
+    } catch (error) {
+      console.error(error.message)
+      return res.status(500).send('Lỗi server')
+    }
+  }
+)
 
 module.exports = router

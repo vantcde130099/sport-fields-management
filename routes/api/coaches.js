@@ -5,9 +5,13 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const { check, validationResult } = require('express-validator')
 
+// middleware
 const upload = require('../../middleware/upload')
+const coach = require('../../middleware/coach')
+
+// models
 const Coach = require('../../models/Coaches')
-const { array } = require('../../middleware/upload')
+const Order = require('../../models/Orders')
 
 // @route   POST /api/coach/register
 // @desc    Register coach
@@ -22,8 +26,9 @@ router.post('/register', upload.array('image', 2), async (req, res) => {
   await check('phoneNumber', 'Vui lòng nhập SDT').not().isEmpty().run(req)
 
   const errors = validationResult(req)
+
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors })
+    return res.status(400).json({ errors: errors.array() })
   }
 
   //upload image
@@ -33,12 +38,26 @@ router.post('/register', upload.array('image', 2), async (req, res) => {
     identityCard.push(e.id)
   })
 
-  const { name, email, phoneNumber, password, city, district, ward } = req.body
+  const {
+    name,
+    dateOfBirth,
+    email,
+    phoneNumber,
+    password,
+    city,
+    district,
+    ward,
+    price,
+    description
+  } = req.body
+
   const address = { city, district, ward }
   const contact = { email, phoneNumber, address }
+
   try {
     //see if coach exist
     let coach = await Coach.findOne({ 'contact.phoneNumber': phoneNumber })
+
     if (coach) {
       return res
         .status(400)
@@ -47,8 +66,12 @@ router.post('/register', upload.array('image', 2), async (req, res) => {
 
     coach = new Coach({
       name,
-      contact
+      dateOfBirth,
+      contact,
+      price,
+      description
     })
+
     //add identityCard Id to Coaches
     coach.identityCard = identityCard
 
@@ -66,13 +89,12 @@ router.post('/register', upload.array('image', 2), async (req, res) => {
     }
 
     jwt.sign(
-      //sign the token pass and the payload pass
       payload,
       config.get('jwtSecret'),
       { expiresIn: 36000 },
       (err, token) => {
         if (err) throw err
-        res.json({ token }) //if have no err, send that token to the client
+        res.json({ token })
       }
     )
   } catch (err) {
@@ -91,14 +113,18 @@ router.post(
     check('password', 'Yêu cầu nhập mật khẩu').exists()
   ],
   async (req, res) => {
-    const err = validationResult(req)
-    if (!err.isEmpty()) {
-      return res.status(400).json({ err: err.array() })
+    const errors = validationResult(req)
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() })
     }
+
     const { phoneNumber, password } = req.body
+
     try {
       //see if owner exists
       let coach = await Coach.findOne({ 'contact.phoneNumber': phoneNumber })
+
       if (!coach) {
         return res
           .status(400)
@@ -106,6 +132,7 @@ router.post(
       }
 
       const isMatch = await bcrypt.compare(password, coach.password)
+
       if (!isMatch) {
         return res
           .status(400)
@@ -129,11 +156,56 @@ router.post(
           res.json({ token })
         }
       )
-    } catch (err) {
-      console.error(err.message)
+    } catch (error) {
+      console.error(error.message)
       res.status(500).send('Lỗi server')
     }
   }
 )
+
+// @route   GET api/coaches/work-schedule
+// @desc    Coach get work schedule
+// @access  Private
+router.get('/work-schedule', coach, async (req, res) => {
+  const [dayStart, monthStart, yearStart] = req.body.start.split('-')
+  const [dayEnd, monthEnd, yearEnd] = req.body.end.split('-')
+  const start = new Date(yearStart, monthStart, dayStart)
+  const end = new Date(yearEnd, monthEnd, dayEnd)
+
+  try {
+    const coachFieldsRegistered = await Coach.findById(req.coach.id, {
+      fieldsRegistered: 1
+    })
+
+    //check coach if exist
+    if (!coachFieldsRegistered) {
+      return res
+        .status(400)
+        .json({ message: 'Lỗi, không tìm thất huấn luyện viên' })
+    }
+
+    //find order has coach booking from rental date
+    const orderHasCoach = await Order.find(
+      {
+        coach: coachFieldsRegistered.id,
+        'payment.status': true,
+        rentalDate: { $gte: start },
+        rentalDate: { $lte: end }
+      },
+      { retalDate: 1, start: 1, end: 1, coachPrice: 1, owner: 1 }
+    )
+
+    if (orderHasCoach.length == 0) {
+      return res
+        .status(400)
+        .json({ message: 'Bạn chưa được ai book trong thời gian này' })
+    }
+
+    res.status(200).json({ orderHasCoach, coachFieldsRegistered })
+  } catch (error) {
+    console.error(error.message)
+    res.status(500).send('Lỗi server')
+  }
+})
 
 module.exports = router

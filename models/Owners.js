@@ -39,7 +39,6 @@ const OwnerSchema = new Schema({
       type: Schema.Types.ObjectId
     }
   ],
-
   brandName: {
     type: String,
     require: true
