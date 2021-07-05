@@ -311,6 +311,28 @@ router.get('/booking-time-by-day', async (req, res) => {
   }
 })
 
+// @route   GET /api/fields/owner-get-fields
+// @desc    Owner get fields info
+// @access  Private
+router.get('/owner-get-fields', owner, async (req, res) => {
+  const ownerId = req.owner.id
+
+  try {
+    const owner = await Owner.findById(ownerId, { fields: 1 })
+
+    if (owner.fields.length == 0) {
+      return res.status(400).json({ message: 'Không có sân nào' })
+    }
+
+    const fields = await Field.find({ _id: { $in: owner.fields } })
+
+    res.status(200).json(fields)
+  } catch (error) {
+    console.error(error.message)
+    return res.status(500).send('Lỗi server')
+  }
+})
+
 // @route   PUT /api/fields/info-modify
 // @desc    Owner modify field info
 // @access  Private
