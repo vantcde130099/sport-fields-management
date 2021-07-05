@@ -11,6 +11,7 @@ const coach = require('../../middleware/coach')
 
 // models
 const Coach = require('../../models/Coaches')
+const Field = require('../../models/Fields')
 const Order = require('../../models/Orders')
 
 // @route   POST /api/coach/register
@@ -159,6 +160,110 @@ router.post(
     } catch (error) {
       console.error(error.message)
       res.status(500).send('Lỗi server')
+    }
+  }
+)
+
+// @route   POST api/coaches/work-register
+// @desc    Coach register for work schedule
+// @access  Private
+router.put(
+  '/work-register',
+  coach,
+  [
+    check(
+      'openHour',
+      'Vui lòng nhập giờ mở cửa lớn hơn 0 và nhỏ hơn 24!'
+    ).isInt({ min: 0, max: 23 }),
+    check(
+      'closeHour',
+      'Vui lòng nhập giờ đóng cửa lớn hơn 0 và nhỏ hơn 24!'
+    ).isInt({ min: 0, max: 23 }),
+    check(
+      'closeMinutes',
+      'Vui lòng nhập phút đóng cửa lớn hơn 0 và nhỏ hơn 59!'
+    ).isInt({ min: 0, max: 59 }),
+    check(
+      'openMinutes',
+      'Vui lòng nhập phút đóng cửa lớn hơn 0 và nhỏ hơn 59!'
+    ).isInt({ min: 0, max: 59 }),
+    check('startDay', 'Vui lòng nhập ngày').not().isEmpty(),
+    check('endDay', 'Vui lòng nhập ngày').not().isEmpty(),
+    check('repeat.unit', 'Vui lòng chọn đơn vị lặp lại').not().isEmpty()
+  ],
+  async (req, res) => {
+    //check validate
+    const errors = validationResult(req)
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() })
+    }
+
+    const {
+      fieldId,
+      openHour,
+      closeHour,
+      openMinutes,
+      closeMinutes,
+      startDay,
+      endDay,
+      repeat,
+      allDay,
+      note
+    } = req.body
+
+    const startInDay = openHour * 60 + openMinutes
+    const endInDay = closeHour * 60 + closeMinutes
+    const [dayStart, monthStart, yearStart] = startDay.split('-')
+    const [dayEnd, monthEnd, yearEnd] = endDay.split('-')
+
+    const workingInDay = { startInDay, endInDay, allDay }
+
+    try {
+      // check id
+      if (fieldId.match(/^[0-9a-fA-F]{24}$/) == null) {
+        return res.status(400).json({ message: 'Id sai' })
+      }
+
+      //check field exist
+      const field = await Field.findById(fieldId)
+
+      if (!field) {
+        return res.status(400).json({ message: 'Sân không tồn tại' })
+      }
+
+      //check if field registered
+      const isFieldRegistered = await Coach.find({
+        'fieldsRegistered.field': { $in: fieldId }
+      })
+
+      if (isFieldRegistered.length > 0) {
+        return res.status(400).json({ message: 'Bạn đã đăng ký sân này rồi!' })
+      }
+
+      const newSchedule = {
+        field: fieldId,
+        workingTime: {
+          startDay: new Date(yearStart, monthStart, dayStart),
+          endDay: new Date(yearEnd, monthEnd, dayEnd),
+          repeat,
+          workingInDay,
+          note
+        }
+      }
+
+      await Coach.findOneAndUpdate(
+        req.coach.id,
+        {
+          $push: { fieldsRegistered: newSchedule }
+        },
+        { new: true }
+      )
+
+      res.status(200).json({ message: 'Thêm lịch làm thành công!' })
+    } catch (error) {
+      console.error(error.message)
+      res.status(500).send('Server error')
     }
   }
 )
