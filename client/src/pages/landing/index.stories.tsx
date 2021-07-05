@@ -1,8 +1,8 @@
 import React from 'react'
-import { LandingPage } from './landingPage'
+import { LandingPage } from '.'
 
 export default {
-  title: 'Pages/landing',
+  title: 'Pages/Landing',
   component: LandingPage
 }
 

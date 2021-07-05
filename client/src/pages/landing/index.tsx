@@ -4,7 +4,7 @@ import React from 'react'
 import { Button, Grid, Paper, Typography } from '@material-ui/core'
 
 //Styles
-import { useStyles } from './landingPage.styles'
+import { useStyles } from './index.styles'
 
 //Image
 import Image from '../../images/imageLanding.png'
