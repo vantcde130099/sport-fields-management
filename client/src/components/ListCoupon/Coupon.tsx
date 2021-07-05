@@ -6,13 +6,15 @@ import { ButtonBase, Grid, Paper, Typography } from '@material-ui/core'
 // Styles
 import { useStyles } from './Coupon.styles'
 
+interface coupon {
+  id?: string
+  code?: string
+  discount?: number
+  dateClose?: string
+}
+
 export interface Props {
-  coupon?: {
-    id?: string
-    code?: string
-    discount?: number
-    dateClose?: string
-  }
+  coupon?: coupon
   selected: boolean
 }
 
@@ -21,7 +23,7 @@ export const Coupon: React.FC<Props> = ({ coupon, selected }) => {
   return (
     <ButtonBase style={{ borderRadius: 10 }}>
       <Paper
-        onClick = {() => {}}
+        onClick={() => {}}
         className={
           `${classes.paper}` + ` ${selected == true ? classes.selected : ''}`
         }

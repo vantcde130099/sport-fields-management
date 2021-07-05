@@ -25,7 +25,7 @@ export interface Props {
  * Primary UI component for user interaction
  */
 export const ListCoupon: React.FC<Props> = ({ listCoupon }) => {
-  const classes = useStyles({})
+  const classes = useStyles()
 
   const [selected, setSelected] = React.useState(-1)
   const onSelectCoupon = (e: any, index: number) => {
