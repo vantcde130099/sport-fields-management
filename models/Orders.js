@@ -18,7 +18,7 @@ const OrderSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'coach'
   },
-  item: [
+  items: [
     {
       id: {
         type: Schema.Types.ObjectId,

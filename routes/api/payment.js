@@ -93,7 +93,10 @@ router.put('/offline/confirm', owner, async (req, res) => {
       }
     }
     res.status(200).json({ message: `Đã ${order.status} thanh toán` })
-  } catch (error) {}
+  } catch (error) {
+    console.error(error.message)
+    return res.status(500).send('Lỗi server')
+  }
 })
 
 module.exports = router
