@@ -6,4 +6,4 @@ export default {
   component: LandingPage
 }
 
-export const landingPage = () => <LandingPage />
+export const template = () => <LandingPage />
