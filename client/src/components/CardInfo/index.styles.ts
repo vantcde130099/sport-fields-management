@@ -1,12 +1,4 @@
-import { createMuiTheme, makeStyles } from '@material-ui/core/styles'
-
-export const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: '#F94949'
-    }
-  }
-});
+import { makeStyles } from '@material-ui/core/styles'
 
 export const useStyles = makeStyles((theme) => ({
   formControl: {

@@ -5,10 +5,10 @@ import { Carousel } from './Carousel'
 import { FormInfo } from './FormInfo'
 
 //Material-ui
-import { Typography, Grid, MuiThemeProvider } from '@material-ui/core'
+import { Typography, Grid } from '@material-ui/core'
 
 //Styles
-import { useStyles, theme } from './index.styles'
+import { useStyles } from './index.styles'
 
 export interface Props {
   description?: string
@@ -58,7 +58,6 @@ export const CardInfo: React.FC<Props> = ({
   //render
   return (
     <>
-      <MuiThemeProvider theme={theme}>
         <Grid container direction="row" justify="center" alignItems="center">
           <Typography
             variant="h5"
@@ -90,7 +89,6 @@ export const CardInfo: React.FC<Props> = ({
             ></FormInfo>
           </Grid>
         </Grid>
-      </MuiThemeProvider>
     </>
   )
 }
