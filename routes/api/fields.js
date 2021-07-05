@@ -193,9 +193,7 @@ router.get('/name', async (req, res) => {
 // @access  Private
 router.get('/booking-time-now', async (req, res) => {
   try {
-    let timeWorkingADay = await Field.findById(req.body.fieldId, { hours: 1 })
-
-    // const orderOnDay = Order.find()  //find order in day now
+    let timeWorkingADay = await Field.findById(req.query.fieldId, { hours: 1 })
 
     //set time for open and close
     let open = new Date()
@@ -245,9 +243,9 @@ router.get('/booking-time-now', async (req, res) => {
 // @access  Private
 router.get('/booking-time-by-day', async (req, res) => {
   try {
-    let timeWorkingADay = await Field.findById(req.body.fieldId, { hours: 1 })
-    // const ordersInDay = Order.find()   //find all order In day
-    const dateArray = req.body.date.split('-')
+    let timeWorkingADay = await Field.findById(req.query.fieldId, { hours: 1 })
+
+    const dateArray = req.query.date.split('-')
     const [day, month, year] = dateArray
 
     //set time for open and close
