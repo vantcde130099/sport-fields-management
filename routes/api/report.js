@@ -31,7 +31,7 @@ router.get(
       return res.status(400).json({ errors: errors.array() })
     }
 
-    const { from, to } = req.body
+    const { from, to } = req.query
 
     const [dayFrom, monthFrom, yearFrom] = from.split('-')
     const [dayTo, monthTo, yearTo] = to.split('-')
@@ -84,7 +84,7 @@ router.get(
       return res.status(400).json({ errors: errors.array() })
     }
 
-    const { from, to } = req.body
+    const { from, to } = req.query
 
     const [dayFrom, monthFrom, yearFrom] = from.split('-')
     const [dayTo, monthTo, yearTo] = to.split('-')

@@ -149,7 +149,7 @@ router.post(
 // @desc    Customer get owner's rating
 // @access  Private
 router.get('/owner', async (req, res) => {
-  const { id } = req.body
+  const { id } = req.query
 
   try {
     const owner = await Owner.findById(id, { averageRating: 1, rate: 1 })
@@ -173,7 +173,7 @@ router.get('/owner', async (req, res) => {
 // @desc    Customer get coach's rating
 // @access  Private
 router.get('/coach', async (req, res) => {
-  const { id } = req.body
+  const { id } = req.query
 
   try {
     const coach = await Coach.findById(id, { averageRating: 1, rate: 1 })
