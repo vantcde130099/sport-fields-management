@@ -34,7 +34,7 @@ router.get('/:image_id', function (req, res) {
 // @desc    Remove image of field by id
 // @access  Private
 router.delete('/remove', owner, async (req, res) => {
-  const { fieldId, imageId } = req.body
+  const { fieldId, imageId } = req.query
 
   try {
     //check field of owner
