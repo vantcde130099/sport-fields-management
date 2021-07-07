@@ -11,30 +11,28 @@ export interface Props {
   images?: string[]
 }
 
-export const Carousel: React.FC<Props> = ({ images }) => {
-  return (
-    <Paper
-      style={{
-        maxWidth: '400px',
-        height: '350px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}
-    >
-      <CarouselComponent showThumbs={false}>
-        {images?.map((item, index) => (
-          <img
-            src={item}
-            style={{
-              borderRadius: 5,
-              width: '100%',
-              height: '350px',
-              objectFit: 'cover'
-            }}
-          />
-        ))}
-      </CarouselComponent>
-    </Paper>
-  )
-}
+export const Carousel: React.FC<Props> = ({ images }: Props) => (
+  <Paper
+    style={{
+      maxWidth: '400px',
+      height: '350px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
+    }}
+  >
+    <CarouselComponent showThumbs={false}>
+      {images?.map((item, index) => (
+        <img
+          src={item}
+          style={{
+            borderRadius: 5,
+            width: '100%',
+            height: '350px',
+            objectFit: 'cover'
+          }}
+        />
+      ))}
+    </CarouselComponent>
+  </Paper>
+)

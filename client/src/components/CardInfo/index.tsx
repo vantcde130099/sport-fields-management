@@ -18,14 +18,14 @@ interface ItemField {
   images: string[]
 }
 
-enum type {
+enum Type {
   Coach = 'coach',
   Field = 'field'
 }
 
 export interface Props {
   description?: string
-  type?: type
+  type?: Type
   name?: string
   point?: number
   //only used for type = field
@@ -45,13 +45,13 @@ export const CardInfo: React.FC<Props> = ({
   point,
   type,
   priceCoach
-}) => {
+}: Props) => {
   //style
   const classes = useStyles()
 
   //state
   const [imagesCarousel, setImagesCarousel] = React.useState(
-    type == 'field' ? itemFields?.[0]?.images : imagesCoach
+    type === Type.Field ? itemFields?.[0]?.images : imagesCoach
   )
 
   //function when change field  ( only used for type = 'field' )
@@ -69,13 +69,13 @@ export const CardInfo: React.FC<Props> = ({
         style={{ fontSize: 32, width: 'auto' }}
         gutterBottom
       >
-        {type == 'field' ? name : 'Hồ Sơ HLV'}
+        {type === Type.Field ? name : 'Hồ Sơ HLV'}
       </Typography>
       <Grid container direction="row" justify="center" alignItems="flex-start">
         <Grid className={classes.paper}>
-          <div style={{ marginTop: 32 }}>
-            <Carousel images={imagesCarousel}></Carousel>
-          </div>
+          <Grid style={{ marginTop: 32 }}>
+            <Carousel images={imagesCarousel} />
+          </Grid>
         </Grid>
         <FormInfo
           onChangeName={onChangeFieldImages}
@@ -85,7 +85,7 @@ export const CardInfo: React.FC<Props> = ({
           name={name}
           point={point}
           priceCoach={priceCoach}
-        ></FormInfo>
+        />
       </Grid>
     </Grid>
   )

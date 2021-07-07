@@ -15,6 +15,7 @@ import Rating from '@material-ui/lab/Rating'
 
 //Styles
 import { useStyles } from './index.styles'
+
 interface ItemField {
   id: string
   name: string
@@ -22,7 +23,7 @@ interface ItemField {
   price: string
 }
 
-enum type {
+enum Type {
   Coach = 'coach',
   Field = 'field'
 }
@@ -30,7 +31,7 @@ enum type {
 export interface Props {
   itemFields?: ItemField[]
   description?: string
-  type?: type
+  type?: Type
   name?: string
   point?: number
   priceCoach?: string
@@ -47,7 +48,7 @@ export const FormInfo: React.FC<Props> = ({
   type,
   priceCoach,
   onChangeName
-}) => {
+}: Props) => {
   const [fieldCount, setFieldCount] = React.useState(0)
 
   const handleChange = (event: any) => {
@@ -56,7 +57,9 @@ export const FormInfo: React.FC<Props> = ({
       onChangeName?.(event.target.value)
     }
   }
+
   const classes = useStyles()
+
   return (
     <Grid style={{ maxWidth: 300 }} className={classes.paper}>
       <Typography
@@ -73,24 +76,23 @@ export const FormInfo: React.FC<Props> = ({
         color="secondary"
       >
         <InputLabel id="demo-simple-select-filled-label">
-          {type == 'field' ? 'Tên Sân' : 'Tên HLV'}
+          {type === Type.Field ? 'Tên Sân' : 'Tên HLV'}
         </InputLabel>
         <Select
-          disabled={type == 'field' ? false : true}
+          disabled={type === Type.Field ? false : true}
           labelId="demo-simple-select-filled-label"
           id="demo-simple-select-filled"
           value={fieldCount}
           onChange={handleChange}
         >
-          {type == 'field' &&
+          {type === Type.Field &&
             itemFields?.map((field, index) => (
               <MenuItem value={index}>{field['name']}</MenuItem>
             ))}
-          {type != 'field' && <MenuItem value={0}>{name}</MenuItem>}
+          {type != Type.Field && <MenuItem value={0}>{name}</MenuItem>}
         </Select>
       </FormControl>
-      <br></br>
-      {type == 'field' && (
+      {type === Type.Field && (
         <FormControl className={classes.formControl}>
           <TextField
             color="secondary"
@@ -105,10 +107,9 @@ export const FormInfo: React.FC<Props> = ({
                 index == fieldCount ? field['type'] : ''
               )
               .join('')}
-          ></TextField>
+          />
         </FormControl>
       )}
-      <br></br>
       <FormControl className={classes.formControl}>
         <TextField
           color="secondary"
@@ -119,7 +120,7 @@ export const FormInfo: React.FC<Props> = ({
             readOnly: true
           }}
           value={
-            type == 'field'
+            type === Type.Field
               ? itemFields
                   ?.map((field, index) =>
                     index == fieldCount ? field['price'] : null
@@ -127,7 +128,7 @@ export const FormInfo: React.FC<Props> = ({
                   .join('')
               : priceCoach
           }
-        ></TextField>
+        />
       </FormControl>
       <Typography
         variant="subtitle1"
@@ -143,13 +144,12 @@ export const FormInfo: React.FC<Props> = ({
         precision={0.1}
         readOnly
       />
-
       <Button
         variant="contained"
         color="secondary"
         className={classes.formControl}
       >
-        {type == 'field' ? 'Bắt Đầu !' : 'Đặt HLV'}
+        {type === Type.Field ? 'Bắt Đầu !' : 'Đặt HLV'}
       </Button>
     </Grid>
   )
