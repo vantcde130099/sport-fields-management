@@ -259,8 +259,8 @@ router.get('/booking-time-by-day', async (req, res) => {
   try {
     let timeWorkingADay = await Field.findById(req.query.fieldId, { hours: 1 })
 
-    // const ordersInDay = Order.find()   //find all order In day
     const dateArray = req.query.date.split('-')
+
     const [day, month, year] = dateArray
 
     //set time for open and close
