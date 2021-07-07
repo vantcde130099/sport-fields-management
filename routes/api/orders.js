@@ -1,12 +1,15 @@
 const express = require('express')
 const router = express.Router()
 
+// models
 const Order = require('../../models/Orders')
 const Field = require('../../models/Fields')
 const Owner = require('../../models/Owners')
 const Coach = require('../../models/Coaches')
 const Item = require('../../models/Items')
 const Coupon = require('../../models/Coupons')
+
+// middleware
 const customer = require('../../middleware/customer')
 const owner = require('../../middleware/owner')
 
@@ -46,7 +49,7 @@ router.post('/create', customer, async (req, res) => {
 
     //check code
     let existCoupon = null
-    if (code.trim() !== '') {
+    if (code && code.trim() !== '') {
       existCoupon = await Coupon.findOne({ code })
       if (existCoupon === null) {
         return res.status(400).json({ message: 'Coupon này không tồn tại' })
@@ -115,7 +118,7 @@ router.post('/create', customer, async (req, res) => {
       ),
       coachPrice: 0,
       itemsPrice: 0,
-      status: 'Đang chờ'
+      status: 'Chờ thanh toán'
     })
 
     //check coach execute
@@ -133,6 +136,7 @@ router.post('/create', customer, async (req, res) => {
         const itemFinding = await Item.findById(items[i].id)
         itemsPrice += itemFinding.price * items[i].quantity
       }
+      order.items = items
       order.itemsPrice = itemsPrice
     }
 

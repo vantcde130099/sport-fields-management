@@ -116,7 +116,7 @@ router.delete(
       return res.status(400).json({ errors: errors.array() })
     }
 
-    const { id } = req.body
+    const { id } = req.query
 
     try {
       const coupon = await Coupon.findOneAndDelete({
@@ -124,6 +124,9 @@ router.delete(
         owner: req.owner.id
       })
 
+      if (!coupon) {
+        return res.status(400).json({ message: 'Code không tồn tại' })
+      }
       res.status(200).json({ message: `Xóa thành công coupon ${coupon.code}` })
     } catch (error) {
       console.error(error.message)
@@ -157,7 +160,7 @@ router.get('/all', owner, async (req, res) => {
 // @desc    Owner search code their coupons
 // @access  Private
 router.get('/search', owner, async (req, res) => {
-  const { code } = req.body
+  const { code } = req.query
 
   try {
     const coupons = await Coupon.find(
@@ -200,7 +203,7 @@ router.get(
       return res.status(400).json({ errors: errors.array() })
     }
 
-    const { code, sportType, fieldType, start, end } = req.body
+    const { code, sportType, fieldType, start, end } = req.query
 
     const [dayStart, monthStart, yearStart] = start.split('-')
     const [dayEnd, monthEnd, yearEnd] = end.split('-')
@@ -237,7 +240,7 @@ router.get(
 // @desc    Customer get coupon of this owner
 // @access  Private
 router.get('/', async (req, res) => {
-  const { ownerId } = req.body
+  const { ownerId } = req.query
   const date = new Date()
 
   try {
