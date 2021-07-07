@@ -1,12 +1,15 @@
 const express = require('express')
 const router = express.Router()
 
+// models
 const Order = require('../../models/Orders')
 const Field = require('../../models/Fields')
 const Owner = require('../../models/Owners')
 const Coach = require('../../models/Coaches')
 const Item = require('../../models/Items')
 const Coupon = require('../../models/Coupons')
+
+// middleware
 const customer = require('../../middleware/customer')
 const owner = require('../../middleware/owner')
 
@@ -22,7 +25,6 @@ router.post('/create', customer, async (req, res) => {
     date,
     startRental,
     endRental,
-    payment,
     code
   } = req.body
 
@@ -47,7 +49,7 @@ router.post('/create', customer, async (req, res) => {
 
     //check code
     let existCoupon = null
-    if (code.trim() !== '') {
+    if (code && code.trim() !== '') {
       existCoupon = await Coupon.findOne({ code })
       if (existCoupon === null) {
         return res.status(400).json({ message: 'Coupon này không tồn tại' })
@@ -115,7 +117,8 @@ router.post('/create', customer, async (req, res) => {
           1000
       ),
       coachPrice: 0,
-      itemsPrice: 0
+      itemsPrice: 0,
+      status: 'Chờ thanh toán'
     })
 
     //check coach execute
@@ -133,14 +136,12 @@ router.post('/create', customer, async (req, res) => {
         const itemFinding = await Item.findById(items[i].id)
         itemsPrice += itemFinding.price * items[i].quantity
       }
+      order.items = items
       order.itemsPrice = itemsPrice
     }
 
     //total cost
     order.total = order.fieldPrice + order.coachPrice + order.itemsPrice
-
-    //payment
-    order.payment = payment
 
     //save to DB
     await order.save()
@@ -160,7 +161,6 @@ router.post('/create', customer, async (req, res) => {
     //     coach price: ${order.coachPrice}
     //     item price: ${order.itemsPrice}
     //     total: ${order.total}
-    //     payment: ${order.payment.method} - ${order.payment.status}
     // `)
 
     return res.status(200).json({ message: 'Đặt sân thành công.' })

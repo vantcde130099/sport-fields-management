@@ -42,19 +42,36 @@ router.post(
       }
 
       //check owner exist
-      const coachRate = await Owner.findById(order.owner)
+      const ownerRate = await Owner.findById(order.owner, {
+        rate: 1,
+        brandName: 1
+      })
 
-      if (!coachRate) {
+      if (!ownerRate) {
         return res.status(400).json({ message: 'Sân không tồn tại' })
       }
 
-      coachRate.rate.push({ customer: customer.id, value, text })
+      ownerRate.rate.push({ customer: customer.id, value, text })
 
-      await coachRate.save()
+      //calculate rate
+      let sumRating = 0
+
+      const listRating = await ownerRate.rate.map((rate) => rate.value)
+
+      if (listRating.length > 0) {
+        sumRating = listRating.reduce((accumulator, currentValue) => {
+          return accumulator + currentValue
+        })
+      }
+
+      ownerRate.averageRating =
+        sumRating != 0 ? sumRating / listRating.length : 0
+
+      await ownerRate.save()
 
       return res
         .status(200)
-        .json({ message: `Đánh giá thành công ${coachRate.brandName}` })
+        .json({ message: `Đánh giá thành công ${ownerRate.brandName}` })
     } catch (error) {
       console.error(error.message)
       return res.status(500).json({ message: 'Lỗi server' })
@@ -62,8 +79,8 @@ router.post(
   }
 )
 
-// @route   POST /api/rate
-// @desc    Customer rate owner
+// @route   POST /api/rate/coach
+// @desc    Customer rate coach
 // @access  Private
 router.post(
   '/coach',
@@ -102,6 +119,20 @@ router.post(
 
       coachRate.rate.push({ customer: customer.id, value, text })
 
+      //calculate rate
+      let sumRating = 0
+
+      const listRating = await coachRate.rate.map((rate) => rate.value)
+
+      if (listRating.length > 0) {
+        sumRating = listRating.reduce((accumulator, currentValue) => {
+          return accumulator + currentValue
+        })
+      }
+
+      coachRate.averageRating =
+        sumRating != 0 ? sumRating / listRating.length : 0
+
       await coachRate.save()
 
       return res
@@ -113,5 +144,53 @@ router.post(
     }
   }
 )
+
+// @route   GET /api/rate/owner
+// @desc    Customer get owner's rating
+// @access  Private
+router.get('/owner', async (req, res) => {
+  const { id } = req.query
+
+  try {
+    const owner = await Owner.findById(id, { averageRating: 1, rate: 1 })
+
+    if (!owner) {
+      return res.status(400).json({ message: 'Không tồn tại owner' })
+    }
+
+    if (owner.rate.length == 0) {
+      return res.status(400).json({ message: 'Chưa có đánh giá nào' })
+    }
+
+    res.status(200).json({ owner })
+  } catch (error) {
+    console.error(error.message)
+    return res.status(500).json({ message: 'Lỗi server' })
+  }
+})
+
+// @route   GET /api/rate/coach
+// @desc    Customer get coach's rating
+// @access  Private
+router.get('/coach', async (req, res) => {
+  const { id } = req.query
+
+  try {
+    const coach = await Coach.findById(id, { averageRating: 1, rate: 1 })
+
+    if (!coach) {
+      return res.status(400).json({ message: 'Lỗi, không tồn tại coach' })
+    }
+
+    if (coach.rate.length == 0) {
+      return res.status(400).json({ message: 'Chưa có đánh giá nào' })
+    }
+
+    res.status(200).json({ coach })
+  } catch (error) {
+    console.error(error.message)
+    return res.status(500).json({ message: 'Lỗi server' })
+  }
+})
 
 module.exports = router

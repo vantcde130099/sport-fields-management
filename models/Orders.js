@@ -18,7 +18,7 @@ const OrderSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'coach'
   },
-  item: [
+  items: [
     {
       id: {
         type: Schema.Types.ObjectId,
@@ -60,11 +60,16 @@ const OrderSchema = new Schema({
   },
   payment: {
     method: {
-      type: String
+      type: String,
+      enum: ['Thanh toán tại chỗ', 'Online']
     },
     status: {
       type: Boolean
     }
+  },
+  status: {
+    type: String,
+    enum: ['Chờ thanh toán', 'Hoàn thành', 'Hủy']
   },
   dateCreated: {
     type: Date,

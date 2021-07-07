@@ -46,12 +46,38 @@ const CoachSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'field'
       },
-      startTime: {
-        hour: {
-          type: Number
+      workingTime: {
+        startDay: {
+          type: Date
         },
-        miutes: {
-          type: Number
+        endDay: {
+          type: Date
+        },
+        repeat: {
+          unit: {
+            type: String,
+            enum: ['Tuần', 'Tháng', 'Năm'],
+            default: 'Tuần'
+          },
+          status: {
+            type: Boolean
+          }
+        },
+        workingInDay: {
+          startInDay: {
+            type: Number,
+            default: 420
+          },
+          endInDay: {
+            type: Number,
+            default: 1200
+          },
+          allDay: {
+            type: Boolean
+          }
+        },
+        note: {
+          type: String
         }
       }
     }
@@ -77,6 +103,11 @@ const CoachSchema = new Schema({
       }
     }
   ],
+  averageRating: {
+    type: Number,
+    default: 0,
+    max: 5
+  },
   booking: {
     type: Number,
     default: 0

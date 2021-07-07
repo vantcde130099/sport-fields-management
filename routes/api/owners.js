@@ -19,8 +19,9 @@ router.post('/register', upload.array('image', 2), async (req, res) => {
   await check('name', 'Vui lòng nhập tên').not().isEmpty().run(req)
   await check('email', 'Vui lòng nhập email').isEmail().run(req)
   await check('password', 'Mật khẩu ít nhất 6 chữ')
-  await check('brandName', 'Vui lòng nhập tên sân').not().isEmpty()
-  await check('phoneNumber', 'Vui lòng nhập số điện thoại')
+    .isLength({ min: 6 })
+    .run(req)
+  await check('phoneNumber', 'Vui lòng nhập Số điện thoại')
     .not()
     .isEmpty()
     .run(req)
@@ -168,6 +169,7 @@ router.get('/', async (req, res) => {
     const fileteredOwner = await listOwners.filter(function (e) {
       return e.fields.length > 0
     })
+
     //add identityCard Id to owner
     owner.identityCard = identityCard
 
@@ -205,10 +207,7 @@ router.get('/', async (req, res) => {
         price: Math.min(...listPrice),
         imageId,
         description: owner.description,
-        rate:
-          sumRating != 0
-            ? sumRating / listRating.length
-            : 'Chưa có đánh giá nào'
+        rate: owner.averageRating
       }
 
       infoBlock.push(info)
@@ -220,11 +219,11 @@ router.get('/', async (req, res) => {
   }
 })
 
-// @route   GET /api/owner
+// @route   GET /api/owner/location
 // @desc    get all fields by location
 // @access  Public
 router.get('/location', async (req, res) => {
-  const { city, district, ward } = req.body
+  const { city, district, ward } = req.query
 
   try {
     let infoBlock = []
@@ -232,17 +231,17 @@ router.get('/location', async (req, res) => {
     let listOwners
 
     if (city && district && ward) {
-      listOwners = await Owner.find({ 'contact.address': req.body }).sort({
+      listOwners = await Owner.find({ 'contact.address': req.query }).sort({
         dateCreated: -1
       })
     } else if (city && district) {
       listOwners = await Owner.find({
-        'contact.address.city': req.body.city,
-        'contact.address.district': req.body.district
+        'contact.address.city': req.query.city,
+        'contact.address.district': req.query.district
       }).sort({ dateCreated: -1 })
     } else if (city) {
       listOwners = await Owner.find({
-        'contact.address.city': req.body.city
+        'contact.address.city': req.query.city
       }).sort({ dateCreated: -1 })
     }
 
@@ -281,7 +280,7 @@ router.get('/location', async (req, res) => {
         price: Math.min(...listPrice),
         imageId,
         description: owner.description,
-        rate: owner.rate.value
+        rate: owner.averageRating
       }
 
       infoBlock.push(info)
@@ -301,7 +300,7 @@ router.get('/name', async (req, res) => {
     let infoBlock = []
 
     const listOwners = await Owner.find({
-      name: { $regex: `.*${req.body.name}.*` }
+      brandName: { $regex: `.*${req.query.name}.*` }
     }).sort({ dateCreated: -1 })
 
     if (listOwners.isEmpty) {
@@ -338,7 +337,7 @@ router.get('/name', async (req, res) => {
         price: Math.min(...listPrice),
         imageId,
         description: owner.description,
-        rate: owner.rate.value
+        rate: owner.averageRating
       }
 
       infoBlock.push(info)
@@ -354,7 +353,7 @@ router.get('/name', async (req, res) => {
 // @desc    get all owners by type
 // @access  Public
 router.get('/type', async (req, res) => {
-  const type = req.body
+  const type = req.query
   try {
     let infoBlock = []
     let listFields
@@ -409,7 +408,7 @@ router.get('/type', async (req, res) => {
         price: Math.min(...listPrice),
         imageId,
         description: owner.description,
-        rate: owner.rate.value
+        rate: owner.averageRating
       }
 
       infoBlock.push(info)
