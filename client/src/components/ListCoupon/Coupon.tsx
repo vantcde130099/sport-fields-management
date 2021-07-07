@@ -18,10 +18,9 @@ export interface Props {
   selected: boolean
 }
 
-export const Coupon: React.FC<Props> = ({ coupon, selected }) => {
-
+export const Coupon: React.FC<Props> = ({ coupon, selected }: Props) => {
   const classes = useStyles()
-  
+
   return (
     <ButtonBase style={{ borderRadius: 10 }}>
       <Paper

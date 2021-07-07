@@ -31,7 +31,7 @@ export interface Props {
 /**
  * Primary UI component for user interaction
  */
-export const ListCoupon: React.FC<Props> = ({ listCoupon }) => {
+export const ListCoupon: React.FC<Props> = ({ listCoupon }: Props) => {
   const classes = useStyles()
 
   const [selected, setSelected] = React.useState(-1)
