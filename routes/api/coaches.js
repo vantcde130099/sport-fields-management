@@ -272,8 +272,8 @@ router.put(
 // @desc    Coach get work schedule
 // @access  Private
 router.get('/work-schedule', coach, async (req, res) => {
-  const [dayStart, monthStart, yearStart] = req.body.start.split('-')
-  const [dayEnd, monthEnd, yearEnd] = req.body.end.split('-')
+  const [dayStart, monthStart, yearStart] = req.query.start.split('-')
+  const [dayEnd, monthEnd, yearEnd] = req.query.end.split('-')
   const start = new Date(yearStart, monthStart, dayStart)
   const end = new Date(yearEnd, monthEnd, dayEnd)
 

@@ -106,7 +106,7 @@ router.post('/add', owner, upload.array('image', 10), async (req, res) => {
 // @access  Private
 router.get('/', async (req, res) => {
   try {
-    const owner = await Owner.findById(req.body.ownerId)
+    const owner = await Owner.findById(req.query.ownerId)
     const fieldId = owner.fields[owner.fields.length - 1]
     const theFirstField = await Field.findById(fieldId)
 
@@ -132,13 +132,16 @@ router.get('/', async (req, res) => {
 // @desc    Get field by type of owner
 // @access  Private
 router.get('/type', async (req, res) => {
+  const { ownerId, sportType, fieldType } = req.query
+
+  const type = { sportType, fieldType }
   try {
-    const owner = await Owner.findById(req.body.ownerId)
+    const owner = await Owner.findById(ownerId)
 
     const fields = await Field.find({
       // get all fields of owner and by type
       _id: { $in: owner.fields },
-      type: req.body.type
+      type: type
     })
 
     if (!fields) {
@@ -170,12 +173,12 @@ router.get('/type', async (req, res) => {
 // @access  Private
 router.get('/name', async (req, res) => {
   try {
-    const owner = await Owner.findById(req.body.ownerId)
+    const owner = await Owner.findById(req.query.ownerId)
 
     const field = await Field.findOne({
       // get field in owner with ?name
       _id: { $in: owner.fields },
-      name: req.body.fieldName
+      name: req.query.fieldName
     })
 
     if (!field) {
@@ -201,9 +204,7 @@ router.get('/name', async (req, res) => {
 // @access  Private
 router.get('/booking-time-now', async (req, res) => {
   try {
-    let timeWorkingADay = await Field.findById(req.body.fieldId, { hours: 1 })
-
-    // const orderOnDay = Order.find()  //find order in day now
+    let timeWorkingADay = await Field.findById(req.query.fieldId, { hours: 1 })
 
     //set time for open and close
     let open = new Date()

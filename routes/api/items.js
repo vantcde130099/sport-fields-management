@@ -57,7 +57,7 @@ router.post('/add', owner, upload.single('image'), async (req, res) => {
 // @access  Public
 router.get('/owner', async (req, res) => {
   try {
-    const owner = await Owners.findById(req.body.ownerId, (err, result) => {
+    const owner = await Owners.findById(req.query.ownerId, (err, result) => {
       if (!result) {
         return res
           .status(400)
