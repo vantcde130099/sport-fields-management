@@ -54,8 +54,8 @@ export const FormComment: React.FC<Props> = ({
   const classes = useStyles()
 
   //states
-  const [value, setValue] = React.useState(2)
-  const [hover, setHover] = React.useState(-1)
+  const [point, setPoint] = React.useState(2)
+  const [hoverRating, setHoverRating] = React.useState(-1)
   const [areaTextLength, setAreaTextLength] = React.useState(0)
   const [areaTextValue, setAreaTextValue] = React.useState('')
 
@@ -102,19 +102,19 @@ export const FormComment: React.FC<Props> = ({
                 >
                   <Rating
                     name="hover-feedback"
-                    value={value}
+                    value={point}
                     size="large"
                     precision={0.5}
                     onChange={(event: any, newValue: any) => {
-                      setValue(newValue)
+                      setPoint(newValue)
                     }}
                     onChangeActive={(event: any, newHover: any) => {
-                      setHover(newHover)
+                      setHoverRating(newHover)
                     }}
                   />
-                  {value !== null && (
+                  {point !== null && (
                     <Box ml={2}>
-                      {(labels as any)[hover !== -1 ? hover : value]}
+                      {(labels as any)[hoverRating !== -1 ? hoverRating : point]}
                     </Box>
                   )}{' '}
                 </Typography>
