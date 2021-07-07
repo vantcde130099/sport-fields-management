@@ -12,9 +12,7 @@ import {
   Grid,
   Paper,
   TextareaAutosize,
-  Typography,
-  ThemeProvider,
-  MuiThemeProvider
+  Typography
 } from '@material-ui/core'
 import { Rating } from '@material-ui/lab'
 
@@ -114,7 +112,11 @@ export const FormComment: React.FC<Props> = ({
                   />
                   {point !== null && (
                     <Box ml={2}>
-                      {(labels as any)[hoverRating !== -1 ? hoverRating : point]}
+                      {
+                        (labels as any)[
+                          hoverRating !== -1 ? hoverRating : point
+                        ]
+                      }
                     </Box>
                   )}{' '}
                 </Typography>
