@@ -16,11 +16,12 @@ export interface Props {
 /**
  * Primary UI component for user interaction
  */
-export const AdviseButtons: React.FC<Props> = ({ instructions }:Props) => {
-
+export const AdviseButtons: React.FC<Props> = ({ instructions }: Props) => {
   const classes = useStyles()
 
-  const [listButtonActive, setListButtonActive] = React.useState<Array<number>>([])
+  const [listButtonActive, setListButtonActive] = React.useState<Array<number>>(
+    []
+  )
 
   const toggleButton = (event: any, index: number) => {
     let array = []

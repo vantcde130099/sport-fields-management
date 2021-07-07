@@ -144,7 +144,7 @@ export const FormComment: React.FC<Props> = ({
         <Grid container justify="space-around" alignItems="center">
           <Button
             variant="contained"
-            className = {classes.button}
+            className={classes.button}
             color="secondary"
           >
             Đánh giá
