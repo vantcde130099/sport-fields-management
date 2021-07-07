@@ -17,8 +17,15 @@ import {
 //styles
 import { useStyles } from './index.styles'
 
+interface Coupon {
+  id?: string
+  code?: string
+  discount?: number
+  dateClose?: string
+}
+
 export interface Props {
-  listCoupon: []
+  listCoupon: Coupon[]
 }
 
 /**
