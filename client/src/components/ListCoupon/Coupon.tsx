@@ -6,7 +6,7 @@ import { ButtonBase, Grid, Paper, Typography } from '@material-ui/core'
 // Styles
 import { useStyles } from './Coupon.styles'
 
-interface coupon {
+interface Coupon {
   id?: string
   code?: string
   discount?: number
@@ -14,12 +14,14 @@ interface coupon {
 }
 
 export interface Props {
-  coupon?: coupon
+  coupon?: Coupon
   selected: boolean
 }
 
 export const Coupon: React.FC<Props> = ({ coupon, selected }) => {
+
   const classes = useStyles()
+  
   return (
     <ButtonBase style={{ borderRadius: 10 }}>
       <Paper

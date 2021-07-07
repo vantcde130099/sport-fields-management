@@ -7,5 +7,10 @@ export const useStyles = makeStyles((theme) => ({
     maxWidth: 380,
     overflow: 'scroll',
     backgroundColor: theme.palette.background.paper
-  }
+  },
+  listItem: {
+    paddingRight: 8,
+    paddingLeft: 8,
+    paddingBottom: 0
+  },
 }))

@@ -45,23 +45,17 @@ export const ListCoupon: React.FC<Props> = ({ listCoupon }) => {
         </Typography>
         <List component="nav">
           {listCoupon?.map((coupon, index) => (
-            <ListItem
-              style={{ paddingRight: 8, paddingLeft: 8, paddingBottom: 0 }}
-            >
+            <ListItem className={classes.listItem}>
               <ListItemText onClick={(e) => onSelectCoupon(e, index)}>
                 <Coupon
                   coupon={coupon}
-                  selected={index == selected ? true : false}
+                  selected={index === selected ? true : false}
                 ></Coupon>
               </ListItemText>
             </ListItem>
           ))}
         </List>
-        <Button
-          style={{ backgroundColor: '#F94949' }}
-          variant="contained"
-          color="secondary"
-        >
+        <Button variant="contained" color="secondary">
           Áp dụng
         </Button>
       </Grid>
