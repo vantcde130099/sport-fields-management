@@ -44,6 +44,10 @@ const CustomerSchema = new Schema({
     type: String,
     default: 'https://www.amongusavatarcreator.com/assets/img/main/icon.png'
   },
+  status: {
+    type: Boolean,
+    default: true
+  },
   dateCreated: {
     type: Date,
     default: Date.now

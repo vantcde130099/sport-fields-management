@@ -86,6 +86,10 @@ const OwnerSchema = new Schema({
   description: {
     type: String
   },
+  status: {
+    type: Boolean,
+    default: true
+  },
   dateCreated: {
     type: Date,
     default: Date.now
