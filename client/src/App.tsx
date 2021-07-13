@@ -2,6 +2,8 @@ import WebFont from 'webfontloader'
 import { Fragment } from 'react'
 import { CssBaseline, ThemeProvider, createMuiTheme } from '@material-ui/core'
 
+import { Counter } from './components/Counter'
+
 const theme = createMuiTheme({
   typography: {
     fontFamily: 'Titillium'
@@ -17,13 +19,11 @@ WebFont.load({
   }
 })
 
-const App = () => (
+export const App = () => (
   <Fragment>
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <h1>Demo Workflow 2</h1>
+      <Counter />
     </ThemeProvider>
   </Fragment>
 )
-
-export default App
