@@ -2,8 +2,13 @@ const express = require('express')
 const router = express.Router()
 const { check, validationResult } = require('express-validator')
 
+// middleware
 const owner = require('../../middleware/owner')
+const coach = require('../../middleware/coach')
 const upload = require('../../middleware/upload')
+
+// models
+const Coach = require('../../models/Coaches')
 const Owner = require('../../models/Owners')
 const Field = require('../../models/Fields')
 
@@ -101,7 +106,7 @@ router.post('/add', owner, upload.array('image', 10), async (req, res) => {
 // @access  Private
 router.get('/', async (req, res) => {
   try {
-    const owner = await Owner.findById(req.body.ownerId)
+    const owner = await Owner.findById(req.query.ownerId)
     const fieldId = owner.fields[owner.fields.length - 1]
     const theFirstField = await Field.findById(fieldId)
 
@@ -127,13 +132,16 @@ router.get('/', async (req, res) => {
 // @desc    Get field by type of owner
 // @access  Private
 router.get('/type', async (req, res) => {
+  const { ownerId, sportType, fieldType } = req.query
+
+  const type = { sportType, fieldType }
   try {
-    const owner = await Owner.findById(req.body.ownerId)
+    const owner = await Owner.findById(ownerId)
 
     const fields = await Field.find({
       // get all fields of owner and by type
       _id: { $in: owner.fields },
-      type: req.body.type
+      type: type
     })
 
     if (!fields) {
@@ -165,12 +173,12 @@ router.get('/type', async (req, res) => {
 // @access  Private
 router.get('/name', async (req, res) => {
   try {
-    const owner = await Owner.findById(req.body.ownerId)
+    const owner = await Owner.findById(req.query.ownerId)
 
     const field = await Field.findOne({
       // get field in owner with ?name
       _id: { $in: owner.fields },
-      name: req.body.fieldName
+      name: req.query.fieldName
     })
 
     if (!field) {
@@ -196,9 +204,7 @@ router.get('/name', async (req, res) => {
 // @access  Private
 router.get('/booking-time-now', async (req, res) => {
   try {
-    let timeWorkingADay = await Field.findById(req.body.fieldId, { hours: 1 })
-
-    // const orderOnDay = Order.find()  //find order in day now
+    let timeWorkingADay = await Field.findById(req.query.fieldId, { hours: 1 })
 
     //set time for open and close
     let open = new Date()
@@ -251,10 +257,10 @@ router.get('/booking-time-now', async (req, res) => {
 // @access  Private
 router.get('/booking-time-by-day', async (req, res) => {
   try {
-    let timeWorkingADay = await Field.findById(req.body.fieldId, { hours: 1 })
+    let timeWorkingADay = await Field.findById(req.query.fieldId, { hours: 1 })
 
-    // const ordersInDay = Order.find()   //find all order In day
-    const dateArray = req.body.date.split('-')
+    const dateArray = req.query.date.split('-')
+
     const [day, month, year] = dateArray
 
     //set time for open and close
@@ -284,7 +290,9 @@ router.get('/booking-time-by-day', async (req, res) => {
       if (i > timeWorkingADay.hours.close - 60) break
 
       let close = new Date(open)
+
       close.setHours(close.getHours() + 1)
+
       listHours.push({
         start: `${open.getHours()}:${
           open.getMinutes() === 0 ? '00' : open.getMinutes()
@@ -298,6 +306,28 @@ router.get('/booking-time-by-day', async (req, res) => {
     }
 
     return res.status(200).json(listHours)
+  } catch (error) {
+    console.error(error.message)
+    return res.status(500).send('Lỗi server')
+  }
+})
+
+// @route   GET /api/fields/owner-get-fields
+// @desc    Owner get fields info
+// @access  Private
+router.get('/owner-get-fields', owner, async (req, res) => {
+  const ownerId = req.owner.id
+
+  try {
+    const owner = await Owner.findById(ownerId, { fields: 1 })
+
+    if (owner.fields.length == 0) {
+      return res.status(400).json({ message: 'Không có sân nào' })
+    }
+
+    const fields = await Field.find({ _id: { $in: owner.fields } })
+
+    res.status(200).json(fields)
   } catch (error) {
     console.error(error.message)
     return res.status(500).send('Lỗi server')
@@ -400,5 +430,92 @@ router.put(
     }
   }
 )
+// @route   GET /api/fields/coach-register
+// @desc    Generate field for coach can register in that city
+// @access  Private
+router.get('/coach-register', coach, async (req, res) => {
+  try {
+    const coach = await Coach.findById(req.coach.id, {
+      'contact.address': 1,
+      fieldsRegistered: 1
+    })
+
+    if (!coach) {
+      return res.status(400).json({ message: 'Huấn luyện viên không tồn tại' })
+    }
+
+    const { city, district, ward } = coach.contact.address
+
+    //khai báo list chủ sân
+    let listOwners = null
+
+    if (city && district && ward) {
+      listOwners = await Owner.find(
+        {
+          'contact.address': coach.contact.address
+        },
+        {
+          name: 1,
+          booking: 1,
+          contact: 1,
+          brandName: 1,
+          averageRating: 1,
+          fieldSize: { $size: '$fields' }
+        }
+      ).sort({
+        brandName: 1
+      })
+    } else if (city && district) {
+      listOwners = await Owner.find(
+        {
+          'contact.address.city': city,
+          'contact.address.district': district
+        },
+        {
+          name: 1,
+          booking: 1,
+          contact: 1,
+          averageRating: 1,
+          fieldSize: { $size: '$fields' },
+          brandName: 1,
+          averageRating
+        }
+      ).sort({
+        brandName: 1
+      })
+    } else if (city) {
+      listOwners = await Owner.find(
+        {
+          'contact.address.city': city
+        },
+        {
+          name: 1,
+          booking: 1,
+          contact: 1,
+          averageRating: 1,
+          fieldSize: { $size: '$fields' },
+          brandName: 1,
+          averageRating
+        }
+      ).sort({
+        brandName: 1
+      })
+    } else {
+      return res.status(400).json({
+        message: `Huấn luyện viên ${coach.name} chưa nhập thông tin địa chỉ`
+      })
+    }
+
+    //check empty list owner found
+    if (listOwners == null) {
+      return res.status(400).json({ msg: 'Không có sân' })
+    }
+
+    res.status(200).json({ listOwners })
+  } catch (error) {
+    console.error(error.message)
+    return res.status(500).send('Lỗi server')
+  }
+})
 
 module.exports = router
